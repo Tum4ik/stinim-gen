@@ -1,2 +1,2 @@
 # i-i-gen
-Interface and implementation generator for classes.
+Interface and implementation generator for .NET classes.
