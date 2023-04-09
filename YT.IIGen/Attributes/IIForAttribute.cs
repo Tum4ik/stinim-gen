@@ -4,7 +4,7 @@ namespace YT.IIGen.Attributes;
 /// An attribute that can be used to automatically generate interface members and an implementation wrapper for a
 /// declared interface with a given class type.
 /// </summary>
-[AttributeUsage(AttributeTargets.Interface, Inherited = false)]
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 public class IIForAttribute : Attribute
 {
   public IIForAttribute(Type classType, string implementationClassName)
