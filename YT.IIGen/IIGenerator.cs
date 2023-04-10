@@ -11,10 +11,10 @@ internal class IIGenerator : IIncrementalGenerator
 {
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
-    System.Diagnostics.Debugger.Launch();
+    //System.Diagnostics.Debugger.Launch();
 
     var interfacesProvider = context.SyntaxProvider.ForAttributeWithMetadataName(
-      typeof(IIForAttribute).ToString(),
+      typeof(IIForAttribute).FullName,
       static (syntaxNode, _) => syntaxNode.IsKind(SyntaxKind.InterfaceDeclaration),
       static (ctx, _) => (InterfaceDeclarationSyntax) ctx.TargetNode
     );
@@ -30,42 +30,40 @@ internal class IIGenerator : IIncrementalGenerator
 
   private static void Generate(SourceProductionContext ctx,
                                (
-                                 InterfaceDeclarationSyntax declarationSyntax,
+                                 InterfaceDeclarationSyntax declaredInterfaceSyntax,
                                  CompilationMethods compilation
                                ) combined)
   {
-    var (declarationSyntax, compilation) = combined;
-    var attributeSyntax = declarationSyntax.AttributeLists.SelectMany(al => al.Attributes).First();
-    var arguments = attributeSyntax.ArgumentList?.Arguments;
-    if (!arguments.HasValue || arguments.Value.Count != 2)
+    var (declaredInterfaceSyntax, compilation) = combined;
+    var declaredAttributeSyntax = declaredInterfaceSyntax.AttributeLists.SelectMany(al => al.Attributes).First();
+    var declaredAttributeArguments = declaredAttributeSyntax.ArgumentList?.Arguments;
+    if (!declaredAttributeArguments.HasValue || declaredAttributeArguments.Value.Count != 2)
     {
-      throw new ArgumentException("Incorrect amount of arguments.");
+      throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
     }
 
-    var classTypeSyntax = (arguments.Value[0].Expression as TypeOfExpressionSyntax)?.Type;
-    if (classTypeSyntax is null)
+    var declaredSourceTypeSyntax = (declaredAttributeArguments.Value[0].Expression as TypeOfExpressionSyntax)?.Type;
+    if (declaredSourceTypeSyntax is null)
     {
       throw new ArgumentException("Can not get the class type syntax.");
     }
 
-    var classNamedTypeSymbol = compilation.GetSemanticModel(classTypeSyntax.SyntaxTree, false)
-      .GetSymbolInfo(classTypeSyntax)
+    var sourceNamedTypeSymbol = compilation.GetSemanticModel(declaredSourceTypeSyntax.SyntaxTree, false)
+      .GetSymbolInfo(declaredSourceTypeSyntax)
       .Symbol as INamedTypeSymbol;
-    if (classNamedTypeSymbol is null)
+    if (sourceNamedTypeSymbol is null)
     {
       throw new ArgumentException("Can not get the class named type symbol.");
     }
-    //var classFullName = classNamedTypeSymbol.ToString();
 
-
-    var wrapperClassName = (arguments.Value[1].Expression as LiteralExpressionSyntax)?.Token.ValueText;
+    var wrapperClassName = (declaredAttributeArguments.Value[1].Expression as LiteralExpressionSyntax)?.Token.ValueText;
     if (wrapperClassName is null)
     {
       throw new ArgumentException("Wrapper class name is not provided");
     }
 
-    var nameSpace = compilation.GetSemanticModel(declarationSyntax.SyntaxTree, false)
-      .GetDeclaredSymbol(declarationSyntax)?
+    var nameSpace = compilation.GetSemanticModel(declaredInterfaceSyntax.SyntaxTree, false)
+      .GetDeclaredSymbol(declaredInterfaceSyntax)?
       .ContainingNamespace
       .ToString();
     if (nameSpace is null)
@@ -73,28 +71,35 @@ internal class IIGenerator : IIncrementalGenerator
       throw new ArgumentException("Can not get the interface namespace.");
     }
 
-    var accessModifier = declarationSyntax.Modifiers.ToString();
+    var accessModifiers = declaredInterfaceSyntax.Modifiers.ToString();
+    var interfaceName = declaredInterfaceSyntax.Identifier.ValueText;
 
     // TODO: optimize
-    var fields = classNamedTypeSymbol.GetMembers()
+    var fields = sourceNamedTypeSymbol.GetMembers()
       .Where(m => m is IFieldSymbol)
       .Cast<IFieldSymbol>()
       .Where(fs => fs.DeclaredAccessibility == Accessibility.Public);
-    var properties = classNamedTypeSymbol.GetMembers()
+    var properties = sourceNamedTypeSymbol.GetMembers()
       .Select(m => m as IPropertySymbol)
       .Where(ps => ps is not null
                 && ps.DeclaredAccessibility == Accessibility.Public);
-    var events = classNamedTypeSymbol.GetMembers()
+    var events = sourceNamedTypeSymbol.GetMembers()
       .Select(m => m as IEventSymbol)
       .Where(es => es is not null
                 && es.DeclaredAccessibility == Accessibility.Public);
-    var methods = classNamedTypeSymbol.GetMembers()
+    var methods = sourceNamedTypeSymbol.GetMembers()
       .Select(m => m as IMethodSymbol)
       .Where(ms => ms is not null
                 && ms.DeclaredAccessibility == Accessibility.Public
                 && ms.MethodKind == MethodKind.Ordinary);
 
-    var generatedFields = new FieldsGenerator(fields).Generate(classNamedTypeSymbol);
+    var generatedFields = new FieldsGenerator(fields).Generate(sourceNamedTypeSymbol);
+
+    var generatedInterface = new InterfaceGenerator()
+      .AddFields(generatedFields.InterfaceFields)
+      .Generate(nameSpace, accessModifiers, interfaceName);
+
+    ctx.AddSource($"{nameSpace}.{interfaceName}.g.cs", generatedInterface);
   }
 }
 

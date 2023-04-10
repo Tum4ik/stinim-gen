@@ -28,14 +28,14 @@ internal class FieldsGenerator
 
     foreach (var fieldSymbol in _fieldSymbols)
     {
-      var type = fieldSymbol.Type.ToString();
+      var typeFullName = fieldSymbol.Type.ToString();
       var name = fieldSymbol.Name;
       var hasSetter = !fieldSymbol.IsConst && !fieldSymbol.IsReadOnly;
 
-      interfaceFieldsBuilder.AppendLine($"  {type} {name} {{ get; {(hasSetter ? "set; " : "")}}}");
+      interfaceFieldsBuilder.AppendLine($"  {typeFullName} {name} {{ get; {(hasSetter ? "set; " : string.Empty)}}}");
 
       implementationFields
-        .AppendLine($"  public {type} {name}")
+        .AppendLine($"  public {typeFullName} {name}")
         .AppendLine("  {")
         .AppendLine($"    get => {callee}.{name};");
       if (hasSetter)
