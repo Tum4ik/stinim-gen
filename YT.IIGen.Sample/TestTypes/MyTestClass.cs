@@ -1,5 +1,5 @@
 namespace YT.IIGen.Sample.TestTypes;
-internal class MyTestClass
+internal class MyTestClass : MyBaseTestClass
 {
   public const int ConstIntField = 1;
   public int IntField = 2;
@@ -17,4 +17,5 @@ internal class MyTestClass
   public readonly MyTestClass ReadonlyMyTestClassField = new();
   public static MyTestClass StaticMyTestClassField = new();
   public static readonly MyTestClass StaticReadonlyMyTestClassField = new();
+
 }

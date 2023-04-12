@@ -1,30 +1,188 @@
+using System.Collections.Immutable;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using YT.IIGen.Attributes;
-using YT.IIGen.Templates;
+using YT.IIGen.Extensions;
+using YT.IIGen.Models;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace YT.IIGen;
 
-[Generator]
-internal class IIGenerator : IIncrementalGenerator
+[Generator(LanguageNames.CSharp)]
+internal sealed partial class IIGenerator : IIncrementalGenerator
 {
+  private static readonly string s_iiForAttributeFullName = typeof(IIForAttribute).FullName;
+  private static readonly string s_indentation = "  ";
+
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
     //System.Diagnostics.Debugger.Launch();
 
     var interfacesProvider = context.SyntaxProvider.ForAttributeWithMetadataName(
-      typeof(IIForAttribute).FullName,
-      static (syntaxNode, _) => syntaxNode.IsKind(SyntaxKind.InterfaceDeclaration),
-      static (ctx, _) => (InterfaceDeclarationSyntax) ctx.TargetNode
+      s_iiForAttributeFullName,
+      static (node, _) => node is InterfaceDeclarationSyntax interfaceDeclaration
+                          && (interfaceDeclaration.AttributeLists.Count > 0
+                              || interfaceDeclaration.Modifiers.Any(m => m.IsKind(SyntaxKind.PartialKeyword))
+                             ),
+      static (ctx, _) =>
+      {
+        var interfaceNamedTypeSymbol = (INamedTypeSymbol) ctx.TargetSymbol;
+        var attributeArguments = interfaceNamedTypeSymbol
+          .GetAttributes()
+          .Single(a => a.AttributeClass?.GetFullyQualifiedMetadataName() == s_iiForAttributeFullName)
+          .ConstructorArguments;
+        if (attributeArguments.Length != 2)
+        {
+          throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
+        }
+
+        var sourceNamedTypeSymbol = attributeArguments[0].Value as INamedTypeSymbol;
+        if (sourceNamedTypeSymbol is null)
+        {
+          throw new ArgumentException("Can not get the class named type symbol.");
+        }
+
+        var wrapperClassName = attributeArguments[1].Value as string;
+        if (wrapperClassName is null)
+        {
+          throw new ArgumentException("Incorrect wrapper class name.");
+        }
+
+        // TODO: optimize
+        // TODO: also include members from base types recursively
+        var fields = sourceNamedTypeSymbol.GetMembers()
+          .Where(m => m is IFieldSymbol)
+          .Cast<IFieldSymbol>()
+          .Where(fs => fs.DeclaredAccessibility == Accessibility.Public);
+
+        var propertyForFieldInfoList = fields
+          .Select(f => new PropertyInfo(
+            f.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+            f.Name,
+            f.IsStatic,
+            !f.IsConst && !f.IsReadOnly
+          ))
+          .ToImmutableArray();
+
+
+        return new IIInfo(
+          interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
+          )),
+          new(
+            interfaceNamedTypeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
+            interfaceNamedTypeSymbol.TypeKind,
+            interfaceNamedTypeSymbol.IsRecord
+          ),
+          new(
+            wrapperClassName,
+            TypeKind.Class,
+            false
+          ),
+          propertyForFieldInfoList,
+          sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
+          sourceNamedTypeSymbol.IsSealed,
+          sourceNamedTypeSymbol.IsStatic,
+          sourceNamedTypeSymbol.IsReferenceType
+        );
+      }
     );
 
-    var getSemanticModelProvider = context.CompilationProvider
-      .Select<Compilation, CompilationMethods>(static (c, _) => new(c.GetSemanticModel, c.GetTypeByMetadataName));
+    context.RegisterSourceOutput(interfacesProvider, static (ctx, iiInfo) =>
+    {
 
-    var combined = interfacesProvider.Combine(getSemanticModelProvider);
+      var interfacePropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
+        .Select(Execute.GetInterfacePropertySyntax);
 
-    context.RegisterSourceOutput(combined, Generate);
+
+      var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
+        .GetSyntax()
+        .AddModifiers(Token(SyntaxKind.PartialKeyword))
+        .AddMembers(interfacePropertyForFieldDeclarations.ToArray());
+
+      var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
+        .GetSyntax()
+        .AddModifiers(Token(SyntaxKind.InternalKeyword));
+      var baseListTypes = new List<BaseTypeSyntax>(2);
+      if (iiInfo.IsSourceStatic)
+      {
+        var implementationPropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
+          .Select(pi => Execute.GetImplementationPropertySyntax(pi, iiInfo.SourceFullyQualifiedName));
+        implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
+          .AddMembers(implementationPropertyForFieldDeclarations.ToArray());
+      }
+      else
+      {
+        const string InstanceFieldName = "_instance";
+        
+        var implementationPropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
+          .Select(pi => Execute.GetImplementationPropertySyntax(
+            pi,
+            pi.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
+            isNewKeywordRequired: true
+          ));
+
+        if (iiInfo.IsSourceSealed || iiInfo.PropertyForFieldInfoList.Any(f => !f.IsStatic))
+        {
+          var instanceFieldDeclarationSyntax = FieldDeclaration(
+            VariableDeclaration(IdentifierName(iiInfo.SourceFullyQualifiedName))
+              .AddVariables(
+                VariableDeclarator(Identifier(InstanceFieldName))
+                  .WithInitializer(
+                    EqualsValueClause(
+                      ImplicitObjectCreationExpression()
+                    )
+                  )
+              )
+            )
+            .AddModifiers(Token(SyntaxKind.PrivateKeyword), Token(SyntaxKind.ReadOnlyKeyword));
+          implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
+            .AddMembers(instanceFieldDeclarationSyntax);
+        }
+
+        implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
+          .AddMembers(implementationPropertyForFieldDeclarations.ToArray());
+        if (iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)
+        {
+          // inherit
+          baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.SourceFullyQualifiedName)));
+        }
+        else
+        {
+          // add properties, events, methods
+          
+        }
+      }
+
+      baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
+
+      implementationTypeDeclarationSyntax = (TypeDeclarationSyntax) implementationTypeDeclarationSyntax
+        .AddBaseListTypes(baseListTypes.ToArray());
+
+
+      var interfaceCompilationUnit = CompilationUnit()
+        .AddMembers(
+          NamespaceDeclaration(IdentifierName(iiInfo.Namespace))
+            .AddMembers(interfaceTypeDeclarationSyntax)
+        )
+        .NormalizeWhitespace(indentation: s_indentation);
+
+      var implementationCompilationUnit = CompilationUnit()
+        .AddMembers(
+          NamespaceDeclaration(IdentifierName(iiInfo.Namespace))
+            .AddMembers(implementationTypeDeclarationSyntax)
+        )
+        .NormalizeWhitespace(indentation: s_indentation);
+
+      
+
+      var interfaceSource = interfaceCompilationUnit.GetText(Encoding.UTF8);
+      var implementationSource = implementationCompilationUnit.GetText(Encoding.UTF8);
+      ctx.AddSource($"{iiInfo.Namespace}.{iiInfo.InterfaceTypeInfo.QualifiedName}.g.cs", interfaceSource);
+      ctx.AddSource($"{iiInfo.Namespace}.{iiInfo.ImplementationTypeInfo.QualifiedName}.g.cs", implementationSource);
+    });
   }
 
 
@@ -56,25 +214,11 @@ internal class IIGenerator : IIncrementalGenerator
       throw new ArgumentException("Can not get the class named type symbol.");
     }
 
-    var wrapperClassName = (declaredAttributeArguments.Value[1].Expression as LiteralExpressionSyntax)?.Token.ValueText;
-    if (wrapperClassName is null)
-    {
-      throw new ArgumentException("Wrapper class name is not provided");
-    }
+    
 
-    var nameSpace = compilation.GetSemanticModel(declaredInterfaceSyntax.SyntaxTree, false)
-      .GetDeclaredSymbol(declaredInterfaceSyntax)?
-      .ContainingNamespace
-      .ToString();
-    if (nameSpace is null)
-    {
-      throw new ArgumentException("Can not get the interface namespace.");
-    }
-
-    var accessModifiers = declaredInterfaceSyntax.Modifiers.ToString();
-    var interfaceName = declaredInterfaceSyntax.Identifier.ValueText;
 
     // TODO: optimize
+    // TODO: also include members from base types recursively
     var fields = sourceNamedTypeSymbol.GetMembers()
       .Where(m => m is IFieldSymbol)
       .Cast<IFieldSymbol>()
@@ -93,13 +237,7 @@ internal class IIGenerator : IIncrementalGenerator
                 && ms.DeclaredAccessibility == Accessibility.Public
                 && ms.MethodKind == MethodKind.Ordinary);
 
-    var generatedFields = new FieldsGenerator(fields).Generate(sourceNamedTypeSymbol);
-
-    var generatedInterface = new InterfaceGenerator()
-      .AddFields(generatedFields.InterfaceFields)
-      .Generate(nameSpace, accessModifiers, interfaceName);
-
-    ctx.AddSource($"{nameSpace}.{interfaceName}.g.cs", generatedInterface);
+    
   }
 }
 
