@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -51,5 +52,17 @@ internal static class ITypeSymbolExtensions
         builder.Append(symbol.MetadataName);
         break;
     }
+  }
+
+
+  public static ImmutableArray<ISymbol> GetMembersIncludingBaseTypes(this ITypeSymbol symbol,
+                                                                     Func<ISymbol, bool> predicate)
+  {
+    var members = symbol.GetMembers().Where(predicate).ToList();
+    if (symbol.BaseType is not null)
+    {
+      members.AddRange(symbol.BaseType.GetMembersIncludingBaseTypes(predicate));
+    }
+    return members.ToImmutableArray();
   }
 }

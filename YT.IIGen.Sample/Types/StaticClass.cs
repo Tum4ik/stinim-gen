@@ -22,4 +22,11 @@ internal static class StaticClass
   public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+
+
+  public static int IntPropertyGetSet { get; set; }
+  public static int? IntPropertyGet { get; }
+  public static DummyStruct DummyStructPropertySet { set => StaticDummyStruct = value; }
+  public static DummyStruct? DummyStructPropertyPrivateGetSet { private get; set; }
+  public static string StringPropertyGetPrivateSet { get; private set; }
 }

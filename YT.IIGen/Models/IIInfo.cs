@@ -6,6 +6,7 @@ internal sealed record IIInfo(
   TypeInfo InterfaceTypeInfo,
   TypeInfo ImplementationTypeInfo,
   ImmutableArray<PropertyInfo> PropertyForFieldInfoList,
+  ImmutableArray<PropertyInfo> PropertyInfoList,
   string SourceFullyQualifiedName,
   bool IsSourceSealed,
   bool IsSourceStatic,

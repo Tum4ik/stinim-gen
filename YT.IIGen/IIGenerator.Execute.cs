@@ -11,10 +11,14 @@ partial class IIGenerator
   {
     public static MemberDeclarationSyntax GetInterfacePropertySyntax(PropertyInfo propertyInfo)
     {
-      var accessorsList = new List<AccessorDeclarationSyntax>(2)
+      var accessorsList = new List<AccessorDeclarationSyntax>(2);
+
+      if (propertyInfo.HasGetter)
       {
-        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
-      };
+        accessorsList.Add(
+          AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+        );
+      }
 
       if (propertyInfo.HasSetter)
       {
@@ -36,12 +40,16 @@ partial class IIGenerator
                                                                           string underlyingCallee,
                                                                           bool isNewKeywordRequired = false)
     {
-      var accessorsList = new List<AccessorDeclarationSyntax>(2)
+      var accessorsList = new List<AccessorDeclarationSyntax>(2);
+
+      if (propertyInfo.HasGetter)
       {
-        AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-          .WithExpressionBody(ArrowExpressionClause(IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}")))
-          .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
-      };
+        accessorsList.Add(
+          AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+            .WithExpressionBody(ArrowExpressionClause(IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}")))
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+        );
+      }
 
       if (propertyInfo.HasSetter)
       {

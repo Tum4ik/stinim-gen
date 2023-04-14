@@ -51,29 +51,52 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           throw new ArgumentException("Incorrect wrapper class name.");
         }
 
-        // TODO: optimize
-        // TODO: also include members from base types recursively
-        var fields = sourceNamedTypeSymbol.GetMembers()
-          .Where(m => m is IFieldSymbol)
-          .Cast<IFieldSymbol>()
-          .Where(fs => fs.DeclaredAccessibility == Accessibility.Public);
-
         var containsDynamicFields = false;
-        var propertyForFieldInfoList = fields
-          .Select(f =>
+        var propertyForFieldInfoList = new List<PropertyInfo>();
+        var propertyInfoList = new List<PropertyInfo>();
+
+        var publicMembers = sourceNamedTypeSymbol
+          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsDefinition);
+        foreach (var member in publicMembers)
+        {
+          switch (member)
           {
-            if (!f.IsStatic)
-            {
-              containsDynamicFields = true;
-            }
-            return new PropertyInfo(
-              f.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-              f.Name,
-              f.IsStatic,
-              !f.IsConst && !f.IsReadOnly
-            );
-          })
-          .ToImmutableArray();
+            case IFieldSymbol field:
+              if (!field.IsStatic)
+              {
+                containsDynamicFields = true;
+              }
+              propertyForFieldInfoList.Add(new PropertyInfo(
+                field.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                field.Name,
+                field.IsStatic,
+                true,
+                !field.IsConst && !field.IsReadOnly
+              ));
+              break;
+            case IPropertySymbol property:
+              var hasGetter = property.GetMethod is not null
+                           && property.GetMethod.DeclaredAccessibility == Accessibility.Public;
+              var hasSetter = property.SetMethod is not null
+                           && property.SetMethod.DeclaredAccessibility == Accessibility.Public;
+              if (!hasGetter && !hasSetter)
+              {
+                continue;
+              }
+              propertyInfoList.Add(new(
+                property.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                property.Name,
+                property.IsStatic,
+                hasGetter,
+                hasSetter
+              ));
+              break;
+            case IEventSymbol @event:
+              break;
+            case IMethodSymbol method:
+              break;
+          }
+        }
 
         return new IIInfo(
           interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
@@ -89,7 +112,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
             TypeKind.Class,
             false
           ),
-          propertyForFieldInfoList,
+          propertyForFieldInfoList.ToImmutableArray(),
+          propertyInfoList.ToImmutableArray(),
           sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
           sourceNamedTypeSymbol.IsSealed,
           sourceNamedTypeSymbol.IsStatic,
@@ -144,6 +168,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
 
     GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers);
 
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
@@ -180,16 +205,53 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
       var interfacePropertyForFieldDeclaration = Execute.GetInterfacePropertySyntax(fieldInfo);
       interfaceMembers.Add(interfacePropertyForFieldDeclaration);
 
+      MemberDeclarationSyntax implementationPropertyForFieldDeclaration;
       if (iiInfo.IsSourceStatic)
       {
-        var implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(fieldInfo, iiInfo.SourceFullyQualifiedName);
-        implementationMembers.Add(implementationPropertyForFieldDeclaration);
+        implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(
+          fieldInfo,
+          iiInfo.SourceFullyQualifiedName
+        );
       }
       else
       {
-        var implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(fieldInfo, fieldInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName, isNewKeywordRequired: !iiInfo.IsSourceSealed);
-        implementationMembers.Add(implementationPropertyForFieldDeclaration);
+        implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(
+          fieldInfo,
+          fieldInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
+          isNewKeywordRequired: !iiInfo.IsSourceSealed
+        );
       }
+      implementationMembers.Add(implementationPropertyForFieldDeclaration);
+    }
+  }
+
+
+  private static void GenerateMembersForProperties(IIInfo iiInfo,
+                                                   List<MemberDeclarationSyntax> interfaceMembers,
+                                                   List<MemberDeclarationSyntax> implementationMembers)
+  {
+    foreach (var propertyInfo in iiInfo.PropertyInfoList)
+    {
+      var interfacePropertyDeclaration = Execute.GetInterfacePropertySyntax(propertyInfo);
+      interfaceMembers.Add(interfacePropertyDeclaration);
+
+      MemberDeclarationSyntax implementationPropertyDeclaration;
+      if (iiInfo.IsSourceStatic)
+      {
+        implementationPropertyDeclaration = Execute.GetImplementationPropertySyntax(
+          propertyInfo,
+          iiInfo.SourceFullyQualifiedName
+        );
+      }
+      else
+      {
+        implementationPropertyDeclaration = Execute.GetImplementationPropertySyntax(
+          propertyInfo,
+          propertyInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
+          isNewKeywordRequired: !iiInfo.IsSourceSealed
+        );
+      }
+      implementationMembers.Add(implementationPropertyDeclaration);
     }
   }
 
@@ -213,73 +275,4 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     var source = compilationUnit.GetText(Encoding.UTF8);
     ctx.AddSource(hintName, source);
   }
-
-
-  private static void Generate(SourceProductionContext ctx,
-                               (
-                                 InterfaceDeclarationSyntax declaredInterfaceSyntax,
-                                 CompilationMethods compilation
-                               ) combined)
-  {
-    var (declaredInterfaceSyntax, compilation) = combined;
-    var declaredAttributeSyntax = declaredInterfaceSyntax.AttributeLists.SelectMany(al => al.Attributes).First();
-    var declaredAttributeArguments = declaredAttributeSyntax.ArgumentList?.Arguments;
-    if (!declaredAttributeArguments.HasValue || declaredAttributeArguments.Value.Count != 2)
-    {
-      throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
-    }
-
-    var declaredSourceTypeSyntax = (declaredAttributeArguments.Value[0].Expression as TypeOfExpressionSyntax)?.Type;
-    if (declaredSourceTypeSyntax is null)
-    {
-      throw new ArgumentException("Can not get the class type syntax.");
-    }
-
-    var sourceNamedTypeSymbol = compilation.GetSemanticModel(declaredSourceTypeSyntax.SyntaxTree, false)
-      .GetSymbolInfo(declaredSourceTypeSyntax)
-      .Symbol as INamedTypeSymbol;
-    if (sourceNamedTypeSymbol is null)
-    {
-      throw new ArgumentException("Can not get the class named type symbol.");
-    }
-
-
-
-
-    // TODO: optimize
-    // TODO: also include members from base types recursively
-    var fields = sourceNamedTypeSymbol.GetMembers()
-      .Where(m => m is IFieldSymbol)
-      .Cast<IFieldSymbol>()
-      .Where(fs => fs.DeclaredAccessibility == Accessibility.Public);
-    var properties = sourceNamedTypeSymbol.GetMembers()
-      .Select(m => m as IPropertySymbol)
-      .Where(ps => ps is not null
-                && ps.DeclaredAccessibility == Accessibility.Public);
-    var events = sourceNamedTypeSymbol.GetMembers()
-      .Select(m => m as IEventSymbol)
-      .Where(es => es is not null
-                && es.DeclaredAccessibility == Accessibility.Public);
-    var methods = sourceNamedTypeSymbol.GetMembers()
-      .Select(m => m as IMethodSymbol)
-      .Where(ms => ms is not null
-                && ms.DeclaredAccessibility == Accessibility.Public
-                && ms.MethodKind == MethodKind.Ordinary);
-
-
-  }
-}
-
-
-internal class CompilationMethods
-{
-  public CompilationMethods(Func<SyntaxTree, bool, SemanticModel> getSemanticModel,
-                            Func<string, INamedTypeSymbol?> getTypeByMetadataName)
-  {
-    GetSemanticModel = getSemanticModel;
-    GetTypeByMetadataName = getTypeByMetadataName;
-  }
-
-  public Func<SyntaxTree, bool, SemanticModel> GetSemanticModel { get; }
-  public Func<string, INamedTypeSymbol?> GetTypeByMetadataName { get; }
 }
