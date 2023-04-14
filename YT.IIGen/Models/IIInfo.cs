@@ -9,5 +9,6 @@ internal sealed record IIInfo(
   string SourceFullyQualifiedName,
   bool IsSourceSealed,
   bool IsSourceStatic,
-  bool IsSourceReferenceType
+  bool IsSourceReferenceType,
+  bool ContainsDynamicFields
 );

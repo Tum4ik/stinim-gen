@@ -14,7 +14,8 @@ namespace YT.IIGen;
 internal sealed partial class IIGenerator : IIncrementalGenerator
 {
   private static readonly string s_iiForAttributeFullName = typeof(IIForAttribute).FullName;
-  private static readonly string s_indentation = "  ";
+  private const string Indentation = "  ";
+  private const string InstanceFieldName = "_instance";
 
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
@@ -57,15 +58,22 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           .Cast<IFieldSymbol>()
           .Where(fs => fs.DeclaredAccessibility == Accessibility.Public);
 
+        var containsDynamicFields = false;
         var propertyForFieldInfoList = fields
-          .Select(f => new PropertyInfo(
-            f.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-            f.Name,
-            f.IsStatic,
-            !f.IsConst && !f.IsReadOnly
-          ))
+          .Select(f =>
+          {
+            if (!f.IsStatic)
+            {
+              containsDynamicFields = true;
+            }
+            return new PropertyInfo(
+              f.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+              f.Name,
+              f.IsStatic,
+              !f.IsConst && !f.IsReadOnly
+            );
+          })
           .ToImmutableArray();
-
 
         return new IIInfo(
           interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
@@ -85,113 +93,125 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
           sourceNamedTypeSymbol.IsSealed,
           sourceNamedTypeSymbol.IsStatic,
-          sourceNamedTypeSymbol.IsReferenceType
+          sourceNamedTypeSymbol.IsReferenceType,
+          containsDynamicFields
         );
       }
     );
 
-    context.RegisterSourceOutput(interfacesProvider, static (ctx, iiInfo) =>
+    context.RegisterSourceOutput(interfacesProvider, Generate);
+  }
+
+
+  private static void Generate(SourceProductionContext ctx, IIInfo iiInfo)
+  {
+    var interfaceMembers = new List<MemberDeclarationSyntax>();
+    var implementationMembers = new List<MemberDeclarationSyntax>();
+
+    var baseListTypes = new List<BaseTypeSyntax>(2);
+
+    if (!iiInfo.IsSourceStatic && (iiInfo.IsSourceSealed || iiInfo.ContainsDynamicFields))
     {
-      var interfacePropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
-        .Select(Execute.GetInterfacePropertySyntax);
+      var modifiers = new List<SyntaxToken>(2)
+      {
+        Token(SyntaxKind.PrivateKeyword)
+      };
+      if (iiInfo.IsSourceReferenceType)
+      {
+        modifiers.Add(Token(SyntaxKind.ReadOnlyKeyword));
+      }
+      var instanceFieldDeclarationSyntax = FieldDeclaration(
+        VariableDeclaration(IdentifierName(iiInfo.SourceFullyQualifiedName))
+          .AddVariables(
+            VariableDeclarator(Identifier(InstanceFieldName))
+              .WithInitializer(
+                EqualsValueClause(
+                  ImplicitObjectCreationExpression()
+                )
+              )
+          )
+        )
+        .AddModifiers(modifiers.ToArray());
+      implementationMembers.Add(instanceFieldDeclarationSyntax);
+    }
 
-      var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
-        .GetSyntax()
-        .AddModifiers(Token(SyntaxKind.PartialKeyword))
-        .AddMembers(interfacePropertyForFieldDeclarations.ToArray());
+    if (!iiInfo.IsSourceStatic && iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)
+    {
+      // inherit
+      baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.SourceFullyQualifiedName)));
+    }
 
-      var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
-        .GetSyntax()
-        .AddModifiers(Token(SyntaxKind.InternalKeyword));
-      var baseListTypes = new List<BaseTypeSyntax>(2);
+    baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
+
+    GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
+
+    var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
+      .GetSyntax()
+      .AddModifiers(Token(SyntaxKind.PartialKeyword))
+      .AddMembers(interfaceMembers.ToArray());
+
+    var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
+      .GetSyntax()
+      .AddModifiers(Token(SyntaxKind.InternalKeyword))
+      .AddMembers(implementationMembers.ToArray())
+      .AddBaseListTypes(baseListTypes.ToArray());
+
+    AddSource(
+      ctx,
+      $"{iiInfo.Namespace}.{iiInfo.InterfaceTypeInfo.QualifiedName}.g.cs",
+      iiInfo.Namespace,
+      interfaceTypeDeclarationSyntax
+    );
+    AddSource(
+      ctx,
+      $"{iiInfo.Namespace}.{iiInfo.ImplementationTypeInfo.QualifiedName}.g.cs",
+      iiInfo.Namespace,
+      implementationTypeDeclarationSyntax
+    );
+  }
+
+
+  private static void GenerateMembersForFields(IIInfo iiInfo,
+                                               List<MemberDeclarationSyntax> interfaceMembers,
+                                               List<MemberDeclarationSyntax> implementationMembers)
+  {
+    foreach (var fieldInfo in iiInfo.PropertyForFieldInfoList)
+    {
+      var interfacePropertyForFieldDeclaration = Execute.GetInterfacePropertySyntax(fieldInfo);
+      interfaceMembers.Add(interfacePropertyForFieldDeclaration);
+
       if (iiInfo.IsSourceStatic)
       {
-        var implementationPropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
-          .Select(pi => Execute.GetImplementationPropertySyntax(pi, iiInfo.SourceFullyQualifiedName));
-        implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
-          .AddMembers(implementationPropertyForFieldDeclarations.ToArray());
+        var implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(fieldInfo, iiInfo.SourceFullyQualifiedName);
+        implementationMembers.Add(implementationPropertyForFieldDeclaration);
       }
       else
       {
-        const string InstanceFieldName = "_instance";
-
-        var implementationPropertyForFieldDeclarations = iiInfo.PropertyForFieldInfoList
-          .Select(pi => Execute.GetImplementationPropertySyntax(
-            pi,
-            pi.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
-            isNewKeywordRequired: !iiInfo.IsSourceSealed
-          ));
-
-        if (iiInfo.IsSourceSealed || iiInfo.PropertyForFieldInfoList.Any(f => !f.IsStatic))
-        {
-          var modifiers = new List<SyntaxToken>(2)
-          {
-            Token(SyntaxKind.PrivateKeyword)
-          };
-          if (iiInfo.IsSourceReferenceType)
-          {
-            modifiers.Add(Token(SyntaxKind.ReadOnlyKeyword));
-          }
-          var instanceFieldDeclarationSyntax = FieldDeclaration(
-            VariableDeclaration(IdentifierName(iiInfo.SourceFullyQualifiedName))
-              .AddVariables(
-                VariableDeclarator(Identifier(InstanceFieldName))
-                  .WithInitializer(
-                    EqualsValueClause(
-                      ImplicitObjectCreationExpression()
-                    )
-                  )
-              )
-            )
-            .AddModifiers(modifiers.ToArray());
-          implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
-            .AddMembers(instanceFieldDeclarationSyntax);
-        }
-
-        implementationTypeDeclarationSyntax = implementationTypeDeclarationSyntax
-          .AddMembers(implementationPropertyForFieldDeclarations.ToArray());
-        if (iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)
-        {
-          // inherit
-          baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.SourceFullyQualifiedName)));
-        }
-        else
-        {
-          // add properties, events, methods
-
-        }
+        var implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(fieldInfo, fieldInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName, isNewKeywordRequired: !iiInfo.IsSourceSealed);
+        implementationMembers.Add(implementationPropertyForFieldDeclaration);
       }
+    }
+  }
 
-      baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
 
-      implementationTypeDeclarationSyntax = (TypeDeclarationSyntax) implementationTypeDeclarationSyntax
-        .AddBaseListTypes(baseListTypes.ToArray());
+  private static void AddSource(SourceProductionContext ctx,
+                                string hintName,
+                                string nameSpace,
+                                BaseTypeDeclarationSyntax typeDeclarationSyntax)
+  {
+    var compilationUnit = CompilationUnit()
+      .AddMembers(
+        FileScopedNamespaceDeclaration(IdentifierName(nameSpace))
+          .WithLeadingTrivia(
+            Comment("// <auto-generated/>"),
+            Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true))
+          )
+          .AddMembers(typeDeclarationSyntax)
+      )
+      .NormalizeWhitespace(indentation: Indentation);
 
-      var namespaceDeclarationSyntax = FileScopedNamespaceDeclaration(IdentifierName(iiInfo.Namespace))
-        .WithLeadingTrivia(
-          Comment("// <auto-generated/>"),
-          Trivia(NullableDirectiveTrivia(Token(SyntaxKind.EnableKeyword), true))
-        );
-
-      var interfaceCompilationUnit = CompilationUnit()
-        .AddMembers(
-          namespaceDeclarationSyntax
-            .AddMembers(interfaceTypeDeclarationSyntax)
-        )
-        .NormalizeWhitespace(indentation: s_indentation);
-
-      var implementationCompilationUnit = CompilationUnit()
-        .AddMembers(
-          namespaceDeclarationSyntax
-            .AddMembers(implementationTypeDeclarationSyntax)
-        )
-        .NormalizeWhitespace(indentation: s_indentation);
-
-      var interfaceSource = interfaceCompilationUnit.GetText(Encoding.UTF8);
-      var implementationSource = implementationCompilationUnit.GetText(Encoding.UTF8);
-      ctx.AddSource($"{iiInfo.Namespace}.{iiInfo.InterfaceTypeInfo.QualifiedName}.g.cs", interfaceSource);
-      ctx.AddSource($"{iiInfo.Namespace}.{iiInfo.ImplementationTypeInfo.QualifiedName}.g.cs", implementationSource);
-    });
+    var source = compilationUnit.GetText(Encoding.UTF8);
+    ctx.AddSource(hintName, source);
   }
 
 
