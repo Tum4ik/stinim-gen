@@ -31,7 +31,6 @@ partial class IIGenerator
           IdentifierName(propertyInfo.TypeNameWithNullabilityAnnotations),
           Identifier(propertyInfo.PropertyName)
         )
-        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddAccessorListAccessors(accessorsList.ToArray());
     }
 
@@ -78,6 +77,47 @@ partial class IIGenerator
         )
         .AddModifiers(modifiers.ToArray())
         .AddAccessorListAccessors(accessorsList.ToArray());
+    }
+
+
+    public static MemberDeclarationSyntax GetInterfaceEventSyntax(EventInfo eventInfo)
+    {
+      return EventDeclaration(
+          IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
+          Identifier(eventInfo.EventName)
+        )
+        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+    }
+
+
+    public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo,
+                                                                       string underlyingCallee)
+    {
+      return EventDeclaration(
+          IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
+          Identifier(eventInfo.EventName)
+        )
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddAccessorListAccessors(
+          AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)
+            .WithExpressionBody(ArrowExpressionClause(
+              AssignmentExpression(
+                SyntaxKind.AddAssignmentExpression,
+                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                IdentifierName("value")
+              )
+            ))
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+          AccessorDeclaration(SyntaxKind.RemoveAccessorDeclaration)
+            .WithExpressionBody(ArrowExpressionClause(
+              AssignmentExpression(
+                SyntaxKind.SubtractAssignmentExpression,
+                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                IdentifierName("value")
+              )
+            ))
+            .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+        );
     }
   }
 }

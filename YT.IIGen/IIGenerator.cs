@@ -54,6 +54,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var containsDynamicFields = false;
         var propertyForFieldInfoList = new List<PropertyInfo>();
         var propertyInfoList = new List<PropertyInfo>();
+        var eventInfoList = new List<EventInfo>();
 
         var publicMembers = sourceNamedTypeSymbol
           .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsDefinition);
@@ -92,6 +93,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               ));
               break;
             case IEventSymbol @event:
+              eventInfoList.Add(new(
+                @event.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                @event.Name,
+                @event.IsStatic
+              ));
               break;
             case IMethodSymbol method:
               break;
@@ -114,6 +120,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           ),
           propertyForFieldInfoList.ToImmutableArray(),
           propertyInfoList.ToImmutableArray(),
+          eventInfoList.ToImmutableArray(),
           sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
           sourceNamedTypeSymbol.IsSealed,
           sourceNamedTypeSymbol.IsStatic,
@@ -169,6 +176,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
     GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
     GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
 
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
@@ -252,6 +260,35 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         );
       }
       implementationMembers.Add(implementationPropertyDeclaration);
+    }
+  }
+
+
+  private static void GenerateMembersForEvents(IIInfo iIInfo,
+                                               List<MemberDeclarationSyntax> interfaceMembers,
+                                               List<MemberDeclarationSyntax> implementationMembers)
+  {
+    foreach (var eventInfo in iIInfo.EventInfoList)
+    {
+      var interfaceEventDeclaration = Execute.GetInterfaceEventSyntax(eventInfo);
+      interfaceMembers.Add(interfaceEventDeclaration);
+
+      MemberDeclarationSyntax implementationEventDeclaration;
+      if (iIInfo.IsSourceStatic)
+      {
+        implementationEventDeclaration = Execute.GetImplementationEventSyntax(
+          eventInfo,
+          iIInfo.SourceFullyQualifiedName
+        );
+      }
+      else
+      {
+        implementationEventDeclaration = Execute.GetImplementationEventSyntax(
+          eventInfo,
+          eventInfo.IsStatic ? iIInfo.SourceFullyQualifiedName : InstanceFieldName
+        );
+      }
+      implementationMembers.Add(implementationEventDeclaration);
     }
   }
 
