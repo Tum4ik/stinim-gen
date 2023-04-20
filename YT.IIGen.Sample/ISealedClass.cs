@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using YT.IIGen.Attributes;
 using YT.IIGen.Sample.Types;
 

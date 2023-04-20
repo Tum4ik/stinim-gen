@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -52,10 +53,10 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         }
 
         var containsDynamicFields = false;
-        var propertyForFieldInfoList = new List<PropertyInfo>();
-        var propertyInfoList = new List<PropertyInfo>();
-        var eventInfoList = new List<EventInfo>();
-        var methodInfoList = new List<MethodInfo>();
+        var propertyForFieldInfoList = new List<Models.PropertyInfo>();
+        var propertyInfoList = new List<Models.PropertyInfo>();
+        var eventInfoList = new List<Models.EventInfo>();
+        var methodInfoList = new List<Models.MethodInfo>();
 
         var publicMembers = sourceNamedTypeSymbol
           .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public
@@ -71,7 +72,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 containsDynamicFields = true;
               }
-              propertyForFieldInfoList.Add(new PropertyInfo(
+              propertyForFieldInfoList.Add(new(
                 fieldSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
                 fieldSymbol.Name,
                 fieldSymbol.IsStatic,
@@ -108,7 +109,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
-              var parameters = methodSymbol.Parameters.Select(p => new ParameterInfo(
+              var parameters = methodSymbol.Parameters.Select(p => new Models.ParameterInfo(
                 p.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
                 p.Name,
                 p.RefKind,
@@ -191,18 +192,40 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
       implementationMembers.Add(instanceFieldDeclarationSyntax);
     }
 
+    var inherited = false;
     if (!iiInfo.IsSourceStatic && iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)
     {
       // inherit
       baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.SourceFullyQualifiedName)));
+      inherited = true;
     }
 
     baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
 
     GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
-    GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers);
-    GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
-    GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers, inherited);
+    GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers, inherited);
+    GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers, inherited);
+
+    var attributes = new[]
+    {
+      AttributeList(SingletonSeparatedList(
+        Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
+          .AddArgumentListArguments(
+            AttributeArgument(LiteralExpression(
+              SyntaxKind.StringLiteralExpression,
+              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product))
+            ),
+            AttributeArgument(LiteralExpression(
+              SyntaxKind.StringLiteralExpression,
+              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version))
+            )
+          )
+      )),
+      AttributeList(SingletonSeparatedList(
+        Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
+      ))
+    };
 
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
@@ -211,6 +234,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()
+      .AddAttributeLists(attributes)
       .AddModifiers(Token(SyntaxKind.InternalKeyword))
       .AddMembers(implementationMembers.ToArray())
       .AddBaseListTypes(baseListTypes.ToArray());
@@ -262,12 +286,18 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForProperties(IIInfo iiInfo,
                                                    List<MemberDeclarationSyntax> interfaceMembers,
-                                                   List<MemberDeclarationSyntax> implementationMembers)
+                                                   List<MemberDeclarationSyntax> implementationMembers,
+                                                   bool inherited)
   {
     foreach (var propertyInfo in iiInfo.PropertyInfoList)
     {
       var interfacePropertyDeclaration = Execute.GetInterfacePropertySyntax(propertyInfo);
       interfaceMembers.Add(interfacePropertyDeclaration);
+
+      if (inherited && !propertyInfo.IsStatic)
+      {
+        continue;
+      }
 
       MemberDeclarationSyntax implementationPropertyDeclaration;
       if (iiInfo.IsSourceStatic)
@@ -292,12 +322,18 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForEvents(IIInfo iiInfo,
                                                List<MemberDeclarationSyntax> interfaceMembers,
-                                               List<MemberDeclarationSyntax> implementationMembers)
+                                               List<MemberDeclarationSyntax> implementationMembers,
+                                               bool inherited)
   {
     foreach (var eventInfo in iiInfo.EventInfoList)
     {
       var interfaceEventDeclaration = Execute.GetInterfaceEventSyntax(eventInfo);
       interfaceMembers.Add(interfaceEventDeclaration);
+
+      if (inherited && !eventInfo.IsStatic)
+      {
+        continue;
+      }
 
       MemberDeclarationSyntax implementationEventDeclaration;
       if (iiInfo.IsSourceStatic)
@@ -321,12 +357,18 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForMethods(IIInfo iiInfo,
                                                 List<MemberDeclarationSyntax> interfaceMembers,
-                                                List<MemberDeclarationSyntax> implementationMembers)
+                                                List<MemberDeclarationSyntax> implementationMembers,
+                                                bool inherited)
   {
     foreach (var methodInfo in iiInfo.MethodInfoList)
     {
       var interfaceMethodDeclaration = Execute.GetInterfaceMethodSyntax(methodInfo);
       interfaceMembers.Add(interfaceMethodDeclaration);
+
+      if (inherited && !methodInfo.IsStatic)
+      {
+        continue;
+      }
 
       MemberDeclarationSyntax implementationMethodDeclaration;
       if (iiInfo.IsSourceStatic)
