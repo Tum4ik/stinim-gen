@@ -55,51 +55,75 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var propertyForFieldInfoList = new List<PropertyInfo>();
         var propertyInfoList = new List<PropertyInfo>();
         var eventInfoList = new List<EventInfo>();
+        var methodInfoList = new List<MethodInfo>();
 
         var publicMembers = sourceNamedTypeSymbol
-          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsDefinition);
+          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public
+                                          && !m.IsOverride
+                                          && (!sourceNamedTypeSymbol.IsStatic || m.IsStatic)
+          );
         foreach (var member in publicMembers)
         {
           switch (member)
           {
-            case IFieldSymbol field:
-              if (!field.IsStatic)
+            case IFieldSymbol fieldSymbol:
+              if (!fieldSymbol.IsStatic)
               {
                 containsDynamicFields = true;
               }
               propertyForFieldInfoList.Add(new PropertyInfo(
-                field.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                field.Name,
-                field.IsStatic,
+                fieldSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                fieldSymbol.Name,
+                fieldSymbol.IsStatic,
                 true,
-                !field.IsConst && !field.IsReadOnly
+                !fieldSymbol.IsConst && !fieldSymbol.IsReadOnly
               ));
               break;
-            case IPropertySymbol property:
-              var hasGetter = property.GetMethod is not null
-                           && property.GetMethod.DeclaredAccessibility == Accessibility.Public;
-              var hasSetter = property.SetMethod is not null
-                           && property.SetMethod.DeclaredAccessibility == Accessibility.Public;
+            case IPropertySymbol propertySymbol:
+              var hasGetter = propertySymbol.GetMethod is not null
+                           && propertySymbol.GetMethod.DeclaredAccessibility == Accessibility.Public;
+              var hasSetter = propertySymbol.SetMethod is not null
+                           && propertySymbol.SetMethod.DeclaredAccessibility == Accessibility.Public;
               if (!hasGetter && !hasSetter)
               {
                 continue;
               }
               propertyInfoList.Add(new(
-                property.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                property.Name,
-                property.IsStatic,
+                propertySymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                propertySymbol.Name,
+                propertySymbol.IsStatic,
                 hasGetter,
                 hasSetter
               ));
               break;
-            case IEventSymbol @event:
+            case IEventSymbol eventSymbol:
               eventInfoList.Add(new(
-                @event.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                @event.Name,
-                @event.IsStatic
+                eventSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                eventSymbol.Name,
+                eventSymbol.IsStatic
               ));
               break;
-            case IMethodSymbol method:
+            case IMethodSymbol methodSymbol:
+              if (methodSymbol.MethodKind != MethodKind.Ordinary)
+              {
+                continue;
+              }
+              var parameters = methodSymbol.Parameters.Select(p => new ParameterInfo(
+                p.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                p.Name,
+                p.RefKind,
+                p.IsParams,
+                p.IsOptional,
+                p.HasExplicitDefaultValue ? p.ExplicitDefaultValue : null
+              )).ToImmutableArray();
+              methodInfoList.Add(new(
+                methodSymbol.ReturnsVoid
+                  ? null
+                  : methodSymbol.ReturnType.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                methodSymbol.Name,
+                methodSymbol.IsStatic,
+                parameters
+              ));
               break;
           }
         }
@@ -121,6 +145,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           propertyForFieldInfoList.ToImmutableArray(),
           propertyInfoList.ToImmutableArray(),
           eventInfoList.ToImmutableArray(),
+          methodInfoList.ToImmutableArray(),
           sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
           sourceNamedTypeSymbol.IsSealed,
           sourceNamedTypeSymbol.IsStatic,
@@ -177,6 +202,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
     GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers);
     GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers);
 
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
@@ -264,31 +290,60 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   }
 
 
-  private static void GenerateMembersForEvents(IIInfo iIInfo,
+  private static void GenerateMembersForEvents(IIInfo iiInfo,
                                                List<MemberDeclarationSyntax> interfaceMembers,
                                                List<MemberDeclarationSyntax> implementationMembers)
   {
-    foreach (var eventInfo in iIInfo.EventInfoList)
+    foreach (var eventInfo in iiInfo.EventInfoList)
     {
       var interfaceEventDeclaration = Execute.GetInterfaceEventSyntax(eventInfo);
       interfaceMembers.Add(interfaceEventDeclaration);
 
       MemberDeclarationSyntax implementationEventDeclaration;
-      if (iIInfo.IsSourceStatic)
+      if (iiInfo.IsSourceStatic)
       {
         implementationEventDeclaration = Execute.GetImplementationEventSyntax(
           eventInfo,
-          iIInfo.SourceFullyQualifiedName
+          iiInfo.SourceFullyQualifiedName
         );
       }
       else
       {
         implementationEventDeclaration = Execute.GetImplementationEventSyntax(
           eventInfo,
-          eventInfo.IsStatic ? iIInfo.SourceFullyQualifiedName : InstanceFieldName
+          eventInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName
         );
       }
       implementationMembers.Add(implementationEventDeclaration);
+    }
+  }
+
+
+  private static void GenerateMembersForMethods(IIInfo iiInfo,
+                                                List<MemberDeclarationSyntax> interfaceMembers,
+                                                List<MemberDeclarationSyntax> implementationMembers)
+  {
+    foreach (var methodInfo in iiInfo.MethodInfoList)
+    {
+      var interfaceMethodDeclaration = Execute.GetInterfaceMethodSyntax(methodInfo);
+      interfaceMembers.Add(interfaceMethodDeclaration);
+
+      MemberDeclarationSyntax implementationMethodDeclaration;
+      if (iiInfo.IsSourceStatic)
+      {
+        implementationMethodDeclaration = Execute.GetImplementationMethodSyntax(
+          methodInfo,
+          iiInfo.SourceFullyQualifiedName
+        );
+      }
+      else
+      {
+        implementationMethodDeclaration = Execute.GetImplementationMethodSyntax(
+          methodInfo,
+          methodInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName
+        );
+      }
+      implementationMembers.Add(implementationMethodDeclaration);
     }
   }
 

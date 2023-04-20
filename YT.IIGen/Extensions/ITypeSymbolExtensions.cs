@@ -58,7 +58,9 @@ internal static class ITypeSymbolExtensions
   public static ImmutableArray<ISymbol> GetMembersIncludingBaseTypes(this ITypeSymbol symbol,
                                                                      Func<ISymbol, bool> predicate)
   {
-    var members = symbol.GetMembers().Where(predicate).ToList();
+    var members = symbol.GetMembers()
+      .Where(predicate)
+      .ToList();
     if (symbol.BaseType is not null)
     {
       members.AddRange(symbol.BaseType.GetMembersIncludingBaseTypes(predicate));

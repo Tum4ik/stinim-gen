@@ -119,5 +119,108 @@ partial class IIGenerator
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
         );
     }
+
+
+    public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodInfo methodInfo)
+    {
+      TypeSyntax returnType = methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
+        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
+        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
+      var parameters = methodInfo.Parameters.Select(p =>
+      {
+        var parameter = Parameter(Identifier(p.ParameterName))
+          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
+        if (p.RefKind != RefKind.None)
+        {
+          parameter = parameter.AddModifiers(Token(p.RefKind switch
+          {
+            RefKind.Ref => SyntaxKind.RefKeyword,
+            RefKind.Out => SyntaxKind.OutKeyword,
+            RefKind.In => SyntaxKind.InKeyword,
+            _ => throw new NotImplementedException(),
+          }));
+        }
+        if (p.IsParams)
+        {
+          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
+        }
+        if (p.IsOptional && p.ExplicitDefaultValue is not null)
+        {
+          parameter = parameter.WithDefault(EqualsValueClause(ParseExpression(p.ExplicitDefaultValue.ToString())));
+        }
+        return parameter;
+      });
+      return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
+        .AddParameterListParameters(parameters.ToArray())
+        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+    }
+
+
+    public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo,
+                                                                        string underlyingCallee)
+    {
+      TypeSyntax returnType = methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
+        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
+        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
+      var parameters = methodInfo.Parameters.Select(p =>
+      {
+        var parameter = Parameter(Identifier(p.ParameterName))
+          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
+        if (p.RefKind != RefKind.None)
+        {
+          parameter = parameter.AddModifiers(Token(p.RefKind switch
+          {
+            RefKind.Ref => SyntaxKind.RefKeyword,
+            RefKind.Out => SyntaxKind.OutKeyword,
+            RefKind.In => SyntaxKind.InKeyword,
+            _ => throw new NotImplementedException()
+          }));
+        }
+        if (p.IsParams)
+        {
+          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
+        }
+        if (p.IsOptional && p.ExplicitDefaultValue is not null)
+        {
+          parameter = parameter.WithDefault(EqualsValueClause(ParseExpression(p.ExplicitDefaultValue.ToString())));
+        }
+        return parameter;
+      });
+      var arguments = methodInfo.Parameters.Select(p =>
+      {
+        var argument = Argument(IdentifierName(p.ParameterName));
+        if (p.RefKind != RefKind.None)
+        {
+          argument = argument.WithRefKindKeyword(Token(p.RefKind switch
+          {
+            RefKind.Ref => SyntaxKind.RefKeyword,
+            RefKind.Out => SyntaxKind.OutKeyword,
+            RefKind.In => SyntaxKind.InKeyword,
+            _ => throw new NotImplementedException()
+          }));
+        }
+        return argument;
+      }).ToArray();
+      var separatorsCount = arguments.Length - 1;
+      if (separatorsCount < 0)
+      {
+        separatorsCount = 0;
+      }
+      var separators = new SyntaxToken[separatorsCount];
+      for (var i = 0; i < separators.Length; i++)
+      {
+        separators[i] = Token(SyntaxKind.CommaToken);
+      }
+      return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddParameterListParameters(parameters.ToArray())
+        .WithExpressionBody(ArrowExpressionClause(
+          InvocationExpression(
+            IdentifierName($"{underlyingCallee}.{methodInfo.MethodName}"),
+            ArgumentList(SeparatedList(arguments, separators))
+          )
+        ))
+        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+    }
   }
 }

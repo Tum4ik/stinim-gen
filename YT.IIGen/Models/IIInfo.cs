@@ -8,6 +8,7 @@ internal sealed record IIInfo(
   ImmutableArray<PropertyInfo> PropertyForFieldInfoList,
   ImmutableArray<PropertyInfo> PropertyInfoList,
   ImmutableArray<EventInfo> EventInfoList,
+  ImmutableArray<MethodInfo> MethodInfoList,
   string SourceFullyQualifiedName,
   bool IsSourceSealed,
   bool IsSourceStatic,
