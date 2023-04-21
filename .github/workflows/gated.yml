@@ -1,0 +1,90 @@
+name: Gated
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'release/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'release/**'
+    paths-ignore:
+      - '.attachments/**'
+      - '.editorconfig'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'README.md'
+
+jobs:
+
+  build:
+
+    name: Gated build
+    runs-on: windows-latest
+
+    outputs:
+      version: ${{ steps.define-version.outputs.version }}
+
+    env:
+      Scripts: .\.github\workflows\scripts
+      TemporaryPfxFilePath: .\GitHubActionsWorkflow.pfx
+      BuildOutputPath: .\YT.IIGen\bin\Release\netstandard2.0
+      PackOutputPath: .\YT.IIGen\bin\Release\pack
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Install .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+
+    - name: Define version
+      id: define-version
+      run: |
+        $majorMinor = "${{ github.ref_name }}".Split("/")[-1]
+        if (![System.Version]::TryParse($majorMinor, [ref]$null)) { $majorMinor = "0.0" }
+        $buildNumber = "$(Get-Date -Format 'yy')$((Get-Date).DayOfYear.ToString().PadLeft(3, '0'))"
+        $version = "$majorMinor.$buildNumber.${{ github.run_number }}"
+        echo "version=$version" >> $env:GITHUB_OUTPUT
+
+    - name: Build
+      run: |
+        $version = "${{ steps.define-version.outputs.version }}"
+        dotnet build `
+          -c Release `
+          --nologo `
+          /p:ContinuousIntegrationBuild=true `
+          /p:PackageVersion=$version `
+          /p:Version=$version
+
+    - name: Sign code files
+      run: |
+        ${{ env.Scripts }}\DecodePfx.ps1 `
+          -Base64Pfx "${{ secrets.BASE64_ENCODED_PFX }}" `
+          -OutputPath ${{ env.TemporaryPfxFilePath }}
+        ${{ env.Scripts }}\SignMyCodeFiles.ps1 `
+          -FilesDirectoryPath ${{ env.BuildOutputPath }} `
+          -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
+          -PfxPassword ${{ secrets.PFX_KEY }}
+        Remove-Item -Path ${{ env.TemporaryPfxFilePath }}
+
+    - name: Pack
+      run: |
+        dotnet pack `
+          -c Release `
+          --nologo `
+          --no-build `
+          --no-dependencies `
+          -o ${{ env.PackOutputPath }}
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        if-no-files-found: error
+        name: Package
+        path: ${{ env.PackOutputPath }}
