@@ -1,4 +1,4 @@
-name: Gated
+name: Release 0.0
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
 
   build:
 
-    name: Gated build
+    name: Build 0.0
     runs-on: windows-latest
 
     outputs:
@@ -105,6 +105,6 @@ jobs:
 
     - name: NuGet push
       run: |
-        dotnet nuget push "*.nupkg" `
+        dotnet nuget push "**/*.nupkg" `
           -s https://api.nuget.org/v3/index.json `
           -k ${{ secrets.NUGET_API_KEY }}
