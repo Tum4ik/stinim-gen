@@ -105,6 +105,6 @@ jobs:
 
     - name: NuGet push
       run: |
-        dotnet nuget push "*.nupkg" `
+        dotnet nuget push "**/*.nupkg" `
           -s https://api.nuget.org/v3/index.json `
           -k ${{ secrets.NUGET_API_KEY }}
