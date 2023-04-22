@@ -75,11 +75,10 @@ jobs:
 
     - name: Pack
       run: |
-        dotnet pack `
+        dotnet pack .\YT.IIGen\YT.IIGen.csproj `
           -c Release `
           --nologo `
           --no-build `
-          --no-dependencies `
           -o ${{ env.PackOutputPath }}
 
     - name: Upload build artifacts
