@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Version>0.0.0.0-dev</Version>
     <Authors>Yevheniy Tymchishin</Authors>
     <Company>YTSoft</Company>
     <Product>IIGen</Product>
