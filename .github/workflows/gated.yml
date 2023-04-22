@@ -75,11 +75,14 @@ jobs:
 
     - name: Pack
       run: |
+        $version = "${{ steps.define-version.outputs.version }}"
         dotnet pack .\YT.IIGen\YT.IIGen.csproj `
           -c Release `
           --nologo `
           --no-build `
-          -o ${{ env.PackOutputPath }}
+          -o ${{ env.PackOutputPath }} `
+          /p:PackageVersion=$version `
+          /p:Version=$version
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
