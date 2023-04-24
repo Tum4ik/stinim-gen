@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using YT.IIGen.Attributes;
 using YT.IIGen.Extensions;
 using YT.IIGen.Models;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -14,7 +13,7 @@ namespace YT.IIGen;
 [Generator(LanguageNames.CSharp)]
 internal sealed partial class IIGenerator : IIncrementalGenerator
 {
-  private static readonly string s_iiForAttributeFullName = typeof(IIForAttribute).FullName;
+  private static readonly string s_iiForAttributeFullName = "YT.IIGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
   private const string InstanceFieldName = "_instance";
 
