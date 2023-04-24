@@ -24,7 +24,7 @@
     <Copyright>© 2023 Yevheniy Tymchishin. All rights reserved.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Tum4ik/i-i-gen</PackageProjectUrl>
-    <PackageTags>Mock;IoC;DI;Tests;MockStaticClasses</PackageTags>
+    <PackageTags>interface-generator;mock-static-class;mock-struct;mock-class-without-interface;mock;ioc;di;tests</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
       Basic possibilities to generate properties, events and methods.
