@@ -54,7 +54,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
+    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
   </ItemGroup>
 
 </Project>
