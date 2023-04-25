@@ -123,33 +123,8 @@ partial class IIGenerator
 
     public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodInfo methodInfo)
     {
-      TypeSyntax returnType = methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
-        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
-        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
-      var parameters = methodInfo.Parameters.Select(p =>
-      {
-        var parameter = Parameter(Identifier(p.ParameterName))
-          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
-        if (p.RefKind != RefKind.None)
-        {
-          parameter = parameter.AddModifiers(Token(p.RefKind switch
-          {
-            RefKind.Ref => SyntaxKind.RefKeyword,
-            RefKind.Out => SyntaxKind.OutKeyword,
-            RefKind.In => SyntaxKind.InKeyword,
-            _ => throw new NotImplementedException(),
-          }));
-        }
-        if (p.IsParams)
-        {
-          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
-        }
-        if (p.IsOptional && p.ExplicitDefaultValue is not null)
-        {
-          parameter = parameter.WithDefault(EqualsValueClause(ParseExpression(p.ExplicitDefaultValue.ToString())));
-        }
-        return parameter;
-      });
+      var returnType = GetMethodReturnType(methodInfo);
+      var parameters = GetMethodParameters(methodInfo);
       return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
         .AddParameterListParameters(parameters.ToArray())
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
@@ -159,33 +134,8 @@ partial class IIGenerator
     public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo,
                                                                         string underlyingCallee)
     {
-      TypeSyntax returnType = methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
-        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
-        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
-      var parameters = methodInfo.Parameters.Select(p =>
-      {
-        var parameter = Parameter(Identifier(p.ParameterName))
-          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
-        if (p.RefKind != RefKind.None)
-        {
-          parameter = parameter.AddModifiers(Token(p.RefKind switch
-          {
-            RefKind.Ref => SyntaxKind.RefKeyword,
-            RefKind.Out => SyntaxKind.OutKeyword,
-            RefKind.In => SyntaxKind.InKeyword,
-            _ => throw new NotImplementedException()
-          }));
-        }
-        if (p.IsParams)
-        {
-          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
-        }
-        if (p.IsOptional && p.ExplicitDefaultValue is not null)
-        {
-          parameter = parameter.WithDefault(EqualsValueClause(ParseExpression(p.ExplicitDefaultValue.ToString())));
-        }
-        return parameter;
-      });
+      var returnType = GetMethodReturnType(methodInfo);
+      var parameters = GetMethodParameters(methodInfo);
       var arguments = methodInfo.Parameters.Select(p =>
       {
         var argument = Argument(IdentifierName(p.ParameterName));
@@ -221,6 +171,75 @@ partial class IIGenerator
           )
         ))
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
+    }
+
+
+    private static TypeSyntax GetMethodReturnType(MethodInfo methodInfo)
+    {
+      return methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
+        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
+        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
+    }
+
+
+    private static IEnumerable<ParameterSyntax> GetMethodParameters(MethodInfo methodInfo)
+    {
+      return methodInfo.Parameters.Select(p =>
+      {
+        var parameter = Parameter(Identifier(p.ParameterName))
+          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
+        if (p.RefKind != RefKind.None)
+        {
+          parameter = parameter.AddModifiers(Token(p.RefKind switch
+          {
+            RefKind.Ref => SyntaxKind.RefKeyword,
+            RefKind.Out => SyntaxKind.OutKeyword,
+            RefKind.In => SyntaxKind.InKeyword,
+            _ => throw new NotImplementedException(),
+          }));
+        }
+        if (p.IsParams)
+        {
+          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
+        }
+        if (p.IsOptional)
+        {
+          ExpressionSyntax literal;
+          if (p.ExplicitDefaultValue is null)
+          {
+            literal = LiteralExpression(SyntaxKind.DefaultLiteralExpression);
+          }
+          else if (p.TypeKind == TypeKind.Enum)
+          {
+            literal = CastExpression(
+              IdentifierName(p.TypeNameWithNullabilityAnnotations),
+              ParseExpression(p.ExplicitDefaultValue.ToString())
+            );
+          }
+          else if (p.SpecialType == SpecialType.System_Decimal)
+          {
+            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((decimal) p.ExplicitDefaultValue));
+          }
+          else if (p.SpecialType == SpecialType.System_Single)
+          {
+            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((float) p.ExplicitDefaultValue));
+          }
+          else if (p.SpecialType == SpecialType.System_Double)
+          {
+            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((double) p.ExplicitDefaultValue));
+          }
+          else if (p.SpecialType == SpecialType.System_String)
+          {
+            literal = LiteralExpression(SyntaxKind.StringLiteralExpression, Literal((string) p.ExplicitDefaultValue));
+          }
+          else
+          {
+            literal = ParseExpression(p.ExplicitDefaultValue.ToString());
+          }
+          parameter = parameter.WithDefault(EqualsValueClause(literal));
+        }
+        return parameter;
+      });
     }
   }
 }

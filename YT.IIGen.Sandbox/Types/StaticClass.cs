@@ -35,6 +35,12 @@ internal static class StaticClass
   public static event EventHandler? NullableEvent;
 
 
-  public static int Method(int intParma, out DummyClass outParam, double def = default, params DummyStruct[] dummyParams)
-  => Method(intParma, out outParam, def, dummyParams);
+  public static int Method(int intParma,
+                           out DummyClass outParam,
+                           double def = default,
+                           float fl = 0.4f,
+                           string str = "str",
+                           DummyClass? dummyClass = null,
+                           params DummyStruct[] dummyParams)
+  => Method(intParma, out outParam, def, fl, str, dummyClass, dummyParams);
 }
