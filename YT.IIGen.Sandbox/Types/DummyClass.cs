@@ -1,4 +1,4 @@
-namespace YT.IIGen.Sample.Types;
+namespace YT.IIGen.Sandbox.Types;
 internal sealed class DummyClass
 {
   public DummyClass()

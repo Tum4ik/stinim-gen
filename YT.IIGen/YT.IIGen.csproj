@@ -27,7 +27,10 @@
     <PackageTags>Mock;IoC;DI;Tests;MockStaticClasses</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      Basic possibilities to generate properties, events and methods.
+      - Fixed generation methods with optional enum parameters.
+      - Fixed generation methods with optional string parameters.
+      - Fixed generation methods with optional floating-point numeric parameters.
+      - Fixed generation methods with optional reference-type parameters.
     </PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>

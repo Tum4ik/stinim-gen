@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YT.IIGen.Sample", "YT.IIGen.Sample\YT.IIGen.Sample.csproj", "{F09F7794-29D0-4715-90BE-D5FB800A2724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YT.IIGen.Sandbox", "YT.IIGen.Sandbox\YT.IIGen.Sandbox.csproj", "{F09F7794-29D0-4715-90BE-D5FB800A2724}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YT.IIGen.Attributes", "YT.IIGen.Attributes\YT.IIGen.Attributes.csproj", "{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}"
 EndProject
