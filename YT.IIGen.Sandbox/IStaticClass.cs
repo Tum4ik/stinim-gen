@@ -1,7 +1,7 @@
 using YT.IIGen.Attributes;
-using YT.IIGen.Sample.Types;
+using YT.IIGen.Sandbox.Types;
 
-namespace YT.IIGen.Sample;
+namespace YT.IIGen.Sandbox;
 
 [IIFor(typeof(StaticClass), "StaticClassWrapper")]
 internal partial interface IStaticClass

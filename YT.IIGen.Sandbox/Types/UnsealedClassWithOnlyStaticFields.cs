@@ -1,4 +1,4 @@
-namespace YT.IIGen.Sample.Types;
+namespace YT.IIGen.Sandbox.Types;
 internal class UnsealedClassWithOnlyStaticFields
 {
   public const int ConstInt = 0;
