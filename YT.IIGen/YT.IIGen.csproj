@@ -50,7 +50,7 @@
     <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
   </ItemGroup>
 
-  <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild">
+  <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild;GenerateNuspec">
     <ReadLinesFromFile File="..\SolutionProperties\Authors.txt">
       <Output TaskParameter="Lines" ItemName="AuthorsLines"/>
     </ReadLinesFromFile>

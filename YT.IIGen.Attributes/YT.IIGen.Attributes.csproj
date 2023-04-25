@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
-  <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild">
+  <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild;GenerateNuspec">
     <ReadLinesFromFile File="..\SolutionProperties\Authors.txt">
       <Output TaskParameter="Lines" ItemName="AuthorsLines"/>
     </ReadLinesFromFile>
