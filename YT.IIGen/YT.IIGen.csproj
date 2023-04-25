@@ -15,23 +15,13 @@
 
       This library is useful in case you want to have possibilities to mock static classes, classes without interfaces and structs in your tests.
     </Description>
-    <Authors>Yevheniy Tymchishin</Authors>
 
     <Version>0.0.0.0-dev</Version>
-    <Company>YTSoft</Company>
-    <Product>IIGen</Product>
     <Title>IIGen - Interface and Implementation Generator</Title>
-    <Copyright>© 2023 Yevheniy Tymchishin. All rights reserved.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Tum4ik/i-i-gen</PackageProjectUrl>
     <PackageTags>interface-generator;mock-static-class;mock-struct;mock-class-without-interface;mock;ioc;di;tests</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>
-      - Fixed generation methods with optional enum parameters.
-      - Fixed generation methods with optional string parameters.
-      - Fixed generation methods with optional floating-point numeric parameters.
-      - Fixed generation methods with optional reference-type parameters.
-    </PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Tum4ik/i-i-gen.git</RepositoryUrl>
@@ -59,5 +49,30 @@
   <ItemGroup>
     <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
   </ItemGroup>
+
+  <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild;GenerateNuspec">
+    <ReadLinesFromFile File="..\SolutionProperties\Authors.txt">
+      <Output TaskParameter="Lines" ItemName="AuthorsLines"/>
+    </ReadLinesFromFile>
+    <ReadLinesFromFile File="..\SolutionProperties\Company.txt">
+      <Output TaskParameter="Lines" ItemName="CompanyLines"/>
+    </ReadLinesFromFile>
+    <ReadLinesFromFile File="..\SolutionProperties\Copyright.txt">
+      <Output TaskParameter="Lines" ItemName="CopyrightLines"/>
+    </ReadLinesFromFile>
+    <ReadLinesFromFile File="..\SolutionProperties\PackageReleaseNotes.txt">
+      <Output TaskParameter="Lines" ItemName="PackageReleaseNotesLines"/>
+    </ReadLinesFromFile>
+    <ReadLinesFromFile File="..\SolutionProperties\Product.txt">
+      <Output TaskParameter="Lines" ItemName="ProductLines"/>
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <Authors>@(AuthorsLines)</Authors>
+      <Company>@(CompanyLines)</Company>
+      <Copyright>@(CopyrightLines)</Copyright>
+      <PackageReleaseNotes>@(PackageReleaseNotesLines, '%0a')</PackageReleaseNotes>
+      <Product>@(ProductLines)</Product>
+    </PropertyGroup>
+  </Target>
 
 </Project>
