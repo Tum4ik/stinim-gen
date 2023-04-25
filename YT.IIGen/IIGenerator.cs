@@ -110,6 +110,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               }
               var parameters = methodSymbol.Parameters.Select(p => new Models.ParameterInfo(
                 p.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                p.Type.TypeKind,
+                p.Type.SpecialType,
                 p.Name,
                 p.RefKind,
                 p.IsParams,

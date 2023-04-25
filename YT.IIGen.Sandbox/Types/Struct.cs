@@ -1,6 +1,11 @@
-namespace YT.IIGen.Sample.Types;
-internal sealed class SealedClass
+namespace YT.IIGen.Sandbox.Types;
+internal struct Struct
 {
+  public Struct()
+  {
+  }
+
+
   public const int ConstInt = 0;
   public const string ConstString = "ConstString";
   public const string? ConstNullableString = "ConstNullableString";
