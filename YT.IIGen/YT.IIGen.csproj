@@ -50,6 +50,12 @@
     <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(AssemblyName).UnitTests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
   <Target Name="FillProjectProperties" BeforeTargets="BeforeBuild;GenerateNuspec">
     <ReadLinesFromFile File="..\SolutionProperties\Authors.txt">
       <Output TaskParameter="Lines" ItemName="AuthorsLines"/>

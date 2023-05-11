@@ -30,7 +30,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
       static (ctx, _) =>
       {
         var interfaceNamedTypeSymbol = (INamedTypeSymbol) ctx.TargetSymbol;
-        var attributeArguments = interfaceNamedTypeSymbol
+        /*var attributeArguments = interfaceNamedTypeSymbol
           .GetAttributes()
           .Single(a => a.AttributeClass?.GetFullyQualifiedMetadataName() == s_iiForAttributeFullName)
           .ConstructorArguments;
@@ -44,8 +44,32 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         {
           throw new ArgumentException("Can not get the class named type symbol.");
         }
-
+        
         var wrapperClassName = attributeArguments[1].Value as string;
+        if (wrapperClassName is null)
+        {
+          throw new ArgumentException("Incorrect wrapper class name.");
+        }*/
+        var attributeArguments = ctx.TargetNode
+          .DescendantNodes()
+          .First(n => n.IsKind(SyntaxKind.Attribute))
+          .DescendantNodes()
+          .OfType<AttributeArgumentSyntax>()
+          .ToImmutableArray();
+        if (attributeArguments.Length != 2)
+        {
+          throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
+        }
+
+        var sourceNamedTypeSymbol = ctx.SemanticModel
+          .GetSymbolInfo(((TypeOfExpressionSyntax) attributeArguments[0].Expression).Type)
+          .Symbol as INamedTypeSymbol;
+        if (sourceNamedTypeSymbol is null)
+        {
+          throw new ArgumentException("Can not get the class named type symbol.");
+        }
+
+        var wrapperClassName = (attributeArguments[1].Expression as LiteralExpressionSyntax)?.Token.ValueText;
         if (wrapperClassName is null)
         {
           throw new ArgumentException("Incorrect wrapper class name.");
@@ -71,13 +95,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 containsDynamicFields = true;
               }
-              propertyForFieldInfoList.Add(new(
-                fieldSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                fieldSymbol.Name,
-                fieldSymbol.IsStatic,
-                true,
-                !fieldSymbol.IsConst && !fieldSymbol.IsReadOnly
-              ));
+              propertyForFieldInfoList.Add(fieldSymbol.ToFieldInfo());
               break;
             case IPropertySymbol propertySymbol:
               var hasGetter = propertySymbol.GetMethod is not null
@@ -261,26 +279,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var fieldInfo in iiInfo.PropertyForFieldInfoList)
     {
-      var interfacePropertyForFieldDeclaration = Execute.GetInterfacePropertySyntax(fieldInfo);
-      interfaceMembers.Add(interfacePropertyForFieldDeclaration);
-
-      MemberDeclarationSyntax implementationPropertyForFieldDeclaration;
-      if (iiInfo.IsSourceStatic)
-      {
-        implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(
-          fieldInfo,
-          iiInfo.SourceFullyQualifiedName
-        );
-      }
-      else
-      {
-        implementationPropertyForFieldDeclaration = Execute.GetImplementationPropertySyntax(
-          fieldInfo,
-          fieldInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
-          isNewKeywordRequired: !iiInfo.IsSourceSealed
-        );
-      }
-      implementationMembers.Add(implementationPropertyForFieldDeclaration);
+      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(fieldInfo));
+      implementationMembers.Add(Execute.GetImplementationPropertySyntax(fieldInfo, iiInfo));
     }
   }
 
@@ -292,31 +292,14 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var propertyInfo in iiInfo.PropertyInfoList)
     {
-      var interfacePropertyDeclaration = Execute.GetInterfacePropertySyntax(propertyInfo);
-      interfaceMembers.Add(interfacePropertyDeclaration);
+      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(propertyInfo));
 
       if (inherited && !propertyInfo.IsStatic)
       {
         continue;
       }
 
-      MemberDeclarationSyntax implementationPropertyDeclaration;
-      if (iiInfo.IsSourceStatic)
-      {
-        implementationPropertyDeclaration = Execute.GetImplementationPropertySyntax(
-          propertyInfo,
-          iiInfo.SourceFullyQualifiedName
-        );
-      }
-      else
-      {
-        implementationPropertyDeclaration = Execute.GetImplementationPropertySyntax(
-          propertyInfo,
-          propertyInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName,
-          isNewKeywordRequired: !iiInfo.IsSourceSealed
-        );
-      }
-      implementationMembers.Add(implementationPropertyDeclaration);
+      implementationMembers.Add(Execute.GetImplementationPropertySyntax(propertyInfo, iiInfo));
     }
   }
 

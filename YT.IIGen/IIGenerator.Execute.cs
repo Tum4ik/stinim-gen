@@ -36,9 +36,13 @@ partial class IIGenerator
 
 
     public static MemberDeclarationSyntax GetImplementationPropertySyntax(PropertyInfo propertyInfo,
-                                                                          string underlyingCallee,
-                                                                          bool isNewKeywordRequired = false)
+                                                                          IIInfo iiInfo)
     {
+      var underlyingCallee = (iiInfo.IsSourceStatic || propertyInfo.IsStatic)
+        ? iiInfo.SourceFullyQualifiedName
+        : InstanceFieldName;
+      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
+
       var accessorsList = new List<AccessorDeclarationSyntax>(2);
 
       if (propertyInfo.HasGetter)
