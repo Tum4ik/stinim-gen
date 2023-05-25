@@ -50,6 +50,10 @@ indent_size = 2
 [*.sh]
 indent_size = 2
 
+# Gerkin files
+[*.feature]
+indent_size = 2
+
 
 ###############################
 # Code style rules            # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/

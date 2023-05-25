@@ -30,26 +30,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
       static (ctx, _) =>
       {
         var interfaceNamedTypeSymbol = (INamedTypeSymbol) ctx.TargetSymbol;
-        /*var attributeArguments = interfaceNamedTypeSymbol
-          .GetAttributes()
-          .Single(a => a.AttributeClass?.GetFullyQualifiedMetadataName() == s_iiForAttributeFullName)
-          .ConstructorArguments;
-        if (attributeArguments.Length != 2)
-        {
-          throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
-        }
-
-        var sourceNamedTypeSymbol = attributeArguments[0].Value as INamedTypeSymbol;
-        if (sourceNamedTypeSymbol is null)
-        {
-          throw new ArgumentException("Can not get the class named type symbol.");
-        }
-        
-        var wrapperClassName = attributeArguments[1].Value as string;
-        if (wrapperClassName is null)
-        {
-          throw new ArgumentException("Incorrect wrapper class name.");
-        }*/
         var attributeArguments = ctx.TargetNode
           .DescendantNodes()
           .First(n => n.IsKind(SyntaxKind.Attribute))
