@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -28,17 +27,20 @@ public class CommonStepDefinitions
     _scenarioContext.AddUsings(usings);
   }
 
+
   [Given(@"source member declaration")]
   public void GivenMemberDeclaration(string sourceMemberDeclaration)
   {
     _scenarioContext.AddSourceMemberDeclaration(sourceMemberDeclaration);
   }
 
+
   [Then(@"generated for interface")]
   public void ThenGeneratedForInterface(string expectedGeneration)
   {
     _scenarioContext.AddExpectedGeneratedMemberForInterface(expectedGeneration);
   }
+
 
   [Then(@"generated for struct implementation")]
   public void ThenGeneratedForStructImplementation(string expectedGeneration)
@@ -59,13 +61,33 @@ public struct {TypeName}
     RunGeneratorAndValidateResults(structDeclaration, expectedGeneration);
   }
 
+
   [Then(@"generated for class implementation")]
   public void ThenGeneratedForClassImplementation(string expectedGeneration)
+  {
+    var classDeclaration = GetClassDeclaration();
+    RunGeneratorAndValidateResults(classDeclaration, expectedGeneration);
+  }
+
+
+  [Then(@"inherited for class implementation")]
+  public void ThenInheritedForClassImplementation()
+  {
+    var classDeclaration = GetClassDeclaration();
+    var expectedGeneratedMemberForInterface = _scenarioContext.GetExpectedGeneratedMemberForInterface();
+    var (memberGeneratedForInterface, memberGeneratedForImplementation) = RunGenerator(classDeclaration);
+
+    memberGeneratedForInterface.Should().Be(expectedGeneratedMemberForInterface);
+    memberGeneratedForImplementation.Should().BeNull();
+  }
+
+
+  private string GetClassDeclaration()
   {
     var usings = _scenarioContext.GetUsings();
     var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
 
-    var classDeclaration = $@"
+    return $@"
 {usings}
 namespace {Namespace};
 public class {TypeName}
@@ -73,9 +95,8 @@ public class {TypeName}
   {sourceMemberDeclaration}
 }}
 ";
-
-    RunGeneratorAndValidateResults(classDeclaration, expectedGeneration);
   }
+
 
   [Then(@"generated for sealed class implementation")]
   public void ThenGeneratedForSealedClassImplementation(string expectedGeneration)
@@ -94,6 +115,7 @@ public sealed class {TypeName}
 
     RunGeneratorAndValidateResults(sealedClassDeclaration, expectedGeneration);
   }
+
 
   [Then(@"generated for static class implementation")]
   public void ThenGeneratedForStaticClassImplementation(string expectedGeneration)
@@ -117,11 +139,21 @@ public static class {TypeName}
   private void RunGeneratorAndValidateResults(string typeDeclaration, string expectedGeneration)
   {
     expectedGeneration = expectedGeneration.Replace("@Namespace", Namespace).Replace("@TypeName", TypeName);
+    var expectedGeneratedMemberForInterface = _scenarioContext.GetExpectedGeneratedMemberForInterface();
 
+    var (memberGeneratedForInterface, memberGeneratedForImplementation) = RunGenerator(typeDeclaration);
+
+    memberGeneratedForInterface.Should().Be(expectedGeneratedMemberForInterface);
+    memberGeneratedForImplementation.Should().Be(expectedGeneration);
+  }
+
+
+  private (string? ForInterface, string? ForImplementation) RunGenerator(string typeDeclaration)
+  {
     var attributeUsageCode = GetAttributeUsageCode();
     var inputCompilation = Helper.CreateCompilation("My.Assembly",
       new[] { typeDeclaration, attributeUsageCode },
-      new[] { typeof(IIForAttribute), typeof(object) }
+      new[] { typeof(IIForAttribute), typeof(object), typeof(Stream) }
     );
     var generatorRunResult = CSharpGeneratorDriver.Create(new IIGenerator())
       .RunGeneratorsAndUpdateCompilation(inputCompilation, out _, out _)
@@ -132,15 +164,13 @@ public static class {TypeName}
     generatorRunResult.Exception.Should().BeNull();
 
     var memberDeclarationKind = _scenarioContext.GetGeneratedMemberDeclarationKind();
-    var expectedGeneratedMemberForInterface = _scenarioContext.GetExpectedGeneratedMemberForInterface();
 
     var (interfaceResult, implementationResult) =
       (generatorRunResult.GeneratedSources[0].SyntaxTree, generatorRunResult.GeneratedSources[1].SyntaxTree);
-    var fieldGeneratedForInterface = GetPropertySourceText(interfaceResult, memberDeclarationKind);
-    var fieldGeneratedForImplementation = GetPropertySourceText(implementationResult, memberDeclarationKind);
+    var memberGeneratedForInterface = GetPropertySourceText(interfaceResult, memberDeclarationKind);
+    var memberGeneratedForImplementation = GetPropertySourceText(implementationResult, memberDeclarationKind);
 
-    fieldGeneratedForInterface.ToString().Should().Be(expectedGeneratedMemberForInterface);
-    fieldGeneratedForImplementation.ToString().Should().Be(expectedGeneration);
+    return (memberGeneratedForInterface?.ToString(), memberGeneratedForImplementation?.ToString());
   }
 
 
@@ -156,11 +186,11 @@ internal partial interface I{TypeName} {{ }}
   }
 
 
-  private static SourceText GetPropertySourceText(SyntaxTree syntaxTree, SyntaxKind memberDeclarationKind)
+  private static SourceText? GetPropertySourceText(SyntaxTree syntaxTree, SyntaxKind memberDeclarationKind)
   {
     return syntaxTree.GetRoot()
       .DescendantNodes()
-      .First(n => n.IsKind(memberDeclarationKind))
+      .FirstOrDefault(n => n.IsKind(memberDeclarationKind))?
       .NormalizeWhitespace()
       .GetText();
   }

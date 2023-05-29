@@ -27,8 +27,4 @@
     <ProjectReference Include="..\..\YT.IIGen\YT.IIGen.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="StepDefinitions\" />
-  </ItemGroup>
-
 </Project>
