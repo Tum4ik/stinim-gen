@@ -291,30 +291,14 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var eventInfo in iiInfo.EventInfoList)
     {
-      var interfaceEventDeclaration = Execute.GetInterfaceEventSyntax(eventInfo);
-      interfaceMembers.Add(interfaceEventDeclaration);
+      interfaceMembers.Add(Execute.GetInterfaceEventSyntax(eventInfo));
 
       if (inherited && !eventInfo.IsStatic)
       {
         continue;
       }
 
-      MemberDeclarationSyntax implementationEventDeclaration;
-      if (iiInfo.IsSourceStatic)
-      {
-        implementationEventDeclaration = Execute.GetImplementationEventSyntax(
-          eventInfo,
-          iiInfo.SourceFullyQualifiedName
-        );
-      }
-      else
-      {
-        implementationEventDeclaration = Execute.GetImplementationEventSyntax(
-          eventInfo,
-          eventInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName
-        );
-      }
-      implementationMembers.Add(implementationEventDeclaration);
+      implementationMembers.Add(Execute.GetImplementationEventSyntax(eventInfo, iiInfo));
     }
   }
 
@@ -326,30 +310,14 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var methodInfo in iiInfo.MethodInfoList)
     {
-      var interfaceMethodDeclaration = Execute.GetInterfaceMethodSyntax(methodInfo);
-      interfaceMembers.Add(interfaceMethodDeclaration);
+      interfaceMembers.Add(Execute.GetInterfaceMethodSyntax(methodInfo));
 
       if (inherited && !methodInfo.IsStatic)
       {
         continue;
       }
 
-      MemberDeclarationSyntax implementationMethodDeclaration;
-      if (iiInfo.IsSourceStatic)
-      {
-        implementationMethodDeclaration = Execute.GetImplementationMethodSyntax(
-          methodInfo,
-          iiInfo.SourceFullyQualifiedName
-        );
-      }
-      else
-      {
-        implementationMethodDeclaration = Execute.GetImplementationMethodSyntax(
-          methodInfo,
-          methodInfo.IsStatic ? iiInfo.SourceFullyQualifiedName : InstanceFieldName
-        );
-      }
-      implementationMembers.Add(implementationMethodDeclaration);
+      implementationMembers.Add(Execute.GetImplementationMethodSyntax(methodInfo,iiInfo));
     }
   }
 

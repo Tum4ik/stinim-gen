@@ -17,6 +17,7 @@ public class FieldStepDefinitions
   [When(@"run generator for field")]
   public void WhenRunGeneratorForField()
   {
-    _scenarioContext.AddGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
+    _scenarioContext.AddInterfaceGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
+    _scenarioContext.AddImplementationGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
   }
 }

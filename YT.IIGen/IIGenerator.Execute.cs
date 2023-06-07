@@ -95,13 +95,23 @@ partial class IIGenerator
 
 
     public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo,
-                                                                       string underlyingCallee)
+                                                                       IIInfo iiInfo)
     {
+      var underlyingCallee = (iiInfo.IsSourceStatic || eventInfo.IsStatic)
+        ? iiInfo.SourceFullyQualifiedName
+        : InstanceFieldName;
+      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
+      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
+      if (isNewKeywordRequired)
+      {
+        modifiers.Add(Token(SyntaxKind.NewKeyword));
+      }
+
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
           Identifier(eventInfo.EventName)
         )
-        .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddModifiers(modifiers.ToArray())
         .AddAccessorListAccessors(
           AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)
             .WithExpressionBody(ArrowExpressionClause(
@@ -136,8 +146,13 @@ partial class IIGenerator
 
 
     public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo,
-                                                                        string underlyingCallee)
+                                                                        IIInfo iiInfo)
     {
+      var underlyingCallee = (iiInfo.IsSourceStatic || methodInfo.IsStatic)
+        ? iiInfo.SourceFullyQualifiedName
+        : InstanceFieldName;
+      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
+
       var returnType = GetMethodReturnType(methodInfo);
       var parameters = GetMethodParameters(methodInfo);
       var arguments = methodInfo.Parameters.Select(p =>
@@ -165,8 +180,15 @@ partial class IIGenerator
       {
         separators[i] = Token(SyntaxKind.CommaToken);
       }
+
+      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
+      if (isNewKeywordRequired)
+      {
+        modifiers.Add(Token(SyntaxKind.NewKeyword));
+      }
+
       return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
-        .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddModifiers(modifiers.ToArray())
         .AddParameterListParameters(parameters.ToArray())
         .WithExpressionBody(ArrowExpressionClause(
           InvocationExpression(

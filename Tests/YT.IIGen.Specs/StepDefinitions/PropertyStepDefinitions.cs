@@ -17,6 +17,7 @@ public class PropertyStepDefinitions
   [When(@"run generator for property")]
   public void WhenRunGeneratorForProperty()
   {
-    _scenarioContext.AddGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
+    _scenarioContext.AddInterfaceGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
+    _scenarioContext.AddImplementationGeneratedMemberDeclarationKind(SyntaxKind.PropertyDeclaration);
   }
 }

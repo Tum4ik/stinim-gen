@@ -35,9 +35,17 @@ public class CommonStepDefinitions
   }
 
 
+  [Given(@"additional namespace declarations")]
+  public void GivenAdditionalNamespaceDeclarations(string additionalNamespaceDeclarations)
+  {
+    _scenarioContext.AddAdditionalNamespaceDeclarations(additionalNamespaceDeclarations);
+  }
+
+
   [Then(@"generated for interface")]
   public void ThenGeneratedForInterface(string expectedGeneration)
   {
+    expectedGeneration = expectedGeneration.Replace("@Namespace", Namespace);
     _scenarioContext.AddExpectedGeneratedMemberForInterface(expectedGeneration);
   }
 
@@ -47,6 +55,7 @@ public class CommonStepDefinitions
   {
     var usings = _scenarioContext.GetUsings();
     var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
+    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
 
     var structDeclaration = $@"
 {usings}
@@ -56,6 +65,8 @@ public struct {TypeName}
   public {TypeName}() {{ }}
   {sourceMemberDeclaration}
 }}
+
+{additionalDeclarations}
 ";
 
     RunGeneratorAndValidateResults(structDeclaration, expectedGeneration);
@@ -86,6 +97,7 @@ public struct {TypeName}
   {
     var usings = _scenarioContext.GetUsings();
     var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
+    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
 
     return $@"
 {usings}
@@ -94,6 +106,8 @@ public class {TypeName}
 {{
   {sourceMemberDeclaration}
 }}
+
+{additionalDeclarations}
 ";
   }
 
@@ -103,6 +117,7 @@ public class {TypeName}
   {
     var usings = _scenarioContext.GetUsings();
     var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
+    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
 
     var sealedClassDeclaration = $@"
 {usings}
@@ -111,6 +126,8 @@ public sealed class {TypeName}
 {{
   {sourceMemberDeclaration}
 }}
+
+{additionalDeclarations}
 ";
 
     RunGeneratorAndValidateResults(sealedClassDeclaration, expectedGeneration);
@@ -122,6 +139,7 @@ public sealed class {TypeName}
   {
     var usings = _scenarioContext.GetUsings();
     var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
+    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
 
     var staticClassDeclaration = $@"
 {usings}
@@ -130,6 +148,8 @@ public static class {TypeName}
 {{
   {sourceMemberDeclaration}
 }}
+
+{additionalDeclarations}
 ";
 
     RunGeneratorAndValidateResults(staticClassDeclaration, expectedGeneration);
@@ -163,12 +183,13 @@ public static class {TypeName}
 
     generatorRunResult.Exception.Should().BeNull();
 
-    var memberDeclarationKind = _scenarioContext.GetGeneratedMemberDeclarationKind();
+    var interfaceMemberDeclarationKind = _scenarioContext.GetInterfaceGeneratedMemberDeclarationKind();
+    var implementationMemberDeclarationKind = _scenarioContext.GetImplementationGeneratedMemberDeclarationKind();
 
     var (interfaceResult, implementationResult) =
       (generatorRunResult.GeneratedSources[0].SyntaxTree, generatorRunResult.GeneratedSources[1].SyntaxTree);
-    var memberGeneratedForInterface = GetPropertySourceText(interfaceResult, memberDeclarationKind);
-    var memberGeneratedForImplementation = GetPropertySourceText(implementationResult, memberDeclarationKind);
+    var memberGeneratedForInterface = GetPropertySourceText(interfaceResult, interfaceMemberDeclarationKind);
+    var memberGeneratedForImplementation = GetPropertySourceText(implementationResult, implementationMemberDeclarationKind);
 
     return (memberGeneratedForInterface?.ToString(), memberGeneratedForImplementation?.ToString());
   }
