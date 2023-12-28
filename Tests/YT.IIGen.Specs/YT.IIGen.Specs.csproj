@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
     <ProjectReference Include="..\..\YT.IIGen\YT.IIGen.csproj" />
   </ItemGroup>
 
