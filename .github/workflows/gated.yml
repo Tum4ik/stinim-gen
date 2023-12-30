@@ -29,8 +29,8 @@ jobs:
     env:
       Scripts: .\.github\workflows\scripts
       TemporaryPfxFilePath: .\GitHubActionsWorkflow.pfx
-      BuildOutputPath: .\YT.IIGen\bin\Release\netstandard2.0
-      PackOutputPath: .\YT.IIGen\bin\Release\pack
+      BuildOutputPath: .\Tum4ik.StinimGen\bin\Release\netstandard2.0
+      PackOutputPath: .\Tum4ik.StinimGen\bin\Release\pack
 
     steps:
     - name: Checkout
@@ -80,7 +80,7 @@ jobs:
           -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
           -PfxPassword ${{ secrets.PFX_KEY }}
         ${{ env.Scripts }}\SignMyCodeFiles.ps1 `
-          -FilesDirectoryPath .\YT.IIGen.Attributes\bin\Release\netstandard2.0 `
+          -FilesDirectoryPath .\Tum4ik.StinimGen.Attributes\bin\Release\netstandard2.0 `
           -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
           -PfxPassword ${{ secrets.PFX_KEY }}
         Remove-Item -Path ${{ env.TemporaryPfxFilePath }}
@@ -88,7 +88,7 @@ jobs:
     - name: Pack
       run: |
         $version = "${{ steps.define-version.outputs.version }}"
-        dotnet pack .\YT.IIGen\YT.IIGen.csproj `
+        dotnet pack .\Tum4ik.StinimGen\Tum4ik.StinimGen.csproj `
           -c Release `
           --nologo `
           --no-build `

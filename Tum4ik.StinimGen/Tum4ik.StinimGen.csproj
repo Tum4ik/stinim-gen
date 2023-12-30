@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,23 +8,23 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>YT.IIGen</PackageId>
+    <PackageId>Tum4ik.StinimGen</PackageId>
     <PackageVersion>0.0.0.0-dev</PackageVersion>
     <Description>
-      Interface and implementation generator for .NET types.
+      Interface and implementation generator for static members.
 
-      This library is useful in case you want to have possibilities to mock static classes, classes without interfaces and structs in your tests.
+      This library is useful in case you want to have possibilities to mock static classes or static members in your tests.
     </Description>
 
     <Version>0.0.0.0-dev</Version>
-    <Title>IIGen - Interface and Implementation Generator</Title>
+    <Title>StinimGen - Static Members Interface and Implementation Generator</Title>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/Tum4ik/i-i-gen</PackageProjectUrl>
-    <PackageTags>interface-generator;mock-static-class;mock-struct;mock-class-without-interface;mock;ioc;di;tests</PackageTags>
+    <PackageProjectUrl>https://github.com/Tum4ik/stinim-gen</PackageProjectUrl>
+    <PackageTags>interface-generator;mock-static-class;mock;ioc;di;tests</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/Tum4ik/i-i-gen.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Tum4ik/stinim-gen.git</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -36,8 +36,8 @@
   <ItemGroup>
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="..\YT.IIGen.Attributes\$(OutputPath)\YT.IIGen.Attributes.dll" Pack="true" PackagePath="lib/netstandard2.0" />
-    <None Include="..\YT.IIGen.Attributes\$(OutputPath)\YT.IIGen.Attributes.pdb" Pack="true" PackagePath="lib/netstandard2.0" />
+    <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.dll" Pack="true" PackagePath="lib/netstandard2.0" />
+    <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.pdb" Pack="true" PackagePath="lib/netstandard2.0" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
+    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\Tum4ik.StinimGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
   </ItemGroup>
 
   <ItemGroup>

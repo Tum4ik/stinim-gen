@@ -1,23 +1,22 @@
-# IIGen
-[![NuGet: YT.IIGen](https://img.shields.io/nuget/v/YT.IIGen)](https://www.nuget.org/packages/YT.IIGen)
-[![NuGet: Downloads](https://img.shields.io/nuget/dt/YT.IIGen)](https://www.nuget.org/packages/YT.IIGen)
+# StinimGen
+[![NuGet: Tum4ik.StinimGen](https://img.shields.io/nuget/v/Tum4ik.StinimGen)](https://www.nuget.org/packages/Tum4ik.StinimGen)
+[![NuGet: Downloads](https://img.shields.io/nuget/dt/Tum4ik.StinimGen)](https://www.nuget.org/packages/Tum4ik.StinimGen)
 
-Interface and implementation generator for .NET types.
+Interface and implementation generator for static members.
 
-This library is useful in case you want to have possibilities to mock static classes, classes without interfaces and
-structs in your tests.
+This library is useful in case you want to have possibilities to mock static classes or static members in your tests.
 
 ## Requirements
 * .NET 6 and higher
 
 ## How to use
 #### 1. Install NuGet package
-Use any approach you prefer to install the NuGet package `YT.IIGen`.
+Use any approach you prefer to install the NuGet package `Tum4ik.StinimGen`.
 #### 2. Declare an interface
 Declare your interface for a type you want to make mockable, use `IIForAttribute` to specify the type to wrap
 and the name of the wrapper class to be generated.
 ```csharp
-using YT.IIGen.Attributes;
+using Tum4ik.StinimGen.Attributes;
 
 [IIFor(typeof(DateTime), "DateTimeWrapper")]
 internal partial interface IDateTime
@@ -76,5 +75,4 @@ public class MyServiceTests
 ```
 
 ## Known limitations
-* The types without default constructor are not supported yet.
 * Generic methods are not supported yet.
