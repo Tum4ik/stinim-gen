@@ -1,6 +1,7 @@
-using static YT.IIGen.Sandbox.Types.UnsealedClassWithOnlyStaticFields;
+using static Tum4ik.StinimGen.Sandbox.Types.UnsealedClassWithOnlyStaticFields;
+using Tum4ik.StinimGen.Sandbox.Types;
 
-namespace YT.IIGen.Sandbox.Types;
+namespace Tum4ik.StinimGen.Sandbox.Types;
 internal struct Struct
 {
   public Struct()

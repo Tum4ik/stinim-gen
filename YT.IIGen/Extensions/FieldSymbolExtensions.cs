@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
-using YT.IIGen.Models;
+using Tum4ik.StinimGen.Models;
 
-namespace YT.IIGen.Extensions;
+namespace Tum4ik.StinimGen.Extensions;
 internal static class FieldSymbolExtensions
 {
   public static PropertyInfo ToFieldInfo(this IFieldSymbol fieldSymbol)

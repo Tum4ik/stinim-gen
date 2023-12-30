@@ -1,10 +1,10 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using YT.IIGen.Models;
+using Tum4ik.StinimGen.Models;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace YT.IIGen;
+namespace Tum4ik.StinimGen;
 partial class IIGenerator
 {
   internal static class Execute

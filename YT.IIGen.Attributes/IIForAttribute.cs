@@ -1,4 +1,4 @@
-namespace YT.IIGen.Attributes;
+namespace Tum4ik.StinimGen.Attributes;
 
 /// <summary>
 /// An attribute that can be used to automatically generate interface members and an implementation wrapper for a

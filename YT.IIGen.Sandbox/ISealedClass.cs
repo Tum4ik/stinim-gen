@@ -1,7 +1,7 @@
-using YT.IIGen.Attributes;
-using YT.IIGen.Sandbox.Types;
+using Tum4ik.StinimGen.Attributes;
+using Tum4ik.StinimGen.Sandbox.Types;
 
-namespace YT.IIGen.Sandbox;
+namespace Tum4ik.StinimGen.Sandbox;
 
 [IIFor(typeof(SealedClass), "SealedClassWrapper")]
 internal partial interface ISealedClass

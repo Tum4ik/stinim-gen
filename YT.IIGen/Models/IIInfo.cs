@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace YT.IIGen.Models;
+namespace Tum4ik.StinimGen.Models;
 internal sealed record IIInfo(
   string Namespace,
   TypeInfo InterfaceTypeInfo,

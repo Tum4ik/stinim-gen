@@ -1,4 +1,4 @@
-namespace YT.IIGen.Sandbox.Types;
+namespace Tum4ik.StinimGen.Sandbox.Types;
 internal sealed class DummyClass
 {
   public DummyClass()

@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace YT.IIGen.Specs.Extensions;
+namespace Tum4ik.StinimGen.Specs.Extensions;
 internal static class ScenarioContextExtensions
 {
   private const string UsingsKey = nameof(UsingsKey);

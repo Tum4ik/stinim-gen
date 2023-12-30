@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 
-namespace YT.IIGen.Extensions;
+namespace Tum4ik.StinimGen.Extensions;
 internal static class SymbolExtensions
 {
   /// <summary>

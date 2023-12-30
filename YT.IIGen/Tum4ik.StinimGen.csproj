@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
+    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\YT.IIGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
   </ItemGroup>
 
   <ItemGroup>

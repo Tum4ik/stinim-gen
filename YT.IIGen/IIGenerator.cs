@@ -4,11 +4,11 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using YT.IIGen.Extensions;
-using YT.IIGen.Models;
+using Tum4ik.StinimGen.Extensions;
+using Tum4ik.StinimGen.Models;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace YT.IIGen;
+namespace Tum4ik.StinimGen;
 
 [Generator(LanguageNames.CSharp)]
 internal sealed partial class IIGenerator : IIncrementalGenerator

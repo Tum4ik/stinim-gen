@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis.CSharp;
-using YT.IIGen.Specs.Extensions;
+using Tum4ik.StinimGen.Specs.Extensions;
 
-namespace YT.IIGen.Specs.StepDefinitions;
+namespace Tum4ik.StinimGen.Specs.StepDefinitions;
 
 [Binding]
 public class PropertyStepDefinitions

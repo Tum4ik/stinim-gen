@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace YT.IIGen.Specs.Features.Field
+namespace Tum4ik.StinimGen.Specs.Features.Field
 {
     using TechTalk.SpecFlow;
     using System;
@@ -31,7 +31,7 @@ namespace YT.IIGen.Specs.Features.Field
 #line 1 "StaticReadonlyField.feature"
 #line hidden
         
-        public StaticRead_OnlyFieldFeature(StaticRead_OnlyFieldFeature.FixtureData fixtureData, YT_IIGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public StaticRead_OnlyFieldFeature(StaticRead_OnlyFieldFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();

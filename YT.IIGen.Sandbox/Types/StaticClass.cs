@@ -1,4 +1,6 @@
-namespace YT.IIGen.Sandbox.Types;
+using Tum4ik.StinimGen.Sandbox.Types;
+
+namespace Tum4ik.StinimGen.Sandbox.Types;
 internal static class StaticClass
 {
   public const int ConstInt = 0;

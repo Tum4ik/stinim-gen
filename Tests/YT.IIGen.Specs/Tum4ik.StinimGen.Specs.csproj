@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\YT.IIGen.Attributes\YT.IIGen.Attributes.csproj" />
-    <ProjectReference Include="..\..\YT.IIGen\YT.IIGen.csproj" />
+    <ProjectReference Include="..\..\YT.IIGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
+    <ProjectReference Include="..\..\YT.IIGen\Tum4ik.StinimGen.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace YT.IIGen.Models;
+namespace Tum4ik.StinimGen.Models;
 /// <summary>
 /// A model describing a type info in a type hierarchy.
 /// </summary>

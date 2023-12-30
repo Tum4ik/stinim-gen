@@ -2,7 +2,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace YT.IIGen.Specs;
+namespace Tum4ik.StinimGen.Specs;
 internal static class Helper
 {
   public static Compilation CreateCompilation(string assemblyName,

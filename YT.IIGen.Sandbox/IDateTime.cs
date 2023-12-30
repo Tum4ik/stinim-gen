@@ -1,6 +1,6 @@
-using YT.IIGen.Attributes;
+using Tum4ik.StinimGen.Attributes;
 
-namespace YT.IIGen.Sandbox;
+namespace Tum4ik.StinimGen.Sandbox;
 
 [IIFor(typeof(DateTime), "DateTimeWrapper")]
 internal partial interface IDateTime

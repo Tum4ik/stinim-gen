@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace YT.IIGen.Specs.Features.Property
+namespace Tum4ik.StinimGen.Specs.Features.Property
 {
     using TechTalk.SpecFlow;
     using System;
@@ -31,7 +31,7 @@ namespace YT.IIGen.Specs.Features.Property
 #line 1 "StaticProperty.feature"
 #line hidden
         
-        public StaticPropertyFeature(StaticPropertyFeature.FixtureData fixtureData, YT_IIGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public StaticPropertyFeature(StaticPropertyFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();

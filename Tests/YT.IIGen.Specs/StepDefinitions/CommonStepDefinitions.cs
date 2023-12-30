@@ -1,10 +1,10 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
-using YT.IIGen.Attributes;
-using YT.IIGen.Specs.Extensions;
+using Tum4ik.StinimGen.Attributes;
+using Tum4ik.StinimGen.Specs.Extensions;
 
-namespace YT.IIGen.Specs.StepDefinitions;
+namespace Tum4ik.StinimGen.Specs.StepDefinitions;
 
 [Binding]
 public class CommonStepDefinitions
