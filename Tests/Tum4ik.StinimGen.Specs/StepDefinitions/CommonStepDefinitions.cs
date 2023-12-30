@@ -198,7 +198,7 @@ public static class {TypeName}
   private static string GetAttributeUsageCode()
   {
     return $@"
-using YT.IIGen.Attributes;
+using Tum4ik.StinimGen.Attributes;
 using {Namespace};
 namespace My.Assembly.Code;
 [IIFor(typeof({TypeName}), ""{TypeName}Wrapper"")]

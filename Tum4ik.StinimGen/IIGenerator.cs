@@ -13,7 +13,7 @@ namespace Tum4ik.StinimGen;
 [Generator(LanguageNames.CSharp)]
 internal sealed partial class IIGenerator : IIncrementalGenerator
 {
-  private static readonly string s_iiForAttributeFullName = "YT.IIGen.Attributes.IIForAttribute";
+  private static readonly string s_iiForAttributeFullName = "Tum4ik.StinimGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
   private const string InstanceFieldName = "_instance";
 
