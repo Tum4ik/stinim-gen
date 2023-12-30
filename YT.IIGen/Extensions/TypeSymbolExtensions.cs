@@ -3,7 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace YT.IIGen.Extensions;
-internal static class ITypeSymbolExtensions
+internal static class TypeSymbolExtensions
 {
   /// <summary>
   /// Gets the fully qualified metadata name for a given <see cref="ITypeSymbol"/> instance.

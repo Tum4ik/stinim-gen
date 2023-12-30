@@ -58,9 +58,17 @@ jobs:
         dotnet build `
           -c Release `
           --nologo `
-          /p:ContinuousIntegrationBuild=true `
           /p:PackageVersion=$version `
-          /p:Version=$version
+          /p:Version=$version `
+          /p:GeneratePackageOnBuild=false `
+          /p:ContinuousIntegrationBuild=true
+
+    - name: Test
+      run: |
+        dotnet test `
+          -c Release `
+          --nologo `
+          --no-build
 
     - name: Sign code files
       run: |
@@ -69,6 +77,10 @@ jobs:
           -OutputPath ${{ env.TemporaryPfxFilePath }}
         ${{ env.Scripts }}\SignMyCodeFiles.ps1 `
           -FilesDirectoryPath ${{ env.BuildOutputPath }} `
+          -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
+          -PfxPassword ${{ secrets.PFX_KEY }}
+        ${{ env.Scripts }}\SignMyCodeFiles.ps1 `
+          -FilesDirectoryPath .\YT.IIGen.Attributes\bin\Release\netstandard2.0 `
           -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
           -PfxPassword ${{ secrets.PFX_KEY }}
         Remove-Item -Path ${{ env.TemporaryPfxFilePath }}
@@ -82,7 +94,9 @@ jobs:
           --no-build `
           -o ${{ env.PackOutputPath }} `
           /p:PackageVersion=$version `
-          /p:Version=$version
+          /p:Version=$version `
+          /p:IncludeSymbols=true `
+          /p:SymbolPackageFormat=snupkg
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3

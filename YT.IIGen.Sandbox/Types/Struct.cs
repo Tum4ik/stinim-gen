@@ -1,3 +1,5 @@
+using static YT.IIGen.Sandbox.Types.UnsealedClassWithOnlyStaticFields;
+
 namespace YT.IIGen.Sandbox.Types;
 internal struct Struct
 {
@@ -45,4 +47,8 @@ internal struct Struct
   public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+
+  public static int Prop { private get; set; }
+
+  public event CustomEventHandler PropertyChanged;
 }

@@ -22,4 +22,12 @@ internal class UnsealedClassWithOnlyStaticFields
   public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+
+  public static int Prop { protected get; set; }
+
+
+  public static event EventHandler PropChanged;
+  public static event Func<int> Event;
+
+  public delegate void CustomEventHandler(int count, string search);
 }

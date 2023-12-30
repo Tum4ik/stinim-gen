@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 
 namespace YT.IIGen.Extensions;
-internal static class ISymbolExtensions
+internal static class SymbolExtensions
 {
   /// <summary>
   /// Gets the fully qualified name for a given symbol, including nullability annotations

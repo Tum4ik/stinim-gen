@@ -40,4 +40,6 @@ internal sealed class SealedClass
   public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+
+  public int Prop { get; protected set; }
 }
