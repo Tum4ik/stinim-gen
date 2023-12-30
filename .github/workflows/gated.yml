@@ -79,6 +79,10 @@ jobs:
           -FilesDirectoryPath ${{ env.BuildOutputPath }} `
           -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
           -PfxPassword ${{ secrets.PFX_KEY }}
+        ${{ env.Scripts }}\SignMyCodeFiles.ps1 `
+          -FilesDirectoryPath .\YT.IIGen.Attributes\bin\Release\netstandard2.0 `
+          -PfxFilePath ${{ env.TemporaryPfxFilePath }} `
+          -PfxPassword ${{ secrets.PFX_KEY }}
         Remove-Item -Path ${{ env.TemporaryPfxFilePath }}
 
     - name: Pack
