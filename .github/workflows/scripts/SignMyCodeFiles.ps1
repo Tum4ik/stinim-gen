@@ -16,7 +16,7 @@ if (!$PfxPassword) {
 
 $filesToSign = Get-ChildItem -Recurse `
   -Include `
-    YT.IIGen.dll, YT.IIGen.Attributes.dll `
+    Tum4ik.StinimGen.dll, Tum4ik.StinimGen.Attributes.dll `
   $FilesDirectoryPath `
   | Select-Object -ExpandProperty FullName
 $signtool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.20348.0\x64\signtool.exe"

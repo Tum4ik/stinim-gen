@@ -1,0 +1,79 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tum4ik.StinimGen", "Tum4ik.StinimGen\Tum4ik.StinimGen.csproj", "{0581660E-58EB-4C97-981C-51AB7553080F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{83D7C525-0809-490F-8838-A4A4EFFA6CC5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tum4ik.StinimGen.Sandbox", "Tum4ik.StinimGen.Sandbox\Tum4ik.StinimGen.Sandbox.csproj", "{F09F7794-29D0-4715-90BE-D5FB800A2724}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tum4ik.StinimGen.Attributes", "Tum4ik.StinimGen.Attributes\Tum4ik.StinimGen.Attributes.csproj", "{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{8E79885E-16BF-4525-9A90-F0A6E3C9A3C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{67D68640-5538-42AB-97C3-66EEB296423D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\gated.yml = .github\workflows\gated.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2A87494B-868C-4DCC-B008-F2A9CD953BDE}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\scripts\DecodePfx.ps1 = .github\workflows\scripts\DecodePfx.ps1
+		.github\workflows\scripts\SignMyCodeFiles.ps1 = .github\workflows\scripts\SignMyCodeFiles.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Properties", "Solution Properties", "{04662B7D-8594-4A5D-BDAB-B361D12E0F45}"
+	ProjectSection(SolutionItems) = preProject
+		SolutionProperties\Authors.txt = SolutionProperties\Authors.txt
+		SolutionProperties\Company.txt = SolutionProperties\Company.txt
+		SolutionProperties\Copyright.txt = SolutionProperties\Copyright.txt
+		SolutionProperties\PackageReleaseNotes.txt = SolutionProperties\PackageReleaseNotes.txt
+		SolutionProperties\Product.txt = SolutionProperties\Product.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D7142119-FDB3-4820-BCC8-AACA0BA536BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tum4ik.StinimGen.Specs", "Tests\Tum4ik.StinimGen.Specs\Tum4ik.StinimGen.Specs.csproj", "{53E6AD03-7EF3-433D-8C6C-B50978838CDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0581660E-58EB-4C97-981C-51AB7553080F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0581660E-58EB-4C97-981C-51AB7553080F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0581660E-58EB-4C97-981C-51AB7553080F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0581660E-58EB-4C97-981C-51AB7553080F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F09F7794-29D0-4715-90BE-D5FB800A2724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F09F7794-29D0-4715-90BE-D5FB800A2724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F09F7794-29D0-4715-90BE-D5FB800A2724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0B321F2-F69F-4E6D-9C34-FB1A92BA0B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E6AD03-7EF3-433D-8C6C-B50978838CDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E6AD03-7EF3-433D-8C6C-B50978838CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E6AD03-7EF3-433D-8C6C-B50978838CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E6AD03-7EF3-433D-8C6C-B50978838CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67D68640-5538-42AB-97C3-66EEB296423D} = {8E79885E-16BF-4525-9A90-F0A6E3C9A3C6}
+		{2A87494B-868C-4DCC-B008-F2A9CD953BDE} = {67D68640-5538-42AB-97C3-66EEB296423D}
+		{53E6AD03-7EF3-433D-8C6C-B50978838CDC} = {D7142119-FDB3-4820-BCC8-AACA0BA536BF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE3904BA-B9E2-47A9-B0BD-F5031C8CBD80}
+	EndGlobalSection
+EndGlobal
