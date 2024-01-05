@@ -19,7 +19,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class StaticPropertyFeature : object, Xunit.IClassFixture<StaticPropertyFeature.FixtureData>, System.IDisposable
+    public partial class PropertyFeature : object, Xunit.IClassFixture<PropertyFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "StaticProperty.feature"
+#line 1 "Property.feature"
 #line hidden
         
-        public StaticPropertyFeature(StaticPropertyFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PropertyFeature(PropertyFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Property", "Static property", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Property", "Property", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,7 +81,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with only getter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with only getter")]
         public void PropertyWithOnlyGetter()
         {
@@ -124,7 +124,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with only setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with only setter")]
         public void PropertyWithOnlySetter()
         {
@@ -168,7 +168,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with getter and setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with getter and setter")]
         public void PropertyWithGetterAndSetter()
         {
@@ -218,7 +218,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with getter and private setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with getter and private setter")]
         public void PropertyWithGetterAndPrivateSetter()
         {
@@ -268,7 +268,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with getter and protected setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with getter and protected setter")]
         public void PropertyWithGetterAndProtectedSetter()
         {
@@ -314,7 +314,7 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Property with private getter and setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Static property")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
         [Xunit.TraitAttribute("Description", "Property with private getter and setter")]
         public void PropertyWithPrivateGetterAndSetter()
         {
@@ -363,12 +363,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                StaticPropertyFeature.FeatureSetup();
+                PropertyFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                StaticPropertyFeature.FeatureTearDown();
+                PropertyFeature.FeatureTearDown();
             }
         }
     }

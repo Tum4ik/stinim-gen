@@ -30,6 +30,4 @@ internal class UnsealedClassWithOnlyStaticFields
 
   public static event EventHandler PropChanged;
   public static event Func<int> Event;
-
-  public delegate void CustomEventHandler(int count, string search);
 }

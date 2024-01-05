@@ -4,48 +4,56 @@ Feature: Read-only field
 Scenario: Non-nullable field with keyworded type
   Given source member declaration
     """
-    public readonly string ReadonlyField;
+    public static readonly float StaticReadonlyField;
     """
   When run generator for field
   Then generated for interface
     """
-    string ReadonlyField { get; }
+    float StaticReadonlyField { get; }
     """
   And generated for struct implementation
     """
-    public string ReadonlyField { get => _instance.ReadonlyField; }
+    public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for class implementation
     """
-    public new string ReadonlyField { get => _instance.ReadonlyField; }
+    public new float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for sealed class implementation
     """
-    public string ReadonlyField { get => _instance.ReadonlyField; }
+    public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
+    """
+  And generated for static class implementation
+    """
+    public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
 
 
 Scenario: Nullable field with keyworded type
   Given source member declaration
     """
-    public readonly string? ReadonlyField;
+    public static readonly float? StaticReadonlyField;
     """
   When run generator for field
   Then generated for interface
     """
-    string? ReadonlyField { get; }
+    float? StaticReadonlyField { get; }
     """
   And generated for struct implementation
     """
-    public string? ReadonlyField { get => _instance.ReadonlyField; }
+    public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for class implementation
     """
-    public new string? ReadonlyField { get => _instance.ReadonlyField; }
+    public new float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for sealed class implementation
     """
-    public string? ReadonlyField { get => _instance.ReadonlyField; }
+    public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
+    """
+  And generated for static class implementation
+    """
+    public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
 
 
@@ -56,24 +64,28 @@ Scenario: Non-nullable field
     """
   And source member declaration
     """
-    public readonly DateTime ReadonlyField;
+    public static readonly StringComparer StaticReadonlyField;
     """
   When run generator for field
   Then generated for interface
     """
-    global::System.DateTime ReadonlyField { get; }
+    global::System.StringComparer StaticReadonlyField { get; }
     """
   And generated for struct implementation
     """
-    public global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
+    public global::System.StringComparer StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for class implementation
     """
-    public new global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
+    public new global::System.StringComparer StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for sealed class implementation
     """
-    public global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
+    public global::System.StringComparer StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
+    """
+  And generated for static class implementation
+    """
+    public global::System.StringComparer StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
 
 
@@ -84,22 +96,26 @@ Scenario: Nullable field
     """
   And source member declaration
     """
-    public readonly DateTime? ReadonlyField;
+    public static readonly StringComparer? StaticReadonlyField;
     """
   When run generator for field
   Then generated for interface
     """
-    global::System.DateTime? ReadonlyField { get; }
+    global::System.StringComparer? StaticReadonlyField { get; }
     """
   And generated for struct implementation
     """
-    public global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
+    public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for class implementation
     """
-    public new global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
+    public new global::System.StringComparer? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """
   And generated for sealed class implementation
     """
-    public global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
+    public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
+    """
+  And generated for static class implementation
+    """
+    public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyField; }
     """

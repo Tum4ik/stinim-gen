@@ -1,4 +1,4 @@
-Feature: Static property
+Feature: Property
 
 
 Scenario: Property with only getter

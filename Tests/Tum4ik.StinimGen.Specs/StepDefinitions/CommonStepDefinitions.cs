@@ -1,6 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Tum4ik.StinimGen.Attributes;
 using Tum4ik.StinimGen.Specs.Extensions;
 
@@ -17,202 +17,94 @@ public class CommonStepDefinitions
   }
 
 
-  private const string Namespace = "Something.Somewhere";
-  private const string TypeName = "SomeType";
-
-
-  [Given(@"usings")]
-  public void GivenUsings(string usings)
+  [Given("declaration")]
+  public void GivenStructDeclaration(string declaration)
   {
-    _scenarioContext.AddUsings(usings);
+    _scenarioContext.AddDeclaration(declaration);
   }
 
 
-  [Given(@"source member declaration")]
-  public void GivenMemberDeclaration(string sourceMemberDeclaration)
+  [Given("attribute usage")]
+  public void GivenAttributeUsage(string attributeUsage)
   {
-    _scenarioContext.AddSourceMemberDeclaration(sourceMemberDeclaration);
+    _scenarioContext.AddAttributeUsage(attributeUsage);
   }
 
 
-  [Given(@"additional namespace declarations")]
-  public void GivenAdditionalNamespaceDeclarations(string additionalNamespaceDeclarations)
+  [Given("member declaration")]
+  public void GivenMemberDeclaration(string memberDeclaration)
   {
-    _scenarioContext.AddAdditionalNamespaceDeclarations(additionalNamespaceDeclarations);
+    _scenarioContext.AddMemberDeclaration(memberDeclaration);
   }
 
 
-  [Then(@"generated for interface")]
-  public void ThenGeneratedForInterface(string expectedGeneration)
+  [When("run generator")]
+  public void WhenRunGenerator()
   {
-    expectedGeneration = expectedGeneration.Replace("@Namespace", Namespace);
-    _scenarioContext.AddExpectedGeneratedMemberForInterface(expectedGeneration);
+    var memberDeclaration = _scenarioContext.GetMemberDeclaration();
+    var declaration = _scenarioContext.GetDeclaration().Replace("<member>", memberDeclaration);
+    var attributeUsage = _scenarioContext.GetAttributeUsage();
+    var generatorRunResult = RunGenerator(declaration, attributeUsage);
+    _scenarioContext.AddGeneratorRunResult(generatorRunResult);
   }
 
 
-  [Then(@"generated for struct implementation")]
-  public void ThenGeneratedForStructImplementation(string expectedGeneration)
+  [Then("there must not be generation exception")]
+  public void ThenThereMustNotBeGenerationException()
   {
-    var usings = _scenarioContext.GetUsings();
-    var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
-    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
-
-    var structDeclaration = $@"
-{usings}
-namespace {Namespace};
-public struct {TypeName}
-{{
-  public {TypeName}() {{ }}
-  {sourceMemberDeclaration}
-}}
-
-{additionalDeclarations}
-";
-
-    RunGeneratorAndValidateResults(structDeclaration, expectedGeneration);
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    generatorRunResult.Exception.Should().BeNull();
   }
 
 
-  [Then(@"generated for class implementation")]
-  public void ThenGeneratedForClassImplementation(string expectedGeneration)
+  [Then("generated interface member must be")]
+  public void ThenGeneratedInterfaceMustBe(string expectedInterfaceMember)
   {
-    var classDeclaration = GetClassDeclaration();
-    RunGeneratorAndValidateResults(classDeclaration, expectedGeneration);
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedInterfaceSourceResult = generatorRunResult.GeneratedSources[0];
+    var generatedMember = generatedInterfaceSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.InterfaceDeclaration))
+      .As<InterfaceDeclarationSyntax>()
+      .Members
+      .First()
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedMember.Should().Be(expectedInterfaceMember);
   }
 
 
-  [Then(@"inherited for class implementation")]
-  public void ThenInheritedForClassImplementation()
+  [Then("generated implementation member must be")]
+  public void ThenGeneratedImplementationMustBe(string expectedImplementationMember)
   {
-    var classDeclaration = GetClassDeclaration();
-    var expectedGeneratedMemberForInterface = _scenarioContext.GetExpectedGeneratedMemberForInterface();
-    var (memberGeneratedForInterface, memberGeneratedForImplementation) = RunGenerator(classDeclaration);
-
-    memberGeneratedForInterface.Should().Be(expectedGeneratedMemberForInterface);
-    memberGeneratedForImplementation.Should().BeNull();
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedImplementationSourceResult = generatorRunResult.GeneratedSources[1];
+    var generatedMember = generatedImplementationSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.ClassDeclaration))
+      .As<ClassDeclarationSyntax>()
+      .Members
+      .First()
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedMember.Should().Be(expectedImplementationMember);
   }
 
 
-  private string GetClassDeclaration()
+  private static GeneratorRunResult RunGenerator(string declaration, string attributeUsage)
   {
-    var usings = _scenarioContext.GetUsings();
-    var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
-    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
-
-    return $@"
-{usings}
-namespace {Namespace};
-public class {TypeName}
-{{
-  {sourceMemberDeclaration}
-}}
-
-{additionalDeclarations}
-";
-  }
-
-
-  [Then(@"generated for sealed class implementation")]
-  public void ThenGeneratedForSealedClassImplementation(string expectedGeneration)
-  {
-    var usings = _scenarioContext.GetUsings();
-    var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
-    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
-
-    var sealedClassDeclaration = $@"
-{usings}
-namespace {Namespace};
-public sealed class {TypeName}
-{{
-  {sourceMemberDeclaration}
-}}
-
-{additionalDeclarations}
-";
-
-    RunGeneratorAndValidateResults(sealedClassDeclaration, expectedGeneration);
-  }
-
-
-  [Then(@"generated for static class implementation")]
-  public void ThenGeneratedForStaticClassImplementation(string expectedGeneration)
-  {
-    var usings = _scenarioContext.GetUsings();
-    var sourceMemberDeclaration = _scenarioContext.GetSourceMemberDeclaration();
-    var additionalDeclarations = _scenarioContext.GetAdditionalNamespaceDeclarations();
-
-    var staticClassDeclaration = $@"
-{usings}
-namespace {Namespace};
-public static class {TypeName}
-{{
-  {sourceMemberDeclaration}
-}}
-
-{additionalDeclarations}
-";
-
-    RunGeneratorAndValidateResults(staticClassDeclaration, expectedGeneration);
-  }
-
-
-  private void RunGeneratorAndValidateResults(string typeDeclaration, string expectedGeneration)
-  {
-    expectedGeneration = expectedGeneration.Replace("@Namespace", Namespace).Replace("@TypeName", TypeName);
-    var expectedGeneratedMemberForInterface = _scenarioContext.GetExpectedGeneratedMemberForInterface();
-
-    var (memberGeneratedForInterface, memberGeneratedForImplementation) = RunGenerator(typeDeclaration);
-
-    memberGeneratedForInterface.Should().Be(expectedGeneratedMemberForInterface);
-    memberGeneratedForImplementation.Should().Be(expectedGeneration);
-  }
-
-
-  private (string? ForInterface, string? ForImplementation) RunGenerator(string typeDeclaration)
-  {
-    var attributeUsageCode = GetAttributeUsageCode();
-    var inputCompilation = Helper.CreateCompilation("My.Assembly",
-      new[] { typeDeclaration, attributeUsageCode },
+    var inputCompilation = Helper.CreateCompilation("Virtual.Assembly",
+      new[] { declaration, attributeUsage },
       new[] { typeof(IIForAttribute), typeof(object), typeof(Stream) }
     );
-    var generatorRunResult = CSharpGeneratorDriver.Create(new IIGenerator())
+    return CSharpGeneratorDriver.Create(new IIGenerator())
       .RunGeneratorsAndUpdateCompilation(inputCompilation, out _, out _)
       .GetRunResult()
       .Results
       .First();
-
-    generatorRunResult.Exception.Should().BeNull();
-
-    var interfaceMemberDeclarationKind = _scenarioContext.GetInterfaceGeneratedMemberDeclarationKind();
-    var implementationMemberDeclarationKind = _scenarioContext.GetImplementationGeneratedMemberDeclarationKind();
-
-    var (interfaceResult, implementationResult) =
-      (generatorRunResult.GeneratedSources[0].SyntaxTree, generatorRunResult.GeneratedSources[1].SyntaxTree);
-    var memberGeneratedForInterface = GetPropertySourceText(interfaceResult, interfaceMemberDeclarationKind);
-    var memberGeneratedForImplementation = GetPropertySourceText(implementationResult, implementationMemberDeclarationKind);
-
-    return (memberGeneratedForInterface?.ToString(), memberGeneratedForImplementation?.ToString());
-  }
-
-
-  private static string GetAttributeUsageCode()
-  {
-    return $@"
-using Tum4ik.StinimGen.Attributes;
-using {Namespace};
-namespace My.Assembly.Code;
-[IIFor(typeof({TypeName}), ""{TypeName}Wrapper"")]
-internal partial interface I{TypeName} {{ }}
-";
-  }
-
-
-  private static SourceText? GetPropertySourceText(SyntaxTree syntaxTree, SyntaxKind memberDeclarationKind)
-  {
-    return syntaxTree.GetRoot()
-      .DescendantNodes()
-      .FirstOrDefault(n => n.IsKind(memberDeclarationKind))?
-      .NormalizeWhitespace()
-      .GetText();
   }
 }

@@ -75,6 +75,21 @@ namespace Tum4ik.StinimGen.Specs.Features.Event
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+  testRunner.Given("declaration", "using System;\r\nnamespace Events;\r\npublic class EventHolder\r\n{\r\n  <member>\r\n}\r\n\r\np" +
+                    "ublic delegate void CustomEventHandler(int count, string search);", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Events;\r\nnamespace Attribute.Usage;\r\n[I" +
+                    "IFor(typeof(EventHolder), \"EventHolderWrapper\")]\r\ninternal partial interface IEv" +
+                    "entHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -88,7 +103,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Event
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with EventHandler type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,28 +113,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 9
-  testRunner.And("source member declaration", "public event EventHandler Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+  testRunner.Given("member declaration", "public static event EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
-  testRunner.Then("generated for interface", "event global::System.EventHandler Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 32
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
-  testRunner.And("generated for struct implementation", "public event global::System.EventHandler Event { add => _instance.Event += value;" +
-                        " remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+  testRunner.Then("generated interface member must be", "event global::System.EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 23
-  testRunner.And("generated for sealed class implementation", "public event global::System.EventHandler Event { add => _instance.Event += value;" +
-                        " remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+  testRunner.And("generated implementation member must be", "public event global::System.EventHandler EventMember { add => Events.EventHolder." +
+                        "EventMember += value; remove => Events.EventHolder.EventMember -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -133,7 +144,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with custom type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 29
+#line 43
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -143,28 +154,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 30
-  testRunner.Given("source member declaration", "public event CustomEventHandler Event;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 34
-  testRunner.And("additional namespace declarations", "public delegate void CustomEventHandler(int count, string search);", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 38
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 39
-  testRunner.Then("generated for interface", "event global::@Namespace.CustomEventHandler Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 43
-  testRunner.And("generated for struct implementation", "public event global::@Namespace.CustomEventHandler Event { add => _instance.Event" +
-                        " += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 47
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+  testRunner.Given("member declaration", "public static event CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 48
-  testRunner.And("generated for sealed class implementation", "public event global::@Namespace.CustomEventHandler Event { add => _instance.Event" +
-                        " += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 49
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 50
+  testRunner.Then("generated interface member must be", "event global::Events.CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 54
+  testRunner.And("generated implementation member must be", "public event global::Events.CustomEventHandler EventMember { add => Events.EventH" +
+                        "older.EventMember += value; remove => Events.EventHolder.EventMember -= value; }" +
+                        "", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -178,7 +186,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Action type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 54
+#line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -188,28 +196,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 55
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 59
-  testRunner.And("source member declaration", "public event Action Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.Given("member declaration", "public static event Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 63
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 65
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 64
-  testRunner.Then("generated for interface", "event global::System.Action Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 66
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 68
-  testRunner.And("generated for struct implementation", "public event global::System.Action Event { add => _instance.Event += value; remov" +
-                        "e => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+  testRunner.Then("generated interface member must be", "event global::System.Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 72
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 73
-  testRunner.And("generated for sealed class implementation", "public event global::System.Action Event { add => _instance.Event += value; remov" +
-                        "e => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
+  testRunner.And("generated implementation member must be", "public event global::System.Action EventMember { add => Events.EventHolder.EventM" +
+                        "ember += value; remove => Events.EventHolder.EventMember -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -223,7 +227,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Action type with keyworded generic parameter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 79
+#line 77
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -233,28 +237,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 80
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 78
+  testRunner.Given("member declaration", "public static event Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 82
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 83
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 84
-  testRunner.And("source member declaration", "public event Action<int> Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("generated interface member must be", "event global::System.Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 88
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 89
-  testRunner.Then("generated for interface", "event global::System.Action<int> Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 93
-  testRunner.And("generated for struct implementation", "public event global::System.Action<int> Event { add => _instance.Event += value; " +
-                        "remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 97
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 98
-  testRunner.And("generated for sealed class implementation", "public event global::System.Action<int> Event { add => _instance.Event += value; " +
-                        "remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public event global::System.Action<int> EventMember { add => Events.EventHolder.E" +
+                        "ventMember += value; remove => Events.EventHolder.EventMember -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -268,7 +268,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Action type with keyworded nullable generic parameter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 104
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -278,28 +278,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 95
+  testRunner.Given("member declaration", "public static event Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 99
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 100
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 101
+  testRunner.Then("generated interface member must be", "event global::System.Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
 #line 105
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 109
-  testRunner.And("source member declaration", "public event Action<string?> Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 113
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 114
-  testRunner.Then("generated for interface", "event global::System.Action<string?> Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 118
-  testRunner.And("generated for struct implementation", "public event global::System.Action<string?> Event { add => _instance.Event += val" +
-                        "ue; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 122
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 123
-  testRunner.And("generated for sealed class implementation", "public event global::System.Action<string?> Event { add => _instance.Event += val" +
-                        "ue; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public event global::System.Action<string?> EventMember { add => Events.EventHold" +
+                        "er.EventMember += value; remove => Events.EventHolder.EventMember -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -313,7 +309,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Action type with non-keyworded generic parameter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 129
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -323,28 +319,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 130
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 134
-  testRunner.And("source member declaration", "public event Action<DateTime> Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+  testRunner.Given("member declaration", "public static event Action<DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 138
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 116
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 139
-  testRunner.Then("generated for interface", "event global::System.Action<global::System.DateTime> Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 143
-  testRunner.And("generated for struct implementation", "public event global::System.Action<global::System.DateTime> Event { add => _insta" +
-                        "nce.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+  testRunner.Then("generated interface member must be", "event global::System.Action<global::System.DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 147
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 148
-  testRunner.And("generated for sealed class implementation", "public event global::System.Action<global::System.DateTime> Event { add => _insta" +
-                        "nce.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+  testRunner.And("generated implementation member must be", "public event global::System.Action<global::System.DateTime> EventMember { add => " +
+                        "Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMembe" +
+                        "r -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -358,7 +351,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Action type with non-keyworded nullable generic parameter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 154
+#line 128
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -368,28 +361,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 155
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 159
-  testRunner.And("source member declaration", "public event Action<DayOfWeek?> Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 129
+  testRunner.Given("member declaration", "public static event Action<DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 163
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 133
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 164
-  testRunner.Then("generated for interface", "event global::System.Action<global::System.DayOfWeek?> Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 134
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 168
-  testRunner.And("generated for struct implementation", "public event global::System.Action<global::System.DayOfWeek?> Event { add => _ins" +
-                        "tance.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
+  testRunner.Then("generated interface member must be", "event global::System.Action<global::System.DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 172
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 173
-  testRunner.And("generated for sealed class implementation", "public event global::System.Action<global::System.DayOfWeek?> Event { add => _ins" +
-                        "tance.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 139
+  testRunner.And("generated implementation member must be", "public event global::System.Action<global::System.DayOfWeek?> EventMember { add =" +
+                        "> Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMem" +
+                        "ber -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -403,7 +393,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Event with Func", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 179
+#line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -413,28 +403,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 180
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 184
-  testRunner.And("source member declaration", "public event Func<DayOfWeek?, double, int?> Event;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 146
+  testRunner.Given("member declaration", "public static event Func<DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 188
-  testRunner.When("run generator for event", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 150
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 189
-  testRunner.Then("generated for interface", "event global::System.Func<global::System.DayOfWeek?, double, int?> Event;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 151
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 193
-  testRunner.And("generated for struct implementation", "public event global::System.Func<global::System.DayOfWeek?, double, int?> Event {" +
-                        " add => _instance.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 152
+  testRunner.Then("generated interface member must be", "event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 197
-  testRunner.And("inherited for class implementation", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 198
-  testRunner.And("generated for sealed class implementation", "public event global::System.Func<global::System.DayOfWeek?, double, int?> Event {" +
-                        " add => _instance.Event += value; remove => _instance.Event -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 156
+  testRunner.And("generated implementation member must be", "public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMe" +
+                        "mber { add => Events.EventHolder.EventMember += value; remove => Events.EventHol" +
+                        "der.EventMember -= value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

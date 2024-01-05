@@ -1,92 +1,48 @@
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
 
 namespace Tum4ik.StinimGen.Specs.Extensions;
 internal static class ScenarioContextExtensions
 {
-  private const string UsingsKey = nameof(UsingsKey);
-
-  public static void AddUsings(this ScenarioContext context, string usings)
+  private const string DeclarationKey = nameof(DeclarationKey);
+  public static void AddDeclaration(this ScenarioContext context, string declaration)
   {
-    context[UsingsKey] = usings;
+    context[DeclarationKey] = declaration;
   }
-
-  public static string GetUsings(this ScenarioContext context)
+  public static string GetDeclaration(this ScenarioContext context)
   {
-    if (context.TryGetValue(UsingsKey, out string usings))
-    {
-      return usings;
-    }
-
-    return string.Empty;
+    return (string) context[DeclarationKey];
   }
 
 
-  private const string SourceMemberDeclarationKey = nameof(SourceMemberDeclarationKey);
-
-  public static void AddSourceMemberDeclaration(this ScenarioContext context, string sourceMemberDeclaration)
+  private const string AttributeUsageKey = nameof(AttributeUsageKey);
+  public static void AddAttributeUsage(this ScenarioContext context, string attributeUsage)
   {
-    context[SourceMemberDeclarationKey] = sourceMemberDeclaration;
+    context[AttributeUsageKey] = attributeUsage;
   }
-
-  public static string GetSourceMemberDeclaration(this ScenarioContext context)
+  public static string GetAttributeUsage(this ScenarioContext context)
   {
-    return (string) context[SourceMemberDeclarationKey];
-  }
-
-
-  private const string ExpectedGeneratedMemberForInterfaceKey = nameof(ExpectedGeneratedMemberForInterfaceKey);
-
-  public static void AddExpectedGeneratedMemberForInterface(this ScenarioContext context,
-                                                            string expectedGeneratedMemberForInterface)
-  {
-    context[ExpectedGeneratedMemberForInterfaceKey] = expectedGeneratedMemberForInterface;
-  }
-
-  public static string GetExpectedGeneratedMemberForInterface(this ScenarioContext context)
-  {
-    return (string) context[ExpectedGeneratedMemberForInterfaceKey];
+    return (string) context[AttributeUsageKey];
   }
 
 
-  private const string InterfaceGeneratedMemberDeclarationKindKey = nameof(InterfaceGeneratedMemberDeclarationKindKey);
-
-  public static void AddInterfaceGeneratedMemberDeclarationKind(this ScenarioContext context, SyntaxKind kind)
+  private const string MemberDeclarationKey = nameof(MemberDeclarationKey);
+  public static void AddMemberDeclaration(this ScenarioContext context, string memberDeclaration)
   {
-    context[InterfaceGeneratedMemberDeclarationKindKey] = kind;
+    context[MemberDeclarationKey] = memberDeclaration;
   }
-
-  public static SyntaxKind GetInterfaceGeneratedMemberDeclarationKind(this ScenarioContext context)
+  public static string GetMemberDeclaration(this ScenarioContext context)
   {
-    return (SyntaxKind) context[InterfaceGeneratedMemberDeclarationKindKey];
-  }
-
-
-  private const string ImplementationGeneratedMemberDeclarationKindKey = nameof(ImplementationGeneratedMemberDeclarationKindKey);
-
-  public static void AddImplementationGeneratedMemberDeclarationKind(this ScenarioContext context, SyntaxKind kind)
-  {
-    context[ImplementationGeneratedMemberDeclarationKindKey] = kind;
-  }
-
-  public static SyntaxKind GetImplementationGeneratedMemberDeclarationKind(this ScenarioContext context)
-  {
-    return (SyntaxKind) context[ImplementationGeneratedMemberDeclarationKindKey];
+    return (string) context[MemberDeclarationKey];
   }
 
 
-  private const string AdditionalNamespaceDeclarationsKey = nameof(AdditionalNamespaceDeclarationsKey);
-
-  public static void AddAdditionalNamespaceDeclarations(this ScenarioContext context, string declarations)
+  private const string GeneratorRunResultKey = nameof(GeneratorRunResultKey);
+  public static void AddGeneratorRunResult(this ScenarioContext context, GeneratorRunResult generatorRunResult)
   {
-    context[AdditionalNamespaceDeclarationsKey] = declarations;
+    context[GeneratorRunResultKey] = generatorRunResult;
   }
-
-  public static string GetAdditionalNamespaceDeclarations(this ScenarioContext context)
+  public static GeneratorRunResult GetGeneratorRunResult(this ScenarioContext context)
   {
-    if (context.TryGetValue(AdditionalNamespaceDeclarationsKey, out string declarations))
-    {
-      return declarations;
-    }
-    return string.Empty;
+    return (GeneratorRunResult) context[GeneratorRunResultKey];
   }
 }

@@ -62,10 +62,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var methodInfoList = new List<Models.MethodInfo>();
 
         var publicMembers = sourceNamedTypeSymbol
-          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public
-                                          && !m.IsOverride
-                                          && (!sourceNamedTypeSymbol.IsStatic || m.IsStatic)
-          );
+          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsStatic);
         foreach (var member in publicMembers)
         {
           switch (member)

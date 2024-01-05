@@ -99,23 +99,29 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
-  testRunner.Given("source member declaration", "public nint Field;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static object StaticField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
   testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
-  testRunner.Then("generated for interface", "nint Field { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("generated for interface", "object StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 14
-  testRunner.And("generated for struct implementation", "public nint Field { get => _instance.Field; set => _instance.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for struct implementation", "public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Name" +
+                        "space.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
-  testRunner.And("generated for class implementation", "public new nint Field { get => _instance.Field; set => _instance.Field = value; }" +
-                        "", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for class implementation", "public new object StaticField { get => @Namespace.@TypeName.StaticField; set => @" +
+                        "Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 22
-  testRunner.And("generated for sealed class implementation", "public nint Field { get => _instance.Field; set => _instance.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for sealed class implementation", "public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Name" +
+                        "space.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+  testRunner.And("generated for static class implementation", "public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Name" +
+                        "space.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -129,7 +135,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 28
+#line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -139,24 +145,30 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 29
-  testRunner.Given("source member declaration", "public nint? Field;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 33
+  testRunner.Given("source member declaration", "public static object? StaticField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
   testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
-  testRunner.Then("generated for interface", "nint? Field { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 38
-  testRunner.And("generated for struct implementation", "public nint? Field { get => _instance.Field; set => _instance.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("generated for interface", "object? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 42
-  testRunner.And("generated for class implementation", "public new nint? Field { get => _instance.Field; set => _instance.Field = value; " +
-                        "}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for struct implementation", "public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Nam" +
+                        "espace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 46
-  testRunner.And("generated for sealed class implementation", "public nint? Field { get => _instance.Field; set => _instance.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for class implementation", "public new object? StaticField { get => @Namespace.@TypeName.StaticField; set => " +
+                        "@Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
+  testRunner.And("generated for sealed class implementation", "public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Nam" +
+                        "espace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
+  testRunner.And("generated for static class implementation", "public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Nam" +
+                        "espace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -170,7 +182,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 52
+#line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -180,29 +192,33 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 53
+#line 61
   testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 57
-  testRunner.And("source member declaration", "public DayOfWeek Field;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+  testRunner.And("source member declaration", "public static Delegate StaticField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 69
   testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
-  testRunner.Then("generated for interface", "global::System.DayOfWeek Field { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 66
-  testRunner.And("generated for struct implementation", "public global::System.DayOfWeek Field { get => _instance.Field; set => _instance." +
-                        "Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 70
-  testRunner.And("generated for class implementation", "public new global::System.DayOfWeek Field { get => _instance.Field; set => _insta" +
-                        "nce.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("generated for interface", "global::System.Delegate StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 74
-  testRunner.And("generated for sealed class implementation", "public global::System.DayOfWeek Field { get => _instance.Field; set => _instance." +
-                        "Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated for struct implementation", "public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticFi" +
+                        "eld; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 78
+  testRunner.And("generated for class implementation", "public new global::System.Delegate StaticField { get => @Namespace.@TypeName.Stat" +
+                        "icField; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 82
+  testRunner.And("generated for sealed class implementation", "public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticFi" +
+                        "eld; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 86
+  testRunner.And("generated for static class implementation", "public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticFi" +
+                        "eld; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -216,7 +232,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 80
+#line 92
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -226,29 +242,33 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 81
+#line 93
   testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 85
-  testRunner.And("source member declaration", "public DayOfWeek? Field;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+  testRunner.And("source member declaration", "public static Delegate? StaticField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 101
   testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 90
-  testRunner.Then("generated for interface", "global::System.DayOfWeek? Field { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 94
-  testRunner.And("generated for struct implementation", "public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance" +
-                        ".Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 98
-  testRunner.And("generated for class implementation", "public new global::System.DayOfWeek? Field { get => _instance.Field; set => _inst" +
-                        "ance.Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 102
-  testRunner.And("generated for sealed class implementation", "public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance" +
-                        ".Field = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("generated for interface", "global::System.Delegate? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 106
+  testRunner.And("generated for struct implementation", "public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticF" +
+                        "ield; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 110
+  testRunner.And("generated for class implementation", "public new global::System.Delegate? StaticField { get => @Namespace.@TypeName.Sta" +
+                        "ticField; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 114
+  testRunner.And("generated for sealed class implementation", "public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticF" +
+                        "ield; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 118
+  testRunner.And("generated for static class implementation", "public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticF" +
+                        "ield; set => @Namespace.@TypeName.StaticField = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

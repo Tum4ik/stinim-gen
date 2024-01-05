@@ -4,48 +4,56 @@ Feature: Field
 Scenario: Non-nullable field with keyworded type
   Given source member declaration
     """
-    public nint Field;
+    public static object StaticField;
     """
   When run generator for field
   Then generated for interface
     """
-    nint Field { get; set; }
+    object StaticField { get; set; }
     """
   And generated for struct implementation
     """
-    public nint Field { get => _instance.Field; set => _instance.Field = value; }
+    public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for class implementation
     """
-    public new nint Field { get => _instance.Field; set => _instance.Field = value; }
+    public new object StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for sealed class implementation
     """
-    public nint Field { get => _instance.Field; set => _instance.Field = value; }
+    public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
+    """
+  And generated for static class implementation
+    """
+    public object StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
 
 
 Scenario: Nullable field with keyworded type
   Given source member declaration
     """
-    public nint? Field;
+    public static object? StaticField;
     """
   When run generator for field
   Then generated for interface
     """
-    nint? Field { get; set; }
+    object? StaticField { get; set; }
     """
   And generated for struct implementation
     """
-    public nint? Field { get => _instance.Field; set => _instance.Field = value; }
+    public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for class implementation
     """
-    public new nint? Field { get => _instance.Field; set => _instance.Field = value; }
+    public new object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for sealed class implementation
     """
-    public nint? Field { get => _instance.Field; set => _instance.Field = value; }
+    public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
+    """
+  And generated for static class implementation
+    """
+    public object? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
 
 
@@ -56,24 +64,28 @@ Scenario: Non-nullable field
     """
   And source member declaration
     """
-    public DayOfWeek Field;
+    public static Delegate StaticField;
     """
   When run generator for field
   Then generated for interface
     """
-    global::System.DayOfWeek Field { get; set; }
+    global::System.Delegate StaticField { get; set; }
     """
   And generated for struct implementation
     """
-    public global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
+    public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for class implementation
     """
-    public new global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
+    public new global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for sealed class implementation
     """
-    public global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
+    public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
+    """
+  And generated for static class implementation
+    """
+    public global::System.Delegate StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
 
 
@@ -84,22 +96,26 @@ Scenario: Nullable field
     """
   And source member declaration
     """
-    public DayOfWeek? Field;
+    public static Delegate? StaticField;
     """
   When run generator for field
   Then generated for interface
     """
-    global::System.DayOfWeek? Field { get; set; }
+    global::System.Delegate? StaticField { get; set; }
     """
   And generated for struct implementation
     """
-    public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
+    public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for class implementation
     """
-    public new global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
+    public new global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """
   And generated for sealed class implementation
     """
-    public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
+    public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
+    """
+  And generated for static class implementation
+    """
+    public global::System.Delegate? StaticField { get => @Namespace.@TypeName.StaticField; set => @Namespace.@TypeName.StaticField = value; }
     """

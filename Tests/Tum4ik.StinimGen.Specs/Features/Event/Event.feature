@@ -1,201 +1,159 @@
 Feature: Event
 
 
-Scenario: Event with EventHandler type
-  Given usings
+Background:
+  Given declaration
     """
     using System;
+    namespace Events;
+    public class EventHolder
+    {
+      <member>
+    }
+    
+    public delegate void CustomEventHandler(int count, string search);
     """
-  And source member declaration
+  And attribute usage
     """
-    public event EventHandler Event;
+    using Tum4ik.StinimGen.Attributes;
+    using Events;
+    namespace Attribute.Usage;
+    [IIFor(typeof(EventHolder), "EventHolderWrapper")]
+    internal partial interface IEventHolder { }
     """
-  When run generator for event
-  Then generated for interface
+
+
+Scenario: Event with EventHandler type
+  Given member declaration
     """
-    event global::System.EventHandler Event;
+    public static event EventHandler EventMember;
     """
-  And generated for struct implementation
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event global::System.EventHandler Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    event global::System.EventHandler EventMember;
     """
-  And inherited for class implementation
-  And generated for sealed class implementation
+  And generated implementation member must be
     """
-    public event global::System.EventHandler Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.EventHandler EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with custom type
-  Given source member declaration
+  Given member declaration
     """
-    public event CustomEventHandler Event;
+    public static event CustomEventHandler EventMember;
     """
-  And additional namespace declarations
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public delegate void CustomEventHandler(int count, string search);
+    event global::Events.CustomEventHandler EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::@Namespace.CustomEventHandler Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::@Namespace.CustomEventHandler Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::@Namespace.CustomEventHandler Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::Events.CustomEventHandler EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Action type
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Action EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Action Event;
+    event global::System.Action EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Action Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Action Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Action Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Action EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Action type with keyworded generic parameter
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Action<int> EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Action<int> Event;
+    event global::System.Action<int> EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Action<int> Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Action<int> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Action<int> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Action<int> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Action type with keyworded nullable generic parameter
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Action<string?> EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Action<string?> Event;
+    event global::System.Action<string?> EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Action<string?> Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Action<string?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Action<string?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Action<string?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Action type with non-keyworded generic parameter
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Action<DateTime> EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Action<DateTime> Event;
+    event global::System.Action<global::System.DateTime> EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Action<global::System.DateTime> Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Action<global::System.DateTime> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Action<global::System.DateTime> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Action<global::System.DateTime> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Action type with non-keyworded nullable generic parameter
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Action<DayOfWeek?> EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Action<DayOfWeek?> Event;
+    event global::System.Action<global::System.DayOfWeek?> EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Action<global::System.DayOfWeek?> Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Action<global::System.DayOfWeek?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Action<global::System.DayOfWeek?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Action<global::System.DayOfWeek?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """
 
 
 Scenario: Event with Func
-  Given usings
+  Given member declaration
     """
-    using System;
+    public static event Func<DayOfWeek?, double, int?> EventMember;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public event Func<DayOfWeek?, double, int?> Event;
+    event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;
     """
-  When run generator for event
-  Then generated for interface
+  And generated implementation member must be
     """
-    event global::System.Func<global::System.DayOfWeek?, double, int?> Event;
-    """
-  And generated for struct implementation
-    """
-    public event global::System.Func<global::System.DayOfWeek?, double, int?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
-    """
-  And inherited for class implementation
-  And generated for sealed class implementation
-    """
-    public event global::System.Func<global::System.DayOfWeek?, double, int?> Event { add => _instance.Event += value; remove => _instance.Event -= value; }
+    public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
     """

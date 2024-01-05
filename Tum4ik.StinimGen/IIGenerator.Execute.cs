@@ -41,7 +41,6 @@ partial class IIGenerator
       var underlyingCallee = (iiInfo.IsSourceStatic || propertyInfo.IsStatic)
         ? iiInfo.SourceFullyQualifiedName
         : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
 
       var accessorsList = new List<AccessorDeclarationSyntax>(2);
 
@@ -69,17 +68,11 @@ partial class IIGenerator
         );
       }
 
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
       return PropertyDeclaration(
           IdentifierName(propertyInfo.TypeNameWithNullabilityAnnotations),
           Identifier(propertyInfo.PropertyName)
         )
-        .AddModifiers(modifiers.ToArray())
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddAccessorListAccessors(accessorsList.ToArray());
     }
 
@@ -100,18 +93,12 @@ partial class IIGenerator
       var underlyingCallee = (iiInfo.IsSourceStatic || eventInfo.IsStatic)
         ? iiInfo.SourceFullyQualifiedName
         : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
+      
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
           Identifier(eventInfo.EventName)
         )
-        .AddModifiers(modifiers.ToArray())
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddAccessorListAccessors(
           AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)
             .WithExpressionBody(ArrowExpressionClause(
@@ -151,7 +138,6 @@ partial class IIGenerator
       var underlyingCallee = (iiInfo.IsSourceStatic || methodInfo.IsStatic)
         ? iiInfo.SourceFullyQualifiedName
         : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
 
       var returnType = GetMethodReturnType(methodInfo);
       var parameters = GetMethodParameters(methodInfo);
@@ -181,14 +167,8 @@ partial class IIGenerator
         separators[i] = Token(SyntaxKind.CommaToken);
       }
 
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
       return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
-        .AddModifiers(modifiers.ToArray())
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddParameterListParameters(parameters.ToArray())
         .WithExpressionBody(ArrowExpressionClause(
           InvocationExpression(
