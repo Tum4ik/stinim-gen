@@ -35,12 +35,9 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationPropertySyntax(PropertyInfo propertyInfo,
-                                                                          IIInfo iiInfo)
+    public static MemberDeclarationSyntax GetImplementationPropertySyntax(PropertyInfo propertyInfo, IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || propertyInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
+      var underlyingCallee = IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{propertyInfo.PropertyName}");
 
       var accessorsList = new List<AccessorDeclarationSyntax>(2);
 
@@ -48,7 +45,7 @@ partial class IIGenerator
       {
         accessorsList.Add(
           AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-            .WithExpressionBody(ArrowExpressionClause(IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}")))
+            .WithExpressionBody(ArrowExpressionClause(underlyingCallee))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
         );
       }
@@ -60,7 +57,7 @@ partial class IIGenerator
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.SimpleAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -87,12 +84,9 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo,
-                                                                       IIInfo iiInfo)
+    public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo, IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || eventInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
+      var underlyingCallee = IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{eventInfo.EventName}");
       
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
@@ -104,7 +98,7 @@ partial class IIGenerator
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.AddAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -113,7 +107,7 @@ partial class IIGenerator
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.SubtractAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -132,13 +126,8 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo,
-                                                                        IIInfo iiInfo)
+    public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo, IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || methodInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
-
       var returnType = GetMethodReturnType(methodInfo);
       var parameters = GetMethodParameters(methodInfo);
       var arguments = methodInfo.Parameters.Select(p =>
@@ -172,7 +161,7 @@ partial class IIGenerator
         .AddParameterListParameters(parameters.ToArray())
         .WithExpressionBody(ArrowExpressionClause(
           InvocationExpression(
-            IdentifierName($"{underlyingCallee}.{methodInfo.MethodName}"),
+            IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{methodInfo.MethodName}"),
             ArgumentList(SeparatedList(arguments, separators))
           )
         ))

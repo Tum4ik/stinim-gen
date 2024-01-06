@@ -9,9 +9,5 @@ internal sealed record IIInfo(
   ImmutableArray<PropertyInfo> PropertyInfoList,
   ImmutableArray<EventInfo> EventInfoList,
   ImmutableArray<MethodInfo> MethodInfoList,
-  string SourceFullyQualifiedName,
-  bool IsSourceSealed,
-  bool IsSourceStatic,
-  bool IsSourceReferenceType,
-  bool ContainsDynamicFields
+  string SourceFullyQualifiedName
 );

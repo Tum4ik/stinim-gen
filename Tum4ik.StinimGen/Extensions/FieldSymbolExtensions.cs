@@ -9,7 +9,6 @@ internal static class FieldSymbolExtensions
     return new(
       fieldSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
       fieldSymbol.Name,
-      fieldSymbol.IsStatic,
       true,
       !fieldSymbol.IsConst && !fieldSymbol.IsReadOnly
     );

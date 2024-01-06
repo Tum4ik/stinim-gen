@@ -15,7 +15,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 {
   private static readonly string s_iiForAttributeFullName = "Tum4ik.StinimGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
-  private const string InstanceFieldName = "_instance";
 
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
@@ -55,7 +54,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           throw new ArgumentException("Incorrect wrapper class name.");
         }
 
-        var containsDynamicFields = false;
         var propertyForFieldInfoList = new List<Models.PropertyInfo>();
         var propertyInfoList = new List<Models.PropertyInfo>();
         var eventInfoList = new List<Models.EventInfo>();
@@ -68,10 +66,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           switch (member)
           {
             case IFieldSymbol fieldSymbol:
-              if (!fieldSymbol.IsStatic)
-              {
-                containsDynamicFields = true;
-              }
               propertyForFieldInfoList.Add(fieldSymbol.ToFieldInfo());
               break;
             case IPropertySymbol propertySymbol:
@@ -86,7 +80,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               propertyInfoList.Add(new(
                 propertySymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
                 propertySymbol.Name,
-                propertySymbol.IsStatic,
                 hasGetter,
                 hasSetter
               ));
@@ -94,8 +87,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
             case IEventSymbol eventSymbol:
               eventInfoList.Add(new(
                 eventSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                eventSymbol.Name,
-                eventSymbol.IsStatic
+                eventSymbol.Name
               ));
               break;
             case IMethodSymbol methodSymbol:
@@ -118,7 +110,6 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
                   ? null
                   : methodSymbol.ReturnType.GetFullyQualifiedNameWithNullabilityAnnotations(),
                 methodSymbol.Name,
-                methodSymbol.IsStatic,
                 parameters
               ));
               break;
@@ -143,11 +134,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           propertyInfoList.ToImmutableArray(),
           eventInfoList.ToImmutableArray(),
           methodInfoList.ToImmutableArray(),
-          sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
-          sourceNamedTypeSymbol.IsSealed,
-          sourceNamedTypeSymbol.IsStatic,
-          sourceNamedTypeSymbol.IsReferenceType,
-          containsDynamicFields
+          sourceNamedTypeSymbol.GetFullyQualifiedMetadataName()
         );
       }
     );
@@ -161,47 +148,10 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     var interfaceMembers = new List<MemberDeclarationSyntax>();
     var implementationMembers = new List<MemberDeclarationSyntax>();
 
-    var baseListTypes = new List<BaseTypeSyntax>(2);
-
-    /*if (!iiInfo.IsSourceStatic && (iiInfo.IsSourceSealed || iiInfo.ContainsDynamicFields))
-    {
-      var modifiers = new List<SyntaxToken>(2)
-      {
-        Token(SyntaxKind.PrivateKeyword)
-      };
-      if (iiInfo.IsSourceReferenceType)
-      {
-        modifiers.Add(Token(SyntaxKind.ReadOnlyKeyword));
-      }
-      var instanceFieldDeclarationSyntax = FieldDeclaration(
-        VariableDeclaration(IdentifierName(iiInfo.SourceFullyQualifiedName))
-          .AddVariables(
-            VariableDeclarator(Identifier(InstanceFieldName))
-              .WithInitializer(
-                EqualsValueClause(
-                  ImplicitObjectCreationExpression()
-                )
-              )
-          )
-        )
-        .AddModifiers(modifiers.ToArray());
-      implementationMembers.Add(instanceFieldDeclarationSyntax);
-    }*/
-
-    var inherited = false;
-    if (!iiInfo.IsSourceStatic && iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)
-    {
-      // inherit
-      baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.SourceFullyQualifiedName)));
-      inherited = true;
-    }
-
-    baseListTypes.Add(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
-
     GenerateMembersForFields(iiInfo, interfaceMembers, implementationMembers);
-    GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers, inherited);
-    GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers, inherited);
-    GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers, inherited);
+    GenerateMembersForProperties(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
+    GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers);
 
     var attributes = new[]
     {
@@ -233,7 +183,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
       .AddAttributeLists(attributes)
       .AddModifiers(Token(SyntaxKind.InternalKeyword))
       .AddMembers(implementationMembers.ToArray())
-      .AddBaseListTypes(baseListTypes.ToArray());
+      .AddBaseListTypes(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
 
     AddSource(
       ctx,
@@ -264,18 +214,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForProperties(IIInfo iiInfo,
                                                    List<MemberDeclarationSyntax> interfaceMembers,
-                                                   List<MemberDeclarationSyntax> implementationMembers,
-                                                   bool inherited)
+                                                   List<MemberDeclarationSyntax> implementationMembers)
   {
     foreach (var propertyInfo in iiInfo.PropertyInfoList)
     {
       interfaceMembers.Add(Execute.GetInterfacePropertySyntax(propertyInfo));
-
-      if (inherited && !propertyInfo.IsStatic)
-      {
-        continue;
-      }
-
       implementationMembers.Add(Execute.GetImplementationPropertySyntax(propertyInfo, iiInfo));
     }
   }
@@ -283,18 +226,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForEvents(IIInfo iiInfo,
                                                List<MemberDeclarationSyntax> interfaceMembers,
-                                               List<MemberDeclarationSyntax> implementationMembers,
-                                               bool inherited)
+                                               List<MemberDeclarationSyntax> implementationMembers)
   {
     foreach (var eventInfo in iiInfo.EventInfoList)
     {
       interfaceMembers.Add(Execute.GetInterfaceEventSyntax(eventInfo));
-
-      if (inherited && !eventInfo.IsStatic)
-      {
-        continue;
-      }
-
       implementationMembers.Add(Execute.GetImplementationEventSyntax(eventInfo, iiInfo));
     }
   }
@@ -302,18 +238,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
   private static void GenerateMembersForMethods(IIInfo iiInfo,
                                                 List<MemberDeclarationSyntax> interfaceMembers,
-                                                List<MemberDeclarationSyntax> implementationMembers,
-                                                bool inherited)
+                                                List<MemberDeclarationSyntax> implementationMembers)
   {
     foreach (var methodInfo in iiInfo.MethodInfoList)
     {
       interfaceMembers.Add(Execute.GetInterfaceMethodSyntax(methodInfo));
-
-      if (inherited && !methodInfo.IsStatic)
-      {
-        continue;
-      }
-
       implementationMembers.Add(Execute.GetImplementationMethodSyntax(methodInfo,iiInfo));
     }
   }
