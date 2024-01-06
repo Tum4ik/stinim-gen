@@ -18,7 +18,7 @@ public class CommonStepDefinitions
 
 
   [Given("source declaration")]
-  public void GivenStructDeclaration(string declaration)
+  public void GivenSourceDeclaration(string declaration)
   {
     _scenarioContext.AddDeclaration(declaration);
   }
