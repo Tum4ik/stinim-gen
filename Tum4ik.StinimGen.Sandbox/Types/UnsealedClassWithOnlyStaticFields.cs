@@ -25,7 +25,7 @@ internal class UnsealedClassWithOnlyStaticFields
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
 
-  public static int Prop { protected get; set; }
+  public static int Prop { get; protected set; }
 
 
   public static event EventHandler PropChanged;

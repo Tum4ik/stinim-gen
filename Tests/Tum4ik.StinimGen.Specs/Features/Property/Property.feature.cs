@@ -75,6 +75,21 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+  testRunner.Given("source declaration", "using System;\r\nusing System.IO;\r\nnamespace Properties;\r\npublic class PropertyHold" +
+                    "er\r\n{\r\n  <member>\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Properties;\r\nnamespace Attribute.Usage;" +
+                    "\r\n[IIFor(typeof(PropertyHolder), \"PropertyHolderWrapper\")]\r\ninternal partial int" +
+                    "erface IPropertyHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -88,7 +103,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with only getter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,26 +113,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
-  testRunner.Given("source member declaration", "public static int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 9
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 10
-  testRunner.Then("generated for interface", "int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 14
-  testRunner.And("generated for struct implementation", "public int Property { get => @Namespace.@TypeName.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 18
-  testRunner.And("generated for class implementation", "public new int Property { get => @Namespace.@TypeName.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 22
-  testRunner.And("generated for sealed class implementation", "public int Property { get => @Namespace.@TypeName.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 26
-  testRunner.And("generated for static class implementation", "public int Property { get => @Namespace.@TypeName.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("source member declaration", "public static int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 30
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 32
+  testRunner.Then("generated interface member must be", "int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 36
+  testRunner.And("generated implementation member must be", "public int Property { get => Properties.PropertyHolder.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -131,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with only setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -141,27 +153,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 43
   testRunner.Given("source member declaration", "private static float? _property;\r\npublic static float? Property { set => _propert" +
                         "y = value; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 48
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
-  testRunner.Then("generated for interface", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 49
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 43
-  testRunner.And("generated for struct implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+  testRunner.Then("generated interface member must be", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 47
-  testRunner.And("generated for class implementation", "public new float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 51
-  testRunner.And("generated for sealed class implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 55
-  testRunner.And("generated for static class implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+  testRunner.And("generated implementation member must be", "public float? Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -175,7 +184,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 61
+#line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -185,33 +194,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 62
-  testRunner.Given("usings", "using System.IO;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 61
+  testRunner.Given("source member declaration", "public static Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 65
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 66
-  testRunner.And("source member declaration", "public static Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 70
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 67
+  testRunner.Then("generated interface member must be", "global::System.IO.Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 71
-  testRunner.Then("generated for interface", "global::System.IO.Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 75
-  testRunner.And("generated for struct implementation", "public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; " +
-                        "set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 79
-  testRunner.And("generated for class implementation", "public new global::System.IO.Stream Property { get => @Namespace.@TypeName.Proper" +
-                        "ty; set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 83
-  testRunner.And("generated for sealed class implementation", "public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; " +
-                        "set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 87
-  testRunner.And("generated for static class implementation", "public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; " +
-                        "set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.IO.Stream Property { get => Properties.PropertyHolder.Prope" +
+                        "rty; set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -225,7 +225,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and private setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 93
+#line 77
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -235,33 +235,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 94
-  testRunner.Given("usings", "using System.IO;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 98
-  testRunner.And("source member declaration", "public static Stream? Property { get; private set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 78
+  testRunner.Given("source member declaration", "public static Stream? Property { get; private set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 102
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 82
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 103
-  testRunner.Then("generated for interface", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 83
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 107
-  testRunner.And("generated for struct implementation", "public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property;" +
-                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+  testRunner.Then("generated interface member must be", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 111
-  testRunner.And("generated for class implementation", "public new global::System.IO.Stream? Property { get => @Namespace.@TypeName.Prope" +
-                        "rty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 115
-  testRunner.And("generated for sealed class implementation", "public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property;" +
-                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 119
-  testRunner.And("generated for static class implementation", "public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property;" +
-                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
+  testRunner.And("generated implementation member must be", "public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Prop" +
+                        "erty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -275,7 +266,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and protected setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 125
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -285,29 +276,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 126
-  testRunner.Given("usings", "using System.IO;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 130
-  testRunner.And("source member declaration", "public static Stream? Property { get; protected set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+  testRunner.Given("source member declaration", "public static Stream? Property { get; protected set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 134
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 99
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 135
-  testRunner.Then("generated for interface", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 100
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 139
-  testRunner.And("generated for struct implementation", "public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property;" +
-                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+  testRunner.Then("generated interface member must be", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 143
-  testRunner.And("generated for class implementation", "public new global::System.IO.Stream? Property { get => @Namespace.@TypeName.Prope" +
-                        "rty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 147
-  testRunner.And("generated for sealed class implementation", "public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property;" +
-                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+  testRunner.And("generated implementation member must be", "public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Prop" +
+                        "erty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -321,7 +307,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with private getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 153
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -331,26 +317,63 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 154
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 112
   testRunner.Given("source member declaration", "public static float? Property { private get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 158
-  testRunner.When("run generator for property", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 116
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 159
-  testRunner.Then("generated for interface", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 163
-  testRunner.And("generated for struct implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+  testRunner.Then("generated interface member must be", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 167
-  testRunner.And("generated for class implementation", "public new float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+  testRunner.And("generated implementation member must be", "public float? Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 171
-  testRunner.And("generated for sealed class implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Property with protected getter and setter")]
+        [Xunit.TraitAttribute("FeatureTitle", "Property")]
+        [Xunit.TraitAttribute("Description", "Property with protected getter and setter")]
+        public void PropertyWithProtectedGetterAndSetter()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with protected getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 128
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-#line 175
-  testRunner.And("generated for static class implementation", "public float? Property { set => @Namespace.@TypeName.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 129
+  testRunner.Given("source member declaration", "public static string Property { protected get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 133
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 134
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 135
+  testRunner.Then("generated interface member must be", "string Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 139
+  testRunner.And("generated implementation member must be", "public string Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,33 +1,43 @@
 Feature: Property
 
 
+Background:
+  Given source declaration
+    """
+    using System;
+    using System.IO;
+    namespace Properties;
+    public class PropertyHolder
+    {
+      <member>
+    }
+    """
+  And attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Properties;
+    namespace Attribute.Usage;
+    [IIFor(typeof(PropertyHolder), "PropertyHolderWrapper")]
+    internal partial interface IPropertyHolder { }
+    """
+
+
 Scenario: Property with only getter
   Given source member declaration
     """
     public static int Property { get; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     int Property { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public int Property { get => @Namespace.@TypeName.Property; }
+    public int Property { get => Properties.PropertyHolder.Property; }
     """
-  And generated for class implementation
-    """
-    public new int Property { get => @Namespace.@TypeName.Property; }
-    """
-  And generated for sealed class implementation
-    """
-    public int Property { get => @Namespace.@TypeName.Property; }
-    """
-  And generated for static class implementation
-    """
-    public int Property { get => @Namespace.@TypeName.Property; }
-    """
-
+  
 
 Scenario: Property with only setter
   Given source member declaration
@@ -35,144 +45,98 @@ Scenario: Property with only setter
     private static float? _property;
     public static float? Property { set => _property = value; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     float? Property { set; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
+    public float? Property { set => Properties.PropertyHolder.Property = value; }
     """
-  And generated for class implementation
-    """
-    public new float? Property { set => @Namespace.@TypeName.Property = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
-    """
-  And generated for static class implementation
-    """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
-    """
-
+  
 
 Scenario: Property with getter and setter
-  Given usings
-    """
-    using System.IO;
-    """
-  And source member declaration
+  Given source member declaration
     """
     public static Stream Property { get; set; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     global::System.IO.Stream Property { get; set; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; set => @Namespace.@TypeName.Property = value; }
+    public global::System.IO.Stream Property { get => Properties.PropertyHolder.Property; set => Properties.PropertyHolder.Property = value; }
     """
-  And generated for class implementation
-    """
-    public new global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; set => @Namespace.@TypeName.Property = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; set => @Namespace.@TypeName.Property = value; }
-    """
-  And generated for static class implementation
-    """
-    public global::System.IO.Stream Property { get => @Namespace.@TypeName.Property; set => @Namespace.@TypeName.Property = value; }
-    """
-
+  
 
 Scenario: Property with getter and private setter
-  Given usings
-    """
-    using System.IO;
-    """
-  And source member declaration
+  Given source member declaration
     """
     public static Stream? Property { get; private set; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     global::System.IO.Stream? Property { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
+    public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
     """
-  And generated for class implementation
-    """
-    public new global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
-    """
-  And generated for static class implementation
-    """
-    public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
-    """
-
+  
 
 Scenario: Property with getter and protected setter
-  Given usings
-    """
-    using System.IO;
-    """
-  And source member declaration
+  Given source member declaration
     """
     public static Stream? Property { get; protected set; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     global::System.IO.Stream? Property { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
+    public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
     """
-  And generated for class implementation
-    """
-    public new global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.IO.Stream? Property { get => @Namespace.@TypeName.Property; }
-    """
-
+  
 
 Scenario: Property with private getter and setter
   Given source member declaration
     """
     public static float? Property { private get; set; }
     """
-  When run generator for property
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     float? Property { set; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
+    public float? Property { set => Properties.PropertyHolder.Property = value; }
     """
-  And generated for class implementation
+
+
+Scenario: Property with protected getter and setter
+  Given source member declaration
     """
-    public new float? Property { set => @Namespace.@TypeName.Property = value; }
+    public static string Property { protected get; set; }
     """
-  And generated for sealed class implementation
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
+    string Property { set; }
     """
-  And generated for static class implementation
+  And generated implementation member must be
     """
-    public float? Property { set => @Namespace.@TypeName.Property = value; }
+    public string Property { set => Properties.PropertyHolder.Property = value; }
     """
