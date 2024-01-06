@@ -2,7 +2,7 @@ Feature: Event
 
 
 Background:
-  Given declaration
+  Given source declaration
     """
     using System;
     namespace Events;
@@ -24,7 +24,7 @@ Background:
 
 
 Scenario: Event with EventHandler type
-  Given member declaration
+  Given source member declaration
     """
     public static event EventHandler EventMember;
     """
@@ -41,7 +41,7 @@ Scenario: Event with EventHandler type
 
 
 Scenario: Event with custom type
-  Given member declaration
+  Given source member declaration
     """
     public static event CustomEventHandler EventMember;
     """
@@ -58,7 +58,7 @@ Scenario: Event with custom type
 
 
 Scenario: Event with Action type
-  Given member declaration
+  Given source member declaration
     """
     public static event Action EventMember;
     """
@@ -75,7 +75,7 @@ Scenario: Event with Action type
 
 
 Scenario: Event with Action type with keyworded generic parameter
-  Given member declaration
+  Given source member declaration
     """
     public static event Action<int> EventMember;
     """
@@ -92,7 +92,7 @@ Scenario: Event with Action type with keyworded generic parameter
 
 
 Scenario: Event with Action type with keyworded nullable generic parameter
-  Given member declaration
+  Given source member declaration
     """
     public static event Action<string?> EventMember;
     """
@@ -109,7 +109,7 @@ Scenario: Event with Action type with keyworded nullable generic parameter
 
 
 Scenario: Event with Action type with non-keyworded generic parameter
-  Given member declaration
+  Given source member declaration
     """
     public static event Action<DateTime> EventMember;
     """
@@ -126,7 +126,7 @@ Scenario: Event with Action type with non-keyworded generic parameter
 
 
 Scenario: Event with Action type with non-keyworded nullable generic parameter
-  Given member declaration
+  Given source member declaration
     """
     public static event Action<DayOfWeek?> EventMember;
     """
@@ -143,7 +143,7 @@ Scenario: Event with Action type with non-keyworded nullable generic parameter
 
 
 Scenario: Event with Func
-  Given member declaration
+  Given source member declaration
     """
     public static event Func<DayOfWeek?, double, int?> EventMember;
     """

@@ -75,6 +75,20 @@ namespace Tum4ik.StinimGen.Specs.Features.Field
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+  testRunner.Given("source declaration", "using System;\r\nnamespace Fields;\r\npublic class FieldHolder\r\n{\r\n  <member>\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Fields;\r\nnamespace Attribute.Usage;\r\n[I" +
+                    "IFor(typeof(FieldHolder), \"FieldHolderWrapper\")]\r\ninternal partial interface IFi" +
+                    "eldHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -88,7 +102,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Field
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-nullable field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,30 +112,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 25
   testRunner.Given("source member declaration", "public static readonly float StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 10
-  testRunner.Then("generated for interface", "float StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
-  testRunner.And("generated for struct implementation", "public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+  testRunner.Then("generated interface member must be", "float StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
-  testRunner.And("generated for class implementation", "public new float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonly" +
-                        "Field; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 22
-  testRunner.And("generated for sealed class implementation", "public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 26
-  testRunner.And("generated for static class implementation", "public float StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+  testRunner.And("generated implementation member must be", "public float StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField;" +
+                        " }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -135,7 +143,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -145,30 +153,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
-  testRunner.Given("source member declaration", "public static readonly float? StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 37
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 38
-  testRunner.Then("generated for interface", "float? StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 42
-  testRunner.And("generated for struct implementation", "public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFie" +
-                        "ld; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("source member declaration", "public static readonly float? StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 46
-  testRunner.And("generated for class implementation", "public new float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonl" +
-                        "yField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
-  testRunner.And("generated for sealed class implementation", "public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFie" +
-                        "ld; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 54
-  testRunner.And("generated for static class implementation", "public float? StaticReadonlyField { get => @Namespace.@TypeName.StaticReadonlyFie" +
-                        "ld; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+  testRunner.Then("generated interface member must be", "float? StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 52
+  testRunner.And("generated implementation member must be", "public float? StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField" +
+                        "; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -182,7 +184,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 60
+#line 58
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -192,33 +194,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 61
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 59
+  testRunner.Given("source member declaration", "public static readonly StringComparer StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 63
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 64
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 65
-  testRunner.And("source member declaration", "public static readonly StringComparer StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("generated interface member must be", "global::System.StringComparer StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 69
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 70
-  testRunner.Then("generated for interface", "global::System.StringComparer StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 74
-  testRunner.And("generated for struct implementation", "public global::System.StringComparer StaticReadonlyField { get => @Namespace.@Typ" +
-                        "eName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 78
-  testRunner.And("generated for class implementation", "public new global::System.StringComparer StaticReadonlyField { get => @Namespace." +
-                        "@TypeName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 82
-  testRunner.And("generated for sealed class implementation", "public global::System.StringComparer StaticReadonlyField { get => @Namespace.@Typ" +
-                        "eName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 86
-  testRunner.And("generated for static class implementation", "public global::System.StringComparer StaticReadonlyField { get => @Namespace.@Typ" +
-                        "eName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.StringComparer StaticReadonlyField { get => Fields.FieldHol" +
+                        "der.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -232,7 +225,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 92
+#line 75
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -242,33 +235,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 93
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 97
-  testRunner.And("source member declaration", "public static readonly StringComparer? StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 76
+  testRunner.Given("source member declaration", "public static readonly StringComparer? StaticReadonlyField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 101
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 80
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 102
-  testRunner.Then("generated for interface", "global::System.StringComparer? StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 81
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 106
-  testRunner.And("generated for struct implementation", "public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@Ty" +
-                        "peName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+  testRunner.Then("generated interface member must be", "global::System.StringComparer? StaticReadonlyField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 110
-  testRunner.And("generated for class implementation", "public new global::System.StringComparer? StaticReadonlyField { get => @Namespace" +
-                        ".@TypeName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 114
-  testRunner.And("generated for sealed class implementation", "public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@Ty" +
-                        "peName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 118
-  testRunner.And("generated for static class implementation", "public global::System.StringComparer? StaticReadonlyField { get => @Namespace.@Ty" +
-                        "peName.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 86
+  testRunner.And("generated implementation member must be", "public global::System.StringComparer? StaticReadonlyField { get => Fields.FieldHo" +
+                        "lder.StaticReadonlyField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

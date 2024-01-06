@@ -163,7 +163,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
     var baseListTypes = new List<BaseTypeSyntax>(2);
 
-    if (!iiInfo.IsSourceStatic && (iiInfo.IsSourceSealed || iiInfo.ContainsDynamicFields))
+    /*if (!iiInfo.IsSourceStatic && (iiInfo.IsSourceSealed || iiInfo.ContainsDynamicFields))
     {
       var modifiers = new List<SyntaxToken>(2)
       {
@@ -186,7 +186,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         )
         .AddModifiers(modifiers.ToArray());
       implementationMembers.Add(instanceFieldDeclarationSyntax);
-    }
+    }*/
 
     var inherited = false;
     if (!iiInfo.IsSourceStatic && iiInfo.IsSourceReferenceType && !iiInfo.IsSourceSealed)

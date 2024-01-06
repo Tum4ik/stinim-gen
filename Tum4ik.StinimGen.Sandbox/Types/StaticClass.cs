@@ -3,7 +3,7 @@ using Tum4ik.StinimGen.Sandbox.Types;
 namespace Tum4ik.StinimGen.Sandbox.Types;
 internal static class StaticClass
 {
-  public const int ConstInt = 0;
+  public const Double ConstInt = 0;
   public const string ConstString = "ConstString";
   public const string? ConstNullableString = "ConstNullableString";
 
@@ -16,14 +16,14 @@ internal static class StaticClass
   public static DummyClass StaticDummyClass = new();
   public static DummyClass? StaticNullableDummyClass = new();
 
-  public static readonly int StaticReadonlyInt = 3;
-  public static readonly int? StaticReadonlyNullableInt = 4;
+  public static readonly int StaticReadonlyInt;
+  public static readonly int? StaticReadonlyNullableInt;
   public static readonly DummyStruct StaticReadonlyDummyStruct;
   public static readonly DummyStruct? StaticReadonlyNullableDummyStruct;
-  public static readonly string StaticReadonlyString = "StaticReadonlyString";
-  public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
-  public static readonly DummyClass StaticReadonlyDummyClass = new();
-  public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+  public static readonly string StaticReadonlyString;
+  public static readonly string? StaticReadonlyNullableString;
+  public static readonly DummyClass StaticReadonlyDummyClass;
+  public static readonly DummyClass? StaticReadonlyNullableDummyClass;
 
 
   public static int IntPropertyGetSet { get; set; }

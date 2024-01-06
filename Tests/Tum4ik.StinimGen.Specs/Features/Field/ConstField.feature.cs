@@ -75,20 +75,34 @@ namespace Tum4ik.StinimGen.Specs.Features.Field
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+  testRunner.Given("source declaration", "using System;\r\nnamespace Fields;\r\npublic class FieldHolder\r\n{\r\n  <member>\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Fields;\r\nnamespace Attribute.Usage;\r\n[I" +
+                    "IFor(typeof(FieldHolder), \"FieldHolderWrapper\")]\r\ninternal partial interface IFi" +
+                    "eldHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Non-nullable field with keyworded type")]
+        [Xunit.SkippableFactAttribute(DisplayName="Field with keyworded type")]
         [Xunit.TraitAttribute("FeatureTitle", "Const field")]
-        [Xunit.TraitAttribute("Description", "Non-nullable field with keyworded type")]
-        public void Non_NullableFieldWithKeywordedType()
+        [Xunit.TraitAttribute("Description", "Field with keyworded type")]
+        public void FieldWithKeywordedType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-nullable field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,40 +112,37 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
-  testRunner.Given("source member declaration", "public const int ConstField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 4
+this.FeatureBackground();
 #line hidden
-#line 9
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+  testRunner.Given("source member declaration", "public const int ConstField = 0;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
-  testRunner.Then("generated for interface", "int ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 14
-  testRunner.And("generated for struct implementation", "public int ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
-  testRunner.And("generated for class implementation", "public new int ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+  testRunner.Then("generated interface member must be", "int ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 22
-  testRunner.And("generated for sealed class implementation", "public int ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 26
-  testRunner.And("generated for static class implementation", "public int ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+  testRunner.And("generated implementation member must be", "public int ConstField { get => Fields.FieldHolder.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Nullable field with keyworded type")]
+        [Xunit.SkippableFactAttribute(DisplayName="Field with non-keyworded type")]
         [Xunit.TraitAttribute("FeatureTitle", "Const field")]
-        [Xunit.TraitAttribute("Description", "Nullable field with keyworded type")]
-        public void NullableFieldWithKeywordedType()
+        [Xunit.TraitAttribute("Description", "Field with non-keyworded type")]
+        public void FieldWithNon_KeywordedType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field with keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 32
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Field with non-keyworded type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -141,126 +152,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
-  testRunner.Given("source member declaration", "public const int? ConstNullableField;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 37
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 38
-  testRunner.Then("generated for interface", "int? ConstNullableField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 42
-  testRunner.And("generated for struct implementation", "public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; " +
-                        "}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("source member declaration", "public const Double ConstField = 0d;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 46
-  testRunner.And("generated for class implementation", "public new int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableFie" +
-                        "ld; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
-  testRunner.And("generated for sealed class implementation", "public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; " +
-                        "}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 54
-  testRunner.And("generated for static class implementation", "public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; " +
-                        "}", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+  testRunner.Then("generated interface member must be", "double ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Non-nullable field")]
-        [Xunit.TraitAttribute("FeatureTitle", "Const field")]
-        [Xunit.TraitAttribute("Description", "Non-nullable field")]
-        public void Non_NullableField()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Non-nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 60
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 61
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 65
-  testRunner.And("source member declaration", "public const Double ConstField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 69
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 70
-  testRunner.Then("generated for interface", "double ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 74
-  testRunner.And("generated for struct implementation", "public double ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 78
-  testRunner.And("generated for class implementation", "public new double ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 82
-  testRunner.And("generated for sealed class implementation", "public double ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 86
-  testRunner.And("generated for static class implementation", "public double ConstField { get => @Namespace.@TypeName.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Nullable field")]
-        [Xunit.TraitAttribute("FeatureTitle", "Const field")]
-        [Xunit.TraitAttribute("Description", "Nullable field")]
-        public void NullableField()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Nullable field", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 92
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 93
-  testRunner.Given("usings", "using System;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 97
-  testRunner.And("source member declaration", "public const Double? ConstNullableField;", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 101
-  testRunner.When("run generator for field", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 102
-  testRunner.Then("generated for interface", "double? ConstNullableField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 106
-  testRunner.And("generated for struct implementation", "public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 110
-  testRunner.And("generated for class implementation", "public new double? ConstNullableField { get => @Namespace.@TypeName.ConstNullable" +
-                        "Field; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 114
-  testRunner.And("generated for sealed class implementation", "public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 118
-  testRunner.And("generated for static class implementation", "public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableFiel" +
-                        "d; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+  testRunner.And("generated implementation member must be", "public double ConstField { get => Fields.FieldHolder.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

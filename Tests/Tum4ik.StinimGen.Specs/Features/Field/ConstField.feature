@@ -1,121 +1,55 @@
 Feature: Const field
 
 
-Scenario: Non-nullable field with keyworded type
+Background:
+  Given source declaration
+    """
+    using System;
+    namespace Fields;
+    public class FieldHolder
+    {
+      <member>
+    }
+    """
+  And attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Fields;
+    namespace Attribute.Usage;
+    [IIFor(typeof(FieldHolder), "FieldHolderWrapper")]
+    internal partial interface IFieldHolder { }
+    """
+
+
+Scenario: Field with keyworded type
   Given source member declaration
     """
-    public const int ConstField;
+    public const int ConstField = 0;
     """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     int ConstField { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public int ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for class implementation
-    """
-    public new int ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for sealed class implementation
-    """
-    public int ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for static class implementation
-    """
-    public int ConstField { get => @Namespace.@TypeName.ConstField; }
+    public int ConstField { get => Fields.FieldHolder.ConstField; }
     """
 
 
-Scenario: Nullable field with keyworded type
+Scenario: Field with non-keyworded type
   Given source member declaration
     """
-    public const int? ConstNullableField;
+    public const Double ConstField = 0d;
     """
-  When run generator for field
-  Then generated for interface
-    """
-    int? ConstNullableField { get; }
-    """
-  And generated for struct implementation
-    """
-    public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for class implementation
-    """
-    public new int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for sealed class implementation
-    """
-    public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for static class implementation
-    """
-    public int? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-
-
-Scenario: Non-nullable field
-  Given usings
-    """
-    using System;
-    """
-  And source member declaration
-    """
-    public const Double ConstField;
-    """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  Then generated interface member must be
     """
     double ConstField { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public double ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for class implementation
-    """
-    public new double ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for sealed class implementation
-    """
-    public double ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-  And generated for static class implementation
-    """
-    public double ConstField { get => @Namespace.@TypeName.ConstField; }
-    """
-
-
-Scenario: Nullable field
-  Given usings
-    """
-    using System;
-    """
-  And source member declaration
-    """
-    public const Double? ConstNullableField;
-    """
-  When run generator for field
-  Then generated for interface
-    """
-    double? ConstNullableField { get; }
-    """
-  And generated for struct implementation
-    """
-    public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for class implementation
-    """
-    public new double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for sealed class implementation
-    """
-    public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
-    """
-  And generated for static class implementation
-    """
-    public double? ConstNullableField { get => @Namespace.@TypeName.ConstNullableField; }
+    public double ConstField { get => Fields.FieldHolder.ConstField; }
     """

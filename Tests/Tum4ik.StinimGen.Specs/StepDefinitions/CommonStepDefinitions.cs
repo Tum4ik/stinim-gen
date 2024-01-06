@@ -17,7 +17,7 @@ public class CommonStepDefinitions
   }
 
 
-  [Given("declaration")]
+  [Given("source declaration")]
   public void GivenStructDeclaration(string declaration)
   {
     _scenarioContext.AddDeclaration(declaration);
@@ -31,7 +31,7 @@ public class CommonStepDefinitions
   }
 
 
-  [Given("member declaration")]
+  [Given("source member declaration")]
   public void GivenMemberDeclaration(string memberDeclaration)
   {
     _scenarioContext.AddMemberDeclaration(memberDeclaration);

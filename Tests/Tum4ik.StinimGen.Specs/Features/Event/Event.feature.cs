@@ -80,7 +80,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Event
 #line 4
 #line hidden
 #line 5
-  testRunner.Given("declaration", "using System;\r\nnamespace Events;\r\npublic class EventHolder\r\n{\r\n  <member>\r\n}\r\n\r\np" +
+  testRunner.Given("source declaration", "using System;\r\nnamespace Events;\r\npublic class EventHolder\r\n{\r\n  <member>\r\n}\r\n\r\np" +
                     "ublic delegate void CustomEventHandler(int count, string search);", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
@@ -117,7 +117,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 27
-  testRunner.Given("member declaration", "public static event EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 31
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -158,7 +158,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 44
-  testRunner.Given("member declaration", "public static event CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 48
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -200,7 +200,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 61
-  testRunner.Given("member declaration", "public static event Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 65
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -241,7 +241,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 78
-  testRunner.Given("member declaration", "public static event Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 82
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -282,7 +282,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 95
-  testRunner.Given("member declaration", "public static event Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 99
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -323,7 +323,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 112
-  testRunner.Given("member declaration", "public static event Action<DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Action<DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 116
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -365,7 +365,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 129
-  testRunner.Given("member declaration", "public static event Action<DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Action<DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 133
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -407,7 +407,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 146
-  testRunner.Given("member declaration", "public static event Func<DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source member declaration", "public static event Func<DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 150
   testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
