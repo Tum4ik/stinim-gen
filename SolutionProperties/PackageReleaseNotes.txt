@@ -1,1 +1,2 @@
 - Interface and implementation generation for static members.
+- Generic methods support.

@@ -125,7 +125,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 31
-  testRunner.Then("generated interface member must be", "int ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "int ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
   testRunner.And("generated implementation member must be", "public int ConstField { get => Fields.FieldHolder.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -165,7 +165,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 48
-  testRunner.Then("generated interface member must be", "double ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "double ConstField { get; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 52
   testRunner.And("generated implementation member must be", "public double ConstField { get => Fields.FieldHolder.ConstField; }", ((TechTalk.SpecFlow.Table)(null)), "And ");

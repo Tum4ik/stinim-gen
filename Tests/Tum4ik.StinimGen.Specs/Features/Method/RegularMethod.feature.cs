@@ -127,7 +127,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 34
-  testRunner.Then("generated interface member must be", "void Method();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 38
   testRunner.And("generated implementation member must be", "public void Method() => Methods.MethodHolder.Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -167,10 +167,10 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 51
-  testRunner.Then("generated interface member must be", "string Method();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.String Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 55
-  testRunner.And("generated implementation member must be", "public string Method() => Methods.MethodHolder.Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.String Method() => Methods.MethodHolder.Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -207,10 +207,10 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 68
-  testRunner.Then("generated interface member must be", "string? Method();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.String? Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 72
-  testRunner.And("generated implementation member must be", "public string? Method() => Methods.MethodHolder.Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.String? Method() => Methods.MethodHolder.Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -247,7 +247,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 85
-  testRunner.Then("generated interface member must be", "global::System.Text.StringBuilder Method();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Text.StringBuilder Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 89
   testRunner.And("generated implementation member must be", "public global::System.Text.StringBuilder Method() => Methods.MethodHolder.Method(" +
@@ -288,7 +288,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 102
-  testRunner.Then("generated interface member must be", "global::System.Text.StringBuilder? Method();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Text.StringBuilder? Method();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 106
   testRunner.And("generated implementation member must be", "public global::System.Text.StringBuilder? Method() => Methods.MethodHolder.Method" +
@@ -329,7 +329,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 119
-  testRunner.Then("generated interface member must be", "void MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 123
   testRunner.And("generated implementation member must be", "public void MethodAsync() => Methods.MethodHolder.MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -369,7 +369,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 136
-  testRunner.Then("generated interface member must be", "global::System.Threading.Tasks.Task MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 140
   testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task MethodAsync() => Methods.MethodHolder." +
@@ -411,11 +411,11 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 153
-  testRunner.Then("generated interface member must be", "global::System.Threading.Tasks.Task<string> MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.String> MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 157
-  testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<string> MethodAsync() => Methods.Metho" +
-                        "dHolder.MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<global::System.String> MethodAsync() =" +
+                        "> Methods.MethodHolder.MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -453,11 +453,11 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 170
-  testRunner.Then("generated interface member must be", "global::System.Threading.Tasks.Task<string?> MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.String?> MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 174
-  testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<string?> MethodAsync() => Methods.Meth" +
-                        "odHolder.MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<global::System.String?> MethodAsync() " +
+                        "=> Methods.MethodHolder.MethodAsync();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -495,8 +495,8 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 187
-  testRunner.Then("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> MethodAsyn" +
-                        "c();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> MethodAsyn" +
+                        "c();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 191
   testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> Met" +
@@ -538,8 +538,8 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 204
-  testRunner.Then("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> MethodAsy" +
-                        "nc();", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> MethodAsy" +
+                        "nc();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 208
   testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> Me" +
@@ -580,10 +580,10 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 221
-  testRunner.Then("generated interface member must be", "void Method(int p);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void Method(global::System.Int32 p);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 225
-  testRunner.And("generated implementation member must be", "public void Method(int p) => Methods.MethodHolder.Method(p);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public void Method(global::System.Int32 p) => Methods.MethodHolder.Method(p);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -620,11 +620,12 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 238
-  testRunner.Then("generated interface member must be", "void Method(int p1, string p2 = \"def\", int p3 = 10);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void Method(global::System.Int32 p1, global::System.String p2 = \"def\", global::Sy" +
+                        "stem.Int32 p3 = 10);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 242
-  testRunner.And("generated implementation member must be", "public void Method(int p1, string p2 = \"def\", int p3 = 10) => Methods.MethodHolde" +
-                        "r.Method(p1, p2, p3);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public void Method(global::System.Int32 p1, global::System.String p2 = \"def\", glo" +
+                        "bal::System.Int32 p3 = 10) => Methods.MethodHolder.Method(p1, p2, p3);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -662,11 +663,13 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 255
-  testRunner.Then("generated interface member must be", "void Method(int p1, string[] p2, float? p3, double? [] p4, object[]? p5);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void Method(global::System.Int32 p1, global::System.String[] p2, global::System.S" +
+                        "ingle? p3, global::System.Double? [] p4, global::System.Object[]? p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 259
-  testRunner.And("generated implementation member must be", "public void Method(int p1, string[] p2, float? p3, double? [] p4, object[]? p5) =" +
-                        "> Methods.MethodHolder.Method(p1, p2, p3, p4, p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public void Method(global::System.Int32 p1, global::System.String[] p2, global::S" +
+                        "ystem.Single? p3, global::System.Double? [] p4, global::System.Object[]? p5) => " +
+                        "Methods.MethodHolder.Method(p1, p2, p3, p4, p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -704,9 +707,9 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 272
-  testRunner.Then("generated interface member must be", "void Method(global::System.DateTime p1, global::System.DateTime[] p2, global::Sys" +
+  testRunner.And("generated interface member must be", "void Method(global::System.DateTime p1, global::System.DateTime[] p2, global::Sys" +
                         "tem.DateTime? p3, global::System.DateTime? [] p4, global::System.DateTime[]? p5)" +
-                        ";", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        ";", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 276
   testRunner.And("generated implementation member must be", "public void Method(global::System.DateTime p1, global::System.DateTime[] p2, glob" +
@@ -749,10 +752,10 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 289
-  testRunner.Then("generated interface member must be", @"void Method(global::System.Collections.Generic.List<int> p1, global::System.Collections.Generic.List<string[]> p2, global::System.Collections.Generic.List<float?> p3, global::System.Collections.Generic.List<double? []> p4, global::System.Collections.Generic.List<object[]?> p5);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", @"void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 293
-  testRunner.And("generated implementation member must be", @"public void Method(global::System.Collections.Generic.List<int> p1, global::System.Collections.Generic.List<string[]> p2, global::System.Collections.Generic.List<float?> p3, global::System.Collections.Generic.List<double? []> p4, global::System.Collections.Generic.List<object[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", @"public void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -790,7 +793,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 306
-  testRunner.Then("generated interface member must be", @"void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", @"void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 310
   testRunner.And("generated implementation member must be", @"public void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);", ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -831,13 +834,13 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 323
-  testRunner.Then("generated interface member must be", "void Method(ref int refP, out double? outP, in global::System.DateTime inP, param" +
-                        "s global::System.DateTime? [] paramsP);", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "void Method(ref global::System.Int32 refP, out global::System.Double? outP, in gl" +
+                        "obal::System.DateTime inP, params global::System.DateTime? [] paramsP);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 327
-  testRunner.And("generated implementation member must be", "public void Method(ref int refP, out double? outP, in global::System.DateTime inP" +
-                        ", params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref" +
-                        " refP, out outP, in inP, paramsP);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("generated implementation member must be", "public void Method(ref global::System.Int32 refP, out global::System.Double? outP" +
+                        ", in global::System.DateTime inP, params global::System.DateTime? [] paramsP) =>" +
+                        " Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

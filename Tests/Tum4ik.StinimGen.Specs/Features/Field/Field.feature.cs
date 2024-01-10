@@ -125,7 +125,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 31
-  testRunner.Then("generated interface member must be", "object StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "object StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
   testRunner.And("generated implementation member must be", "public object StaticField { get => Fields.FieldHolder.StaticField; set => Fields." +
@@ -166,7 +166,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 48
-  testRunner.Then("generated interface member must be", "object? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "object? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 52
   testRunner.And("generated implementation member must be", "public object? StaticField { get => Fields.FieldHolder.StaticField; set => Fields" +
@@ -207,7 +207,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 65
-  testRunner.Then("generated interface member must be", "global::System.Delegate StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Delegate StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 69
   testRunner.And("generated implementation member must be", "public global::System.Delegate StaticField { get => Fields.FieldHolder.StaticFiel" +
@@ -248,7 +248,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 82
-  testRunner.Then("generated interface member must be", "global::System.Delegate? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "global::System.Delegate? StaticField { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 86
   testRunner.And("generated implementation member must be", "public global::System.Delegate? StaticField { get => Fields.FieldHolder.StaticFie" +

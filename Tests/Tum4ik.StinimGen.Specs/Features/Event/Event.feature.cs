@@ -126,7 +126,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 33
-  testRunner.Then("generated interface member must be", "event global::System.EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.EventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 37
   testRunner.And("generated implementation member must be", "public event global::System.EventHandler EventMember { add => Events.EventHolder." +
@@ -167,7 +167,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 50
-  testRunner.Then("generated interface member must be", "event global::Events.CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::Events.CustomEventHandler EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 54
   testRunner.And("generated implementation member must be", "public event global::Events.CustomEventHandler EventMember { add => Events.EventH" +
@@ -209,7 +209,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 67
-  testRunner.Then("generated interface member must be", "event global::System.Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Action EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 71
   testRunner.And("generated implementation member must be", "public event global::System.Action EventMember { add => Events.EventHolder.EventM" +
@@ -250,7 +250,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 84
-  testRunner.Then("generated interface member must be", "event global::System.Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Action<int> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 88
   testRunner.And("generated implementation member must be", "public event global::System.Action<int> EventMember { add => Events.EventHolder.E" +
@@ -291,7 +291,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 101
-  testRunner.Then("generated interface member must be", "event global::System.Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Action<string?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 105
   testRunner.And("generated implementation member must be", "public event global::System.Action<string?> EventMember { add => Events.EventHold" +
@@ -332,7 +332,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 118
-  testRunner.Then("generated interface member must be", "event global::System.Action<global::System.DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Action<global::System.DateTime> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 122
   testRunner.And("generated implementation member must be", "public event global::System.Action<global::System.DateTime> EventMember { add => " +
@@ -374,7 +374,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 135
-  testRunner.Then("generated interface member must be", "event global::System.Action<global::System.DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Action<global::System.DayOfWeek?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 139
   testRunner.And("generated implementation member must be", "public event global::System.Action<global::System.DayOfWeek?> EventMember { add =" +
@@ -416,7 +416,7 @@ this.FeatureBackground();
   testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 152
-  testRunner.Then("generated interface member must be", "event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("generated interface member must be", "event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 156
   testRunner.And("generated implementation member must be", "public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMe" +

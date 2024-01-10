@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Tum4ik.StinimGen.Specs.Features.Property
+namespace Tum4ik.StinimGen.Specs.Features.Method
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class PropertyFeature : object, Xunit.IClassFixture<PropertyFeature.FixtureData>, System.IDisposable
+    public partial class GenericMethodFeature : object, Xunit.IClassFixture<GenericMethodFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Property.feature"
+#line 1 "GenericMethod.feature"
 #line hidden
         
-        public PropertyFeature(PropertyFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public GenericMethodFeature(GenericMethodFeature.FixtureData fixtureData, Tum4ik_StinimGen_Specs_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Property", "Property", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Method", "Generic method", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,13 +80,14 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
 #line 4
 #line hidden
 #line 5
-  testRunner.Given("source declaration", "using System;\r\nusing System.IO;\r\nnamespace Properties;\r\npublic class PropertyHold" +
-                    "er\r\n{\r\n  <member>\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("source declaration", "using System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\nusing Syste" +
+                    "m.Threading.Tasks;\r\nnamespace Methods;\r\npublic class MethodHolder\r\n{\r\n  <member>" +
+                    "\r\n}", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
-  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Properties;\r\nnamespace Attribute.Usage;" +
-                    "\r\n[IIFor(typeof(PropertyHolder), \"PropertyHolderWrapper\")]\r\ninternal partial int" +
-                    "erface IPropertyHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+  testRunner.And("attribute usage", "using Tum4ik.StinimGen.Attributes;\r\nusing Methods;\r\nnamespace Attribute.Usage;\r\n[" +
+                    "IIFor(typeof(MethodHolder), \"MethodHolderWrapper\")]\r\ninternal partial interface " +
+                    "IMethodHolder { }", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -95,15 +96,15 @@ namespace Tum4ik.StinimGen.Specs.Features.Property
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with only getter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with only getter")]
-        public void PropertyWithOnlyGetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Void method with a generic parameter and without parameters")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Void method with a generic parameter and without parameters")]
+        public void VoidMethodWithAGenericParameterAndWithoutParameters()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with only getter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Void method with a generic parameter and without parameters", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,34 +117,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 26
-  testRunner.Given("source member declaration", "public static int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 30
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 31
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+  testRunner.Given("source member declaration", "public static void Method<T>() { }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 32
-  testRunner.And("generated interface member must be", "int Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
-  testRunner.And("generated implementation member must be", "public int Property { get => Properties.PropertyHolder.Property; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 34
+  testRunner.And("generated interface member must be", "void Method<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+  testRunner.And("generated implementation member must be", "public void Method<T>() => Methods.MethodHolder.Method<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with only setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with only setter")]
-        public void PropertyWithOnlySetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Void method with several generic parameters and without parameters")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Void method with several generic parameters and without parameters")]
+        public void VoidMethodWithSeveralGenericParametersAndWithoutParameters()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with only setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 42
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Void method with several generic parameters and without parameters", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 44
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -156,35 +157,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 43
-  testRunner.Given("source member declaration", "private static float? _property;\r\npublic static float? Property { set => _propert" +
-                        "y = value; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 48
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 45
+  testRunner.Given("source member declaration", "public static void Method<T1, T2, T3>() { }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 49
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 50
-  testRunner.And("generated interface member must be", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 54
-  testRunner.And("generated implementation member must be", "public float? Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+  testRunner.And("generated interface member must be", "void Method<T1, T2, T3>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 55
+  testRunner.And("generated implementation member must be", "public void Method<T1, T2, T3>() => Methods.MethodHolder.Method<T1, T2, T3>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with getter and setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with getter and setter")]
-        public void PropertyWithGetterAndSetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Method without parameters returns generic type")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Method without parameters returns generic type")]
+        public void MethodWithoutParametersReturnsGenericType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 60
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Method without parameters returns generic type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 61
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -197,35 +197,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 61
-  testRunner.Given("source member declaration", "public static Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 65
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 62
+  testRunner.Given("source member declaration", "public static T Method<T>() { }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 66
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 67
-  testRunner.And("generated interface member must be", "global::System.IO.Stream Property { get; set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 71
-  testRunner.And("generated implementation member must be", "public global::System.IO.Stream Property { get => Properties.PropertyHolder.Prope" +
-                        "rty; set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+  testRunner.And("generated interface member must be", "T Method<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 72
+  testRunner.And("generated implementation member must be", "public T Method<T>() => Methods.MethodHolder.Method<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with getter and private setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with getter and private setter")]
-        public void PropertyWithGetterAndPrivateSetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Method with parameters returns generic type")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Method with parameters returns generic type")]
+        public void MethodWithParametersReturnsGenericType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and private setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 77
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Method with parameters returns generic type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 78
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -238,35 +237,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 78
-  testRunner.Given("source member declaration", "public static Stream? Property { get; private set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 82
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 79
+  testRunner.Given("source member declaration", "public static T1 Method<T1, T2>(T1 p1, T2 p2) { }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 83
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 84
-  testRunner.And("generated interface member must be", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 88
-  testRunner.And("generated implementation member must be", "public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Prop" +
-                        "erty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 85
+  testRunner.And("generated interface member must be", "T1 Method<T1, T2>(T1 p1, T2 p2);", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 89
+  testRunner.And("generated implementation member must be", "public T1 Method<T1, T2>(T1 p1, T2 p2) => Methods.MethodHolder.Method<T1, T2>(p1," +
+                        " p2);", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with getter and protected setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with getter and protected setter")]
-        public void PropertyWithGetterAndProtectedSetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Async method without parameters returns Task of generic type")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Async method without parameters returns Task of generic type")]
+        public void AsyncMethodWithoutParametersReturnsTaskOfGenericType()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with getter and protected setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 94
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Async method without parameters returns Task of generic type", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 95
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -279,35 +278,36 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 95
-  testRunner.Given("source member declaration", "public static Stream? Property { get; protected set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 99
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 96
+  testRunner.Given("source member declaration", "public static async Task<T> MethodAsync<T>() => await Task.FromResult<T>(default)" +
+                        ";", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 100
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 101
-  testRunner.And("generated interface member must be", "global::System.IO.Stream? Property { get; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 105
-  testRunner.And("generated implementation member must be", "public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Prop" +
-                        "erty; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+  testRunner.And("generated interface member must be", "global::System.Threading.Tasks.Task<T> MethodAsync<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 106
+  testRunner.And("generated implementation member must be", "public global::System.Threading.Tasks.Task<T> MethodAsync<T>() => Methods.MethodH" +
+                        "older.MethodAsync<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with private getter and setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with private getter and setter")]
-        public void PropertyWithPrivateGetterAndSetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Generic method with a constraint")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Generic method with a constraint")]
+        public void GenericMethodWithAConstraint()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with private getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 111
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generic method with a constraint", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 112
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -320,34 +320,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 112
-  testRunner.Given("source member declaration", "public static float? Property { private get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 116
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 113
+  testRunner.Given("source member declaration", "public static void Method<T>() where T : class, new() { }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 117
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 118
-  testRunner.And("generated interface member must be", "float? Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 122
-  testRunner.And("generated implementation member must be", "public float? Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+  testRunner.And("generated interface member must be", "void Method<T>()\r\n    where T : class, new();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 124
+  testRunner.And("generated implementation member must be", "public void Method<T>()\r\n    where T : class, new() => Methods.MethodHolder.Metho" +
+                        "d<T>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Property with protected getter and setter")]
-        [Xunit.TraitAttribute("FeatureTitle", "Property")]
-        [Xunit.TraitAttribute("Description", "Property with protected getter and setter")]
-        public void PropertyWithProtectedGetterAndSetter()
+        [Xunit.SkippableFactAttribute(DisplayName="Generic method with several constraints")]
+        [Xunit.TraitAttribute("FeatureTitle", "Generic method")]
+        [Xunit.TraitAttribute("Description", "Generic method with several constraints")]
+        public void GenericMethodWithSeveralConstraints()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Property with protected getter and setter", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 128
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Generic method with several constraints", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 131
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -360,20 +361,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 129
-  testRunner.Given("source member declaration", "public static string Property { protected get; set; }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 133
-  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 134
-  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 135
-  testRunner.And("generated interface member must be", "string Property { set; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 132
+  testRunner.Given("source member declaration", "public static void Method<TParent, TChild>()\r\n  where TParent : class\r\n  where TC" +
+                        "hild : TParent, new()\r\n{ }", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 139
-  testRunner.And("generated implementation member must be", "public string Property { set => Properties.PropertyHolder.Property = value; }", ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.When("run generator", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 140
+  testRunner.Then("there must not be generation exception", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 141
+  testRunner.And("generated interface member must be", "void Method<TParent, TChild>()\r\n    where TParent : class where TChild : TParent," +
+                        " new();", ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 146
+  testRunner.And("generated implementation member must be", "public void Method<TParent, TChild>()\r\n    where TParent : class where TChild : T" +
+                        "Parent, new() => Methods.MethodHolder.Method<TParent, TChild>();", ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -386,12 +390,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                PropertyFeature.FeatureSetup();
+                GenericMethodFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PropertyFeature.FeatureTearDown();
+                GenericMethodFeature.FeatureTearDown();
             }
         }
     }

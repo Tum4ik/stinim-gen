@@ -31,7 +31,7 @@ Scenario: Void method without parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     void Method();
     """
@@ -48,13 +48,13 @@ Scenario: Method without parameters returns keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    string Method();
+    global::System.String Method();
     """
   And generated implementation member must be
     """
-    public string Method() => Methods.MethodHolder.Method();
+    public global::System.String Method() => Methods.MethodHolder.Method();
     """
 
 
@@ -65,13 +65,13 @@ Scenario: Method without parameters returns keyworded nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    string? Method();
+    global::System.String? Method();
     """
   And generated implementation member must be
     """
-    public string? Method() => Methods.MethodHolder.Method();
+    public global::System.String? Method() => Methods.MethodHolder.Method();
     """
 
 
@@ -82,7 +82,7 @@ Scenario: Method without parameters returns non-nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Text.StringBuilder Method();
     """
@@ -99,7 +99,7 @@ Scenario: Method without parameters returns nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Text.StringBuilder? Method();
     """
@@ -116,7 +116,7 @@ Scenario: Async void method without parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     void MethodAsync();
     """
@@ -133,7 +133,7 @@ Scenario: Async method without parameters returns Task
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Threading.Tasks.Task MethodAsync();
     """
@@ -150,13 +150,13 @@ Scenario: Method without parameters returns Taks of keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    global::System.Threading.Tasks.Task<string> MethodAsync();
+    global::System.Threading.Tasks.Task<global::System.String> MethodAsync();
     """
   And generated implementation member must be
     """
-    public global::System.Threading.Tasks.Task<string> MethodAsync() => Methods.MethodHolder.MethodAsync();
+    public global::System.Threading.Tasks.Task<global::System.String> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
 
@@ -167,13 +167,13 @@ Scenario: Method without parameters returns Task of keyworded nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    global::System.Threading.Tasks.Task<string?> MethodAsync();
+    global::System.Threading.Tasks.Task<global::System.String?> MethodAsync();
     """
   And generated implementation member must be
     """
-    public global::System.Threading.Tasks.Task<string?> MethodAsync() => Methods.MethodHolder.MethodAsync();
+    public global::System.Threading.Tasks.Task<global::System.String?> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
 
@@ -184,7 +184,7 @@ Scenario: Method without parameters returns Task of non-nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> MethodAsync();
     """
@@ -201,7 +201,7 @@ Scenario: Method without parameters returns Task of nullable type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> MethodAsync();
     """
@@ -218,13 +218,13 @@ Scenario: Void method with a parameter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    void Method(int p);
+    void Method(global::System.Int32 p);
     """
   And generated implementation member must be
     """
-    public void Method(int p) => Methods.MethodHolder.Method(p);
+    public void Method(global::System.Int32 p) => Methods.MethodHolder.Method(p);
     """
 
 
@@ -235,13 +235,13 @@ Scenario: Void method with default parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    void Method(int p1, string p2 = "def", int p3 = 10);
+    void Method(global::System.Int32 p1, global::System.String p2 = "def", global::System.Int32 p3 = 10);
     """
   And generated implementation member must be
     """
-    public void Method(int p1, string p2 = "def", int p3 = 10) => Methods.MethodHolder.Method(p1, p2, p3);
+    public void Method(global::System.Int32 p1, global::System.String p2 = "def", global::System.Int32 p3 = 10) => Methods.MethodHolder.Method(p1, p2, p3);
     """
 
 
@@ -252,13 +252,13 @@ Scenario: Void method with several keyworded parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    void Method(int p1, string[] p2, float? p3, double? [] p4, object[]? p5);
+    void Method(global::System.Int32 p1, global::System.String[] p2, global::System.Single? p3, global::System.Double? [] p4, global::System.Object[]? p5);
     """
   And generated implementation member must be
     """
-    public void Method(int p1, string[] p2, float? p3, double? [] p4, object[]? p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
+    public void Method(global::System.Int32 p1, global::System.String[] p2, global::System.Single? p3, global::System.Double? [] p4, global::System.Object[]? p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
 
@@ -269,7 +269,7 @@ Scenario: Void method with several non-keyworded parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     void Method(global::System.DateTime p1, global::System.DateTime[] p2, global::System.DateTime? p3, global::System.DateTime? [] p4, global::System.DateTime[]? p5);
     """
@@ -286,13 +286,13 @@ Scenario: Void method with several keyworded generic parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    void Method(global::System.Collections.Generic.List<int> p1, global::System.Collections.Generic.List<string[]> p2, global::System.Collections.Generic.List<float?> p3, global::System.Collections.Generic.List<double? []> p4, global::System.Collections.Generic.List<object[]?> p5);
+    void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5);
     """
   And generated implementation member must be
     """
-    public void Method(global::System.Collections.Generic.List<int> p1, global::System.Collections.Generic.List<string[]> p2, global::System.Collections.Generic.List<float?> p3, global::System.Collections.Generic.List<double? []> p4, global::System.Collections.Generic.List<object[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
+    public void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
 
@@ -303,7 +303,7 @@ Scenario: Void method with several non-keyworded generic parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5);
     """
@@ -320,11 +320,11 @@ Scenario: Void method with ref/out/in and params parameters
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
-    void Method(ref int refP, out double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP);
+    void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP);
     """
   And generated implementation member must be
     """
-    public void Method(ref int refP, out double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);
+    public void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);
     """

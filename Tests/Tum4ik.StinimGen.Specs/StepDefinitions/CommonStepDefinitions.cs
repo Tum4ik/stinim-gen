@@ -15,7 +15,7 @@ public class CommonStepDefinitions
   {
     _scenarioContext = scenarioContext;
   }
-
+  
 
   [Given("source declaration")]
   public void GivenSourceDeclaration(string declaration)

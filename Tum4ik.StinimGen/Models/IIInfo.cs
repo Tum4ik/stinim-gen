@@ -1,4 +1,6 @@
 using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Tum4ik.StinimGen.Models;
 internal sealed record IIInfo(
@@ -8,6 +10,6 @@ internal sealed record IIInfo(
   ImmutableArray<PropertyInfo> PropertyForFieldInfoList,
   ImmutableArray<PropertyInfo> PropertyInfoList,
   ImmutableArray<EventInfo> EventInfoList,
-  ImmutableArray<MethodInfo> MethodInfoList,
+  ImmutableArray<MethodDeclarationSyntax> MethodInfoList,
   string SourceFullyQualifiedName
 );

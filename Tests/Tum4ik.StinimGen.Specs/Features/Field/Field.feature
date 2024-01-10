@@ -28,7 +28,7 @@ Scenario: Non-nullable field with keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     object StaticField { get; set; }
     """
@@ -45,7 +45,7 @@ Scenario: Nullable field with keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     object? StaticField { get; set; }
     """
@@ -62,7 +62,7 @@ Scenario: Non-nullable field
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Delegate StaticField { get; set; }
     """
@@ -79,7 +79,7 @@ Scenario: Nullable field
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.Delegate? StaticField { get; set; }
     """

@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Editing;
 using Tum4ik.StinimGen.Extensions;
 using Tum4ik.StinimGen.Models;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -15,6 +16,9 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 {
   private static readonly string s_iiForAttributeFullName = "Tum4ik.StinimGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
+  private static readonly SyntaxGenerator s_syntaxGenerator = SyntaxGenerator.GetGenerator(
+    new AdhocWorkspace(), LanguageNames.CSharp
+  );
 
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
@@ -57,7 +61,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var propertyForFieldInfoList = new List<Models.PropertyInfo>();
         var propertyInfoList = new List<Models.PropertyInfo>();
         var eventInfoList = new List<Models.EventInfo>();
-        var methodInfoList = new List<Models.MethodInfo>();
+        var methodInfoList = new List<MethodDeclarationSyntax>();
 
         var publicMembers = sourceNamedTypeSymbol
           .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsStatic);
@@ -95,23 +99,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
-              var parameters = methodSymbol.Parameters.Select(p => new Models.ParameterInfo(
-                p.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                p.Type.TypeKind,
-                p.Type.SpecialType,
-                p.Name,
-                p.RefKind,
-                p.IsParams,
-                p.IsOptional,
-                p.HasExplicitDefaultValue ? p.ExplicitDefaultValue : null
-              )).ToImmutableArray();
-              methodInfoList.Add(new(
-                methodSymbol.ReturnsVoid
-                  ? null
-                  : methodSymbol.ReturnType.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                methodSymbol.Name,
-                parameters
-              ));
+              var methodSyntaxNode = (MethodDeclarationSyntax) s_syntaxGenerator.MethodDeclaration(methodSymbol);
+              methodInfoList.Add(methodSyntaxNode);
               break;
           }
         }

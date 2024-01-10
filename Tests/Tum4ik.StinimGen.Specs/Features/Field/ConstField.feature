@@ -28,7 +28,7 @@ Scenario: Field with keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     int ConstField { get; }
     """
@@ -45,7 +45,7 @@ Scenario: Field with non-keyworded type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     double ConstField { get; }
     """

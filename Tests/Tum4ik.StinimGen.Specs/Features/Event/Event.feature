@@ -30,7 +30,7 @@ Scenario: Event with EventHandler type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.EventHandler EventMember;
     """
@@ -47,7 +47,7 @@ Scenario: Event with custom type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::Events.CustomEventHandler EventMember;
     """
@@ -64,7 +64,7 @@ Scenario: Event with Action type
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Action EventMember;
     """
@@ -81,7 +81,7 @@ Scenario: Event with Action type with keyworded generic parameter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Action<int> EventMember;
     """
@@ -98,7 +98,7 @@ Scenario: Event with Action type with keyworded nullable generic parameter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Action<string?> EventMember;
     """
@@ -115,7 +115,7 @@ Scenario: Event with Action type with non-keyworded generic parameter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Action<global::System.DateTime> EventMember;
     """
@@ -132,7 +132,7 @@ Scenario: Event with Action type with non-keyworded nullable generic parameter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Action<global::System.DayOfWeek?> EventMember;
     """
@@ -149,7 +149,7 @@ Scenario: Event with Func
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;
     """

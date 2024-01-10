@@ -29,7 +29,7 @@ Scenario: Property with only getter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     int Property { get; }
     """
@@ -47,7 +47,7 @@ Scenario: Property with only setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     float? Property { set; }
     """
@@ -64,7 +64,7 @@ Scenario: Property with getter and setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.IO.Stream Property { get; set; }
     """
@@ -81,7 +81,7 @@ Scenario: Property with getter and private setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.IO.Stream? Property { get; }
     """
@@ -98,7 +98,7 @@ Scenario: Property with getter and protected setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     global::System.IO.Stream? Property { get; }
     """
@@ -115,7 +115,7 @@ Scenario: Property with private getter and setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     float? Property { set; }
     """
@@ -132,7 +132,7 @@ Scenario: Property with protected getter and setter
     """
   When run generator
   Then there must not be generation exception
-  Then generated interface member must be
+  And generated interface member must be
     """
     string Property { set; }
     """
