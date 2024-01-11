@@ -1,105 +1,89 @@
 Feature: Field
 
 
+Background:
+  Given source declaration
+    """
+    using System;
+    namespace Fields;
+    public class FieldHolder
+    {
+      <member>
+    }
+    """
+  And attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Fields;
+    namespace Attribute.Usage;
+    [IIFor(typeof(FieldHolder), "FieldHolderWrapper")]
+    internal partial interface IFieldHolder { }
+    """
+
+
 Scenario: Non-nullable field with keyworded type
   Given source member declaration
     """
-    public nint Field;
+    public static object StaticField;
     """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    nint Field { get; set; }
+    object StaticField { get; set; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public nint Field { get => _instance.Field; set => _instance.Field = value; }
+    public object StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
     """
-  And generated for class implementation
-    """
-    public new nint Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public nint Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-
+  
 
 Scenario: Nullable field with keyworded type
   Given source member declaration
     """
-    public nint? Field;
+    public static object? StaticField;
     """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    nint? Field { get; set; }
+    object? StaticField { get; set; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public nint? Field { get => _instance.Field; set => _instance.Field = value; }
+    public object? StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
     """
-  And generated for class implementation
-    """
-    public new nint? Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public nint? Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-
+  
 
 Scenario: Non-nullable field
-  Given usings
+  Given source member declaration
     """
-    using System;
+    public static Delegate StaticField;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    public DayOfWeek Field;
+    global::System.Delegate StaticField { get; set; }
     """
-  When run generator for field
-  Then generated for interface
+  And generated implementation member must be
     """
-    global::System.DayOfWeek Field { get; set; }
+    public global::System.Delegate StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
     """
-  And generated for struct implementation
-    """
-    public global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for class implementation
-    """
-    public new global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.DayOfWeek Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-
+  
 
 Scenario: Nullable field
-  Given usings
+  Given source member declaration
     """
-    using System;
+    public static Delegate? StaticField;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    public DayOfWeek? Field;
+    global::System.Delegate? StaticField { get; set; }
     """
-  When run generator for field
-  Then generated for interface
+  And generated implementation member must be
     """
-    global::System.DayOfWeek? Field { get; set; }
-    """
-  And generated for struct implementation
-    """
-    public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for class implementation
-    """
-    public new global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.DayOfWeek? Field { get => _instance.Field; set => _instance.Field = value; }
+    public global::System.Delegate? StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
     """

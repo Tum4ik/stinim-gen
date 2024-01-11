@@ -16,6 +16,11 @@ This library is useful in case you want to have possibilities to mock static cla
 ## Requirements
 * .NET 6 and higher
 
+## Philosophy
+1. `Stinim` should be associated with the words: **st**atic, **in**terface, **im**plementation, `Gen` - **gen**erator.
+2. Static (and const) **fields** are converted to the **properties**.
+3. Static **events**, **properties** and **methods** are converted to the **events**, **properties** and **methods** respectively.
+
 ## How to use
 #### 1. Install NuGet package
 Use any approach you prefer to install the NuGet package `Tum4ik.StinimGen`.
@@ -80,6 +85,3 @@ public class MyServiceTests
   }
 }
 ```
-
-## Known limitations
-* Generic methods are not supported yet.

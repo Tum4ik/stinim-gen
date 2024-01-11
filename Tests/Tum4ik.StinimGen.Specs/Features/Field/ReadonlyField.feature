@@ -1,105 +1,89 @@
 Feature: Read-only field
 
 
+Background:
+  Given source declaration
+    """
+    using System;
+    namespace Fields;
+    public class FieldHolder
+    {
+      <member>
+    }
+    """
+  And attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Fields;
+    namespace Attribute.Usage;
+    [IIFor(typeof(FieldHolder), "FieldHolderWrapper")]
+    internal partial interface IFieldHolder { }
+    """
+
+
 Scenario: Non-nullable field with keyworded type
   Given source member declaration
     """
-    public readonly string ReadonlyField;
+    public static readonly float StaticReadonlyField;
     """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    string ReadonlyField { get; }
+    float StaticReadonlyField { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public string ReadonlyField { get => _instance.ReadonlyField; }
+    public float StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
-  And generated for class implementation
-    """
-    public new string ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for sealed class implementation
-    """
-    public string ReadonlyField { get => _instance.ReadonlyField; }
-    """
-
+  
 
 Scenario: Nullable field with keyworded type
   Given source member declaration
     """
-    public readonly string? ReadonlyField;
+    public static readonly float? StaticReadonlyField;
     """
-  When run generator for field
-  Then generated for interface
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    string? ReadonlyField { get; }
+    float? StaticReadonlyField { get; }
     """
-  And generated for struct implementation
+  And generated implementation member must be
     """
-    public string? ReadonlyField { get => _instance.ReadonlyField; }
+    public float? StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
-  And generated for class implementation
-    """
-    public new string? ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for sealed class implementation
-    """
-    public string? ReadonlyField { get => _instance.ReadonlyField; }
-    """
-
+  
 
 Scenario: Non-nullable field
-  Given usings
+  Given source member declaration
     """
-    using System;
+    public static readonly StringComparer StaticReadonlyField;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    public readonly DateTime ReadonlyField;
+    global::System.StringComparer StaticReadonlyField { get; }
     """
-  When run generator for field
-  Then generated for interface
+  And generated implementation member must be
     """
-    global::System.DateTime ReadonlyField { get; }
+    public global::System.StringComparer StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
-  And generated for struct implementation
-    """
-    public global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for class implementation
-    """
-    public new global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.DateTime ReadonlyField { get => _instance.ReadonlyField; }
-    """
-
+  
 
 Scenario: Nullable field
-  Given usings
+  Given source member declaration
     """
-    using System;
+    public static readonly StringComparer? StaticReadonlyField;
     """
-  And source member declaration
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
     """
-    public readonly DateTime? ReadonlyField;
+    global::System.StringComparer? StaticReadonlyField { get; }
     """
-  When run generator for field
-  Then generated for interface
+  And generated implementation member must be
     """
-    global::System.DateTime? ReadonlyField { get; }
-    """
-  And generated for struct implementation
-    """
-    public global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for class implementation
-    """
-    public new global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
-    """
-  And generated for sealed class implementation
-    """
-    public global::System.DateTime? ReadonlyField { get => _instance.ReadonlyField; }
+    public global::System.StringComparer? StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """

@@ -35,13 +35,9 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationPropertySyntax(PropertyInfo propertyInfo,
-                                                                          IIInfo iiInfo)
+    public static MemberDeclarationSyntax GetImplementationPropertySyntax(PropertyInfo propertyInfo, IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || propertyInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
+      var underlyingCallee = IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{propertyInfo.PropertyName}");
 
       var accessorsList = new List<AccessorDeclarationSyntax>(2);
 
@@ -49,7 +45,7 @@ partial class IIGenerator
       {
         accessorsList.Add(
           AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-            .WithExpressionBody(ArrowExpressionClause(IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}")))
+            .WithExpressionBody(ArrowExpressionClause(underlyingCallee))
             .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
         );
       }
@@ -61,7 +57,7 @@ partial class IIGenerator
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.SimpleAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{propertyInfo.PropertyName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -69,17 +65,11 @@ partial class IIGenerator
         );
       }
 
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
       return PropertyDeclaration(
           IdentifierName(propertyInfo.TypeNameWithNullabilityAnnotations),
           Identifier(propertyInfo.PropertyName)
         )
-        .AddModifiers(modifiers.ToArray())
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddAccessorListAccessors(accessorsList.ToArray());
     }
 
@@ -94,30 +84,21 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo,
-                                                                       IIInfo iiInfo)
+    public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo, IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || eventInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
+      var underlyingCallee = IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{eventInfo.EventName}");
+      
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
           Identifier(eventInfo.EventName)
         )
-        .AddModifiers(modifiers.ToArray())
+        .AddModifiers(Token(SyntaxKind.PublicKeyword))
         .AddAccessorListAccessors(
           AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.AddAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -126,7 +107,7 @@ partial class IIGenerator
             .WithExpressionBody(ArrowExpressionClause(
               AssignmentExpression(
                 SyntaxKind.SubtractAssignmentExpression,
-                IdentifierName($"{underlyingCallee}.{eventInfo.EventName}"),
+                underlyingCallee,
                 IdentifierName("value")
               )
             ))
@@ -135,137 +116,62 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodInfo methodInfo)
+    public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodDeclarationSyntax methodDeclarationSyntax)
     {
-      var returnType = GetMethodReturnType(methodInfo);
-      var parameters = GetMethodParameters(methodInfo);
-      return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
-        .AddParameterListParameters(parameters.ToArray())
+      return methodDeclarationSyntax
+        .WithModifiers(TokenList())
+        .WithBody(null)
+        .WithExpressionBody(null)
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
 
 
-    public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodInfo methodInfo,
+    public static MemberDeclarationSyntax GetImplementationMethodSyntax(MethodDeclarationSyntax methodDeclarationSyntax,
                                                                         IIInfo iiInfo)
     {
-      var underlyingCallee = (iiInfo.IsSourceStatic || methodInfo.IsStatic)
-        ? iiInfo.SourceFullyQualifiedName
-        : InstanceFieldName;
-      var isNewKeywordRequired = !iiInfo.IsSourceStatic && !iiInfo.IsSourceSealed;
-
-      var returnType = GetMethodReturnType(methodInfo);
-      var parameters = GetMethodParameters(methodInfo);
-      var arguments = methodInfo.Parameters.Select(p =>
+      var typeParameterList = methodDeclarationSyntax.TypeParameterList;
+      ExpressionSyntax invocationExpressionIdentifier;
+      if (typeParameterList is not null && typeParameterList.Parameters.Count > 0)
       {
-        var argument = Argument(IdentifierName(p.ParameterName));
-        if (p.RefKind != RefKind.None)
-        {
-          argument = argument.WithRefKindKeyword(Token(p.RefKind switch
-          {
-            RefKind.Ref => SyntaxKind.RefKeyword,
-            RefKind.Out => SyntaxKind.OutKeyword,
-            RefKind.In => SyntaxKind.InKeyword,
-            _ => throw new NotImplementedException()
-          }));
-        }
-        return argument;
-      }).ToArray();
-      var separatorsCount = arguments.Length - 1;
-      if (separatorsCount < 0)
-      {
-        separatorsCount = 0;
-      }
-      var separators = new SyntaxToken[separatorsCount];
-      for (var i = 0; i < separators.Length; i++)
-      {
-        separators[i] = Token(SyntaxKind.CommaToken);
-      }
-
-      var modifiers = new List<SyntaxToken>(2) { Token(SyntaxKind.PublicKeyword) };
-      if (isNewKeywordRequired)
-      {
-        modifiers.Add(Token(SyntaxKind.NewKeyword));
-      }
-
-      return MethodDeclaration(returnType, Identifier(methodInfo.MethodName))
-        .AddModifiers(modifiers.ToArray())
-        .AddParameterListParameters(parameters.ToArray())
-        .WithExpressionBody(ArrowExpressionClause(
-          InvocationExpression(
-            IdentifierName($"{underlyingCallee}.{methodInfo.MethodName}"),
-            ArgumentList(SeparatedList(arguments, separators))
+        invocationExpressionIdentifier = GenericName(
+          $"{iiInfo.SourceFullyQualifiedName}.{methodDeclarationSyntax.Identifier}"
+        )
+        .WithTypeArgumentList(
+          TypeArgumentList(
+            SeparatedList(typeParameterList.Parameters.Select(p => ParseTypeName(p.Identifier.ValueText)))
           )
-        ))
-        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
-    }
-
-
-    private static TypeSyntax GetMethodReturnType(MethodInfo methodInfo)
-    {
-      return methodInfo.ReturnTypeNameWithNullabilityAnnotations is null
-        ? PredefinedType(Token(SyntaxKind.VoidKeyword))
-        : IdentifierName(methodInfo.ReturnTypeNameWithNullabilityAnnotations);
-    }
-
-
-    private static IEnumerable<ParameterSyntax> GetMethodParameters(MethodInfo methodInfo)
-    {
-      return methodInfo.Parameters.Select(p =>
+        );
+      }
+      else
       {
-        var parameter = Parameter(Identifier(p.ParameterName))
-          .WithType(IdentifierName(p.TypeNameWithNullabilityAnnotations));
-        if (p.RefKind != RefKind.None)
-        {
-          parameter = parameter.AddModifiers(Token(p.RefKind switch
-          {
-            RefKind.Ref => SyntaxKind.RefKeyword,
-            RefKind.Out => SyntaxKind.OutKeyword,
-            RefKind.In => SyntaxKind.InKeyword,
-            _ => throw new NotImplementedException(),
-          }));
-        }
-        if (p.IsParams)
-        {
-          parameter = parameter.AddModifiers(Token(SyntaxKind.ParamsKeyword));
-        }
-        if (p.IsOptional)
-        {
-          ExpressionSyntax literal;
-          if (p.ExplicitDefaultValue is null)
-          {
-            literal = LiteralExpression(SyntaxKind.DefaultLiteralExpression);
-          }
-          else if (p.TypeKind == TypeKind.Enum)
-          {
-            literal = CastExpression(
-              IdentifierName(p.TypeNameWithNullabilityAnnotations),
-              ParseExpression(p.ExplicitDefaultValue.ToString())
-            );
-          }
-          else if (p.SpecialType == SpecialType.System_Decimal)
-          {
-            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((decimal) p.ExplicitDefaultValue));
-          }
-          else if (p.SpecialType == SpecialType.System_Single)
-          {
-            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((float) p.ExplicitDefaultValue));
-          }
-          else if (p.SpecialType == SpecialType.System_Double)
-          {
-            literal = LiteralExpression(SyntaxKind.NumericLiteralExpression, Literal((double) p.ExplicitDefaultValue));
-          }
-          else if (p.SpecialType == SpecialType.System_String)
-          {
-            literal = LiteralExpression(SyntaxKind.StringLiteralExpression, Literal((string) p.ExplicitDefaultValue));
-          }
-          else
-          {
-            literal = ParseExpression(p.ExplicitDefaultValue.ToString());
-          }
-          parameter = parameter.WithDefault(EqualsValueClause(literal));
-        }
-        return parameter;
-      });
+        invocationExpressionIdentifier = IdentifierName(
+          $"{iiInfo.SourceFullyQualifiedName}.{methodDeclarationSyntax.Identifier}"
+        );
+      }
+      return methodDeclarationSyntax
+        .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+        .WithBody(null)
+        .WithExpressionBody(
+          ArrowExpressionClause(
+            InvocationExpression(
+              invocationExpressionIdentifier,
+              ArgumentList(
+                SeparatedList(methodDeclarationSyntax.ParameterList.Parameters.Select(
+                  p =>
+                  {
+                    var refKeywork = p.Modifiers.FirstOrDefault(
+                      m => m.IsKind(SyntaxKind.RefKeyword)
+                        || m.IsKind(SyntaxKind.OutKeyword)
+                        || m.IsKind(SyntaxKind.InKeyword)
+                    );
+                    return Argument(IdentifierName(p.Identifier)).WithRefKindKeyword(refKeywork);
+                  }
+                ))
+              )
+            )
+          )
+        )
+        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
   }
 }
