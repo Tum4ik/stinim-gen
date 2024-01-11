@@ -23,7 +23,7 @@ Background:
     """
 
 
-Scenario: Event with EventHandler type
+Scenario: Event field with EventHandler type
   Given source member declaration
     """
     public static event EventHandler EventMember;
@@ -40,7 +40,7 @@ Scenario: Event with EventHandler type
     """
 
 
-Scenario: Event with custom type
+Scenario: Event field with custom type
   Given source member declaration
     """
     public static event CustomEventHandler EventMember;
@@ -57,7 +57,7 @@ Scenario: Event with custom type
     """
 
 
-Scenario: Event with Action type
+Scenario: Event field with Action type
   Given source member declaration
     """
     public static event Action EventMember;
@@ -74,7 +74,7 @@ Scenario: Event with Action type
     """
 
 
-Scenario: Event with Action type with keyworded generic parameter
+Scenario: Event field with Action type with keyworded generic parameter
   Given source member declaration
     """
     public static event Action<int> EventMember;
@@ -91,7 +91,7 @@ Scenario: Event with Action type with keyworded generic parameter
     """
 
 
-Scenario: Event with Action type with keyworded nullable generic parameter
+Scenario: Event field with Action type with keyworded nullable generic parameter
   Given source member declaration
     """
     public static event Action<string?> EventMember;
@@ -108,7 +108,7 @@ Scenario: Event with Action type with keyworded nullable generic parameter
     """
 
 
-Scenario: Event with Action type with non-keyworded generic parameter
+Scenario: Event field with Action type with non-keyworded generic parameter
   Given source member declaration
     """
     public static event Action<DateTime> EventMember;
@@ -125,7 +125,7 @@ Scenario: Event with Action type with non-keyworded generic parameter
     """
 
 
-Scenario: Event with Action type with non-keyworded nullable generic parameter
+Scenario: Event field with Action type with non-keyworded nullable generic parameter
   Given source member declaration
     """
     public static event Action<DayOfWeek?> EventMember;
@@ -142,7 +142,7 @@ Scenario: Event with Action type with non-keyworded nullable generic parameter
     """
 
 
-Scenario: Event with Func
+Scenario: Event field with Func
   Given source member declaration
     """
     public static event Func<DayOfWeek?, double, int?> EventMember;
@@ -156,4 +156,26 @@ Scenario: Event with Func
   And generated implementation member must be
     """
     public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    """
+
+
+Scenario: Full event
+  Given source member declaration
+    """
+    private static event EventHandler _fullEvent;
+    public static event EventHandler FullEvent
+    {
+      add => _fullEvent += value;
+      remove => _fullEvent -= value;
+    }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    event global::System.EventHandler FullEvent;
+    """
+  And generated implementation member must be
+    """
+    public event global::System.EventHandler FullEvent { add => Events.EventHolder.FullEvent += value; remove => Events.EventHolder.FullEvent -= value; }
     """

@@ -99,8 +99,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
-              var methodSyntaxNode = (MethodDeclarationSyntax) s_syntaxGenerator.MethodDeclaration(methodSymbol);
-              methodInfoList.Add(methodSyntaxNode);
+              var methodDeclarationSyntax = (MethodDeclarationSyntax) s_syntaxGenerator.MethodDeclaration(methodSymbol);
+              methodInfoList.Add(methodDeclarationSyntax);
               break;
           }
         }
@@ -232,7 +232,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     foreach (var methodInfo in iiInfo.MethodInfoList)
     {
       interfaceMembers.Add(Execute.GetInterfaceMethodSyntax(methodInfo));
-      implementationMembers.Add(Execute.GetImplementationMethodSyntax(methodInfo,iiInfo));
+      implementationMembers.Add(Execute.GetImplementationMethodSyntax(methodInfo, iiInfo));
     }
   }
 
