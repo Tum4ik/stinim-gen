@@ -18,8 +18,9 @@ This library is useful in case you want to have possibilities to mock static cla
 
 ## Philosophy
 1. `Stinim` should be associated with the words: **st**atic, **in**terface, **im**plementation, `Gen` - **gen**erator.
-2. Static (and const) **fields** are converted to the **properties**.
+2. Static (also const) **fields** are converted to the **properties**.
 3. Static **events**, **properties** and **methods** are converted to the **events**, **properties** and **methods** respectively.
+4. All instance (non-static) members are ignored.
 
 ## How to use
 #### 1. Install NuGet package
