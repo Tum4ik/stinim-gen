@@ -35,8 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Properties", "Solu
 		SolutionProperties\Authors.txt = SolutionProperties\Authors.txt
 		SolutionProperties\Company.txt = SolutionProperties\Company.txt
 		SolutionProperties\Copyright.txt = SolutionProperties\Copyright.txt
-		SolutionProperties\PackageReleaseNotes.txt = SolutionProperties\PackageReleaseNotes.txt
 		SolutionProperties\Product.txt = SolutionProperties\Product.txt
+		SolutionProperties\ReleaseNotes.txt = SolutionProperties\ReleaseNotes.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D7142119-FDB3-4820-BCC8-AACA0BA536BF}"

@@ -69,8 +69,8 @@
     <ReadLinesFromFile File="..\SolutionProperties\Copyright.txt">
       <Output TaskParameter="Lines" ItemName="CopyrightLines" />
     </ReadLinesFromFile>
-    <ReadLinesFromFile File="..\SolutionProperties\PackageReleaseNotes.txt">
-      <Output TaskParameter="Lines" ItemName="PackageReleaseNotesLines" />
+    <ReadLinesFromFile File="..\SolutionProperties\ReleaseNotes.txt">
+      <Output TaskParameter="Lines" ItemName="ReleaseNotesLines" />
     </ReadLinesFromFile>
     <ReadLinesFromFile File="..\SolutionProperties\Product.txt">
       <Output TaskParameter="Lines" ItemName="ProductLines" />
@@ -79,7 +79,7 @@
       <Authors>@(AuthorsLines)</Authors>
       <Company>@(CompanyLines)</Company>
       <Copyright>@(CopyrightLines)</Copyright>
-      <PackageReleaseNotes>@(PackageReleaseNotesLines, '%0a')</PackageReleaseNotes>
+      <PackageReleaseNotes>@(ReleaseNotesLines, '%0a')</PackageReleaseNotes>
       <Product>@(ProductLines)</Product>
     </PropertyGroup>
   </Target>
