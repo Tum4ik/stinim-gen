@@ -1,4 +1,4 @@
-name: Gated
+name: Release 1.0
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
 
   build:
 
-    name: Gated build
+    name: Build 1.0
     runs-on: windows-latest
 
     outputs:
