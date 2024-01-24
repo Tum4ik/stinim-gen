@@ -16,14 +16,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 {
   private static readonly string s_iiForAttributeFullName = "Tum4ik.StinimGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
-  private static readonly SyntaxGenerator s_syntaxGenerator = SyntaxGenerator.GetGenerator(
-    new AdhocWorkspace(), LanguageNames.CSharp
-  );
+ 
 
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
     //System.Diagnostics.Debugger.Launch();
-
     var interfacesProvider = context.SyntaxProvider.ForAttributeWithMetadataName(
       s_iiForAttributeFullName,
       static (node, _) => node is InterfaceDeclarationSyntax interfaceDeclaration
@@ -65,6 +62,9 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 
         var publicMembers = sourceNamedTypeSymbol
           .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsStatic);
+       var s_syntaxGenerator = SyntaxGenerator.GetGenerator(
+    new AdhocWorkspace(), LanguageNames.CSharp
+  );
         foreach (var member in publicMembers)
         {
           switch (member)
