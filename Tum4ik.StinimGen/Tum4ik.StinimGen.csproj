@@ -39,6 +39,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Composition.Hosting" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="System.Composition.Runtime" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Composition.TypedParts" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
@@ -47,6 +48,7 @@
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgSystem_Composition_Hosting)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PkgSystem_Composition_Runtime)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.dll" Pack="true" PackagePath="lib/netstandard2.0" />
     <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.pdb" Pack="true" PackagePath="lib/netstandard2.0" />
