@@ -50,7 +50,7 @@ jobs:
         if (![System.Version]::TryParse($majorMinor, [ref]$null)) { $majorMinor = "0.0" }
         $buildNumber = "$(Get-Date -Format 'yy')$((Get-Date).DayOfYear.ToString().PadLeft(3, '0'))"
         $version = "$majorMinor.$buildNumber.${{ github.run_number }}"
-        echo "version=$version" >> $env:GITHUB_OUTPUT
+        echo "version=$version-beta" >> $env:GITHUB_OUTPUT
 
     - name: Build
       run: |
