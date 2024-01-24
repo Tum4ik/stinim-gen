@@ -38,6 +38,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.8.0" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="System.Composition.AttributedModel" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Composition.Hosting" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Composition.Runtime" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="System.Composition.TypedParts" Version="7.0.0" PrivateAssets="all" GeneratePathProperty="true" />
@@ -47,6 +48,7 @@
     <!-- Package the generator in the analyzer directory of the nuget package -->
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgMicrosoft_CodeAnalysis_Workspaces_Common)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(PkgSystem_Composition_AttributedModel)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgSystem_Composition_Hosting)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgSystem_Composition_Runtime)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(PkgSystem_Composition_TypedParts)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
