@@ -21,6 +21,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
     //System.Diagnostics.Debugger.Launch();
+
     var interfacesProvider = context.SyntaxProvider.ForAttributeWithMetadataName(
       s_iiForAttributeFullName,
       static (node, _) => node is InterfaceDeclarationSyntax interfaceDeclaration
