@@ -98,27 +98,58 @@ jobs:
           /p:IncludeSymbols=true `
           /p:SymbolPackageFormat=snupkg
 
-    - name: Upload build artifacts
+    - name: Upload package
       uses: actions/upload-artifact@v4.3.0
       with:
         if-no-files-found: error
         name: Package
         path: ${{ env.PackOutputPath }}
 
+    - name: Upload release notes
+      uses: actions/upload-artifact@v4.3.0
+      with:
+        if-no-files-found: error
+        name: ReleaseNotes
+        path: .\SolutionProperties\ReleaseNotes.txt
+
 
   nuget-release:
 
+    name: NuGet Release ${{ needs.build.outputs.version }}
     if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
     needs: build
-    name: Release ${{ needs.build.outputs.version }}
     runs-on: windows-latest
 
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4.1.1
+      with:
+        name: Package
 
     - name: NuGet push
       run: |
         dotnet nuget push "**/*.nupkg" `
           -s https://api.nuget.org/v3/index.json `
           -k ${{ secrets.NUGET_API_KEY }}
+
+
+  github-release:
+
+    name: GitHub Release ${{ needs.build.outputs.version }}
+    if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4.1.1
+      with:
+        name: ReleaseNotes
+
+    - name: GitHub release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        tag_name: ${{ needs.build.outputs.version }}
+        draft: false
+        body_path: ReleaseNotes/ReleaseNotes.txt
+        fail_on_unmatched_files: true
