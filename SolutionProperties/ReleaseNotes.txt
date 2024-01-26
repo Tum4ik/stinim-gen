@@ -1,1 +1,2 @@
 - Fixed problem with explicit interface specifier.
+- Excluded methods inherited from System.Object.

@@ -45,8 +45,6 @@ Scenario: Static methods from the System.Object class must not be included
     """
   And generated implementation must be
     """
-    [global::System.CodeDom.Compiler.GeneratedCode("StinimGen", "0.0.0.0")]
-    [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     internal class EmptyClassWrapper : IEmptyClass
     {
     }

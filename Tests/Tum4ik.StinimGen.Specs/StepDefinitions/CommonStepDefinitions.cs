@@ -71,6 +71,7 @@ public class CommonStepDefinitions
       .DescendantNodes()
       .First(n => n.IsKind(SyntaxKind.InterfaceDeclaration))
       .As<InterfaceDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
       .NormalizeWhitespace()
       .GetText()
       .ToString();
@@ -88,6 +89,7 @@ public class CommonStepDefinitions
       .DescendantNodes()
       .First(n => n.IsKind(SyntaxKind.ClassDeclaration))
       .As<ClassDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
       .NormalizeWhitespace()
       .GetText()
       .ToString();
