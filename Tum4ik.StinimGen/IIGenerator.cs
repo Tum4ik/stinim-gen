@@ -107,7 +107,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               break;
           }
         }
-
+        
         return new IIInfo(
           interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
@@ -155,34 +155,33 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
     GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers);
 
-    var attributes = new[]
-    {
-      AttributeList(SingletonSeparatedList(
-        Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
-          .AddArgumentListArguments(
-            AttributeArgument(LiteralExpression(
-              SyntaxKind.StringLiteralExpression,
-              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product))
-            ),
-            AttributeArgument(LiteralExpression(
-              SyntaxKind.StringLiteralExpression,
-              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version))
-            )
+    var executingAssembly = Assembly.GetExecutingAssembly();
+    var generatedCodeAttribute = AttributeList(SingletonSeparatedList(
+      Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
+        .AddArgumentListArguments(
+          AttributeArgument(LiteralExpression(
+            SyntaxKind.StringLiteralExpression,
+            Literal(executingAssembly.GetCustomAttribute<AssemblyProductAttribute>().Product))
+          ),
+          AttributeArgument(LiteralExpression(
+            SyntaxKind.StringLiteralExpression,
+            Literal(executingAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version))
           )
-      )),
-      AttributeList(SingletonSeparatedList(
-        Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
-      ))
-    };
-
+        )
+    ));
+    var excludeFromCodeCoverageAttribute = AttributeList(SingletonSeparatedList(
+      Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
+    ));
+    
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
+      .AddAttributeLists(generatedCodeAttribute)
       .AddModifiers(Token(SyntaxKind.PartialKeyword))
       .AddMembers(interfaceMembers.ToArray());
 
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()
-      .AddAttributeLists(attributes)
+      .AddAttributeLists(generatedCodeAttribute, excludeFromCodeCoverageAttribute)
       .AddModifiers(Token(SyntaxKind.InternalKeyword))
       .AddMembers(implementationMembers.ToArray())
       .AddBaseListTypes(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
