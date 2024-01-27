@@ -61,6 +61,42 @@ public class CommonStepDefinitions
   }
 
 
+  [Then("generated interface must be")]
+  public void GeneratedInterfaceMustBe(string expectedInterface)
+  {
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedInterfaceSourceResult = generatorRunResult.GeneratedSources[0];
+    var generatedInterface = generatedInterfaceSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.InterfaceDeclaration))
+      .As<InterfaceDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedInterface.Should().Be(expectedInterface);
+  }
+
+
+  [Then("generated implementation must be")]
+  public void GeneratedImplementationMustBe(string expectedImplementation)
+  {
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedImplementationSourceResult = generatorRunResult.GeneratedSources[1];
+    var generatedImplementation = generatedImplementationSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.ClassDeclaration))
+      .As<ClassDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedImplementation.Should().Be(expectedImplementation);
+  }
+
+
   [Then("generated interface member must be")]
   public void ThenGeneratedInterfaceMustBe(string expectedInterfaceMember)
   {

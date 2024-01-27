@@ -61,8 +61,11 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var eventInfoList = new List<Models.EventInfo>();
         var methodInfoList = new List<MethodDeclarationSyntax>();
 
-        var publicMembers = sourceNamedTypeSymbol
-          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsStatic);
+        var publicMembers = sourceNamedTypeSymbol.GetMembersIncludingBaseTypes(
+          m => m.DeclaredAccessibility == Accessibility.Public
+               && m.IsStatic
+               && !IsObjectType(m.ContainingType)
+        );
         var syntaxGenerator = SyntaxGenerator.GetGenerator(new AdhocWorkspace(), LanguageNames.CSharp);
         foreach (var member in publicMembers)
         {
@@ -129,6 +132,16 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     );
 
     context.RegisterSourceOutput(interfacesProvider, Generate);
+  }
+
+
+  private static bool IsObjectType(INamedTypeSymbol namedTypeSymbol)
+  {
+    var fullyQualifiedName = namedTypeSymbol.ToDisplayString(
+      SymbolDisplayFormat.FullyQualifiedFormat
+        .RemoveMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.UseSpecialTypes)
+    );
+    return fullyQualifiedName == "global::System.Object";
   }
 
 
