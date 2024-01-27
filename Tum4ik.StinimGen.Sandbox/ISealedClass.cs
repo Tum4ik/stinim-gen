@@ -4,6 +4,6 @@ using Tum4ik.StinimGen.Sandbox.Types;
 namespace Tum4ik.StinimGen.Sandbox;
 
 [IIFor(typeof(SealedClass), "SealedClassWrapper")]
-internal partial interface ISealedClass
+public partial interface ISealedClass
 {
 }

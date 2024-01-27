@@ -8,9 +8,13 @@ internal static class ScenarioContextExtensions
   {
     context[DeclarationKey] = declaration;
   }
-  public static string GetDeclaration(this ScenarioContext context)
+  public static string? GetDeclaration(this ScenarioContext context)
   {
-    return (string) context[DeclarationKey];
+    if (context.TryGetValue<string>(DeclarationKey, out var declaration))
+    {
+      return declaration;
+    }
+    return null;
   }
 
 
@@ -30,9 +34,13 @@ internal static class ScenarioContextExtensions
   {
     context[MemberDeclarationKey] = memberDeclaration;
   }
-  public static string GetMemberDeclaration(this ScenarioContext context)
+  public static string? GetMemberDeclaration(this ScenarioContext context)
   {
-    return (string) context[MemberDeclarationKey];
+    if (context.TryGetValue<string>(MemberDeclarationKey, out var memberDeclaration))
+    {
+      return memberDeclaration;
+    }
+    return null;
   }
 
 

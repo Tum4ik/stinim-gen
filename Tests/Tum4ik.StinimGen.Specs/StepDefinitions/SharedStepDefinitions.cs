@@ -7,15 +7,15 @@ using Tum4ik.StinimGen.Specs.Extensions;
 namespace Tum4ik.StinimGen.Specs.StepDefinitions;
 
 [Binding]
-public class CommonStepDefinitions
+public class SharedStepDefinitions
 {
   private readonly ScenarioContext _scenarioContext;
 
-  public CommonStepDefinitions(ScenarioContext scenarioContext)
+  public SharedStepDefinitions(ScenarioContext scenarioContext)
   {
     _scenarioContext = scenarioContext;
   }
-  
+
 
   [Given("source declaration")]
   public void GivenSourceDeclaration(string declaration)
@@ -42,9 +42,13 @@ public class CommonStepDefinitions
   public void WhenRunGenerator()
   {
     var memberDeclaration = _scenarioContext.GetMemberDeclaration();
-    var declaration = _scenarioContext.GetDeclaration().Replace("<member>", memberDeclaration);
+    var declaration = _scenarioContext.GetDeclaration();
+    if (memberDeclaration is not null && declaration is not null)
+    {
+      declaration = declaration.Replace("<member>", memberDeclaration);
+    }
     var attributeUsage = _scenarioContext.GetAttributeUsage();
-    var generatorRunResult = RunGenerator(declaration, attributeUsage);
+    var generatorRunResult = RunGenerator(attributeUsage, declaration);
     _scenarioContext.AddGeneratorRunResult(generatorRunResult);
   }
 
@@ -54,6 +58,42 @@ public class CommonStepDefinitions
   {
     var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
     generatorRunResult.Exception.Should().BeNull();
+  }
+
+
+  [Then("generated interface must be")]
+  public void GeneratedInterfaceMustBe(string expectedInterface)
+  {
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedInterfaceSourceResult = generatorRunResult.GeneratedSources[0];
+    var generatedInterface = generatedInterfaceSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.InterfaceDeclaration))
+      .As<InterfaceDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedInterface.Should().Be(expectedInterface);
+  }
+
+
+  [Then("generated implementation must be")]
+  public void GeneratedImplementationMustBe(string expectedImplementation)
+  {
+    var generatorRunResult = _scenarioContext.GetGeneratorRunResult();
+    var generatedImplementationSourceResult = generatorRunResult.GeneratedSources[1];
+    var generatedImplementation = generatedImplementationSourceResult.SyntaxTree
+      .GetRoot()
+      .DescendantNodes()
+      .First(n => n.IsKind(SyntaxKind.ClassDeclaration))
+      .As<ClassDeclarationSyntax>()
+      .WithAttributeLists(new SyntaxList<AttributeListSyntax>())
+      .NormalizeWhitespace()
+      .GetText()
+      .ToString();
+    generatedImplementation.Should().Be(expectedImplementation);
   }
 
 
@@ -95,11 +135,12 @@ public class CommonStepDefinitions
   }
 
 
-  private static GeneratorRunResult RunGenerator(string declaration, string attributeUsage)
+  private static GeneratorRunResult RunGenerator(string attributeUsage, string? declaration)
   {
+    string[] sourceCodeTrees = declaration is null ? [attributeUsage] : [declaration, attributeUsage];
     var inputCompilation = Helper.CreateCompilation("Virtual.Assembly",
-      new[] { declaration, attributeUsage },
-      new[] { typeof(IIForAttribute), typeof(object), typeof(Stream) }
+      sourceCodeTrees,
+      [typeof(IIForAttribute), typeof(object), typeof(Stream)]
     );
     return CSharpGeneratorDriver.Create(new IIGenerator())
       .RunGeneratorsAndUpdateCompilation(inputCompilation, out _, out _)
