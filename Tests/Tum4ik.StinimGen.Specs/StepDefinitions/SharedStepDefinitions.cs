@@ -7,11 +7,11 @@ using Tum4ik.StinimGen.Specs.Extensions;
 namespace Tum4ik.StinimGen.Specs.StepDefinitions;
 
 [Binding]
-public class CommonStepDefinitions
+public class SharedStepDefinitions
 {
   private readonly ScenarioContext _scenarioContext;
 
-  public CommonStepDefinitions(ScenarioContext scenarioContext)
+  public SharedStepDefinitions(ScenarioContext scenarioContext)
   {
     _scenarioContext = scenarioContext;
   }

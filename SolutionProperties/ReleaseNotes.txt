@@ -1,2 +1,3 @@
 - Fixed problem with explicit interface specifier.
 - Excluded methods inherited from System.Object.
+- GeneratedCodeAttribute for the generated interface.
