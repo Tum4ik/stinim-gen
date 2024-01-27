@@ -151,5 +151,5 @@ jobs:
       with:
         tag_name: ${{ needs.build.outputs.version }}
         draft: false
-        body_path: ReleaseNotes/ReleaseNotes.txt
+        body_path: ReleaseNotes.txt
         fail_on_unmatched_files: true
