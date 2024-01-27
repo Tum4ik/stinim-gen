@@ -16,7 +16,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
 {
   private static readonly string s_iiForAttributeFullName = "Tum4ik.StinimGen.Attributes.IIForAttribute";
   private const string Indentation = "  ";
- 
+
 
   public void Initialize(IncrementalGeneratorInitializationContext context)
   {
@@ -61,11 +61,12 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         var eventInfoList = new List<Models.EventInfo>();
         var methodInfoList = new List<MethodDeclarationSyntax>();
 
-        var publicMembers = sourceNamedTypeSymbol
-          .GetMembersIncludingBaseTypes(m => m.DeclaredAccessibility == Accessibility.Public && m.IsStatic);
-       var s_syntaxGenerator = SyntaxGenerator.GetGenerator(
-    new AdhocWorkspace(), LanguageNames.CSharp
-  );
+        var publicMembers = sourceNamedTypeSymbol.GetMembersIncludingBaseTypes(
+          m => m.DeclaredAccessibility == Accessibility.Public
+               && m.IsStatic
+               && !IsObjectType(m.ContainingType)
+        );
+        var syntaxGenerator = SyntaxGenerator.GetGenerator(new AdhocWorkspace(), LanguageNames.CSharp);
         foreach (var member in publicMembers)
         {
           switch (member)
@@ -100,12 +101,13 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
-              var methodDeclarationSyntax = (MethodDeclarationSyntax) s_syntaxGenerator.MethodDeclaration(methodSymbol);
+              var methodDeclarationSyntax = ((MethodDeclarationSyntax) syntaxGenerator.MethodDeclaration(methodSymbol))
+                .WithExplicitInterfaceSpecifier(null);
               methodInfoList.Add(methodDeclarationSyntax);
               break;
           }
         }
-
+        
         return new IIInfo(
           interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
@@ -133,6 +135,16 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   }
 
 
+  private static bool IsObjectType(INamedTypeSymbol namedTypeSymbol)
+  {
+    var fullyQualifiedName = namedTypeSymbol.ToDisplayString(
+      SymbolDisplayFormat.FullyQualifiedFormat
+        .RemoveMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.UseSpecialTypes)
+    );
+    return fullyQualifiedName == "global::System.Object";
+  }
+
+
   private static void Generate(SourceProductionContext ctx, IIInfo iiInfo)
   {
     var interfaceMembers = new List<MemberDeclarationSyntax>();
@@ -143,34 +155,33 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     GenerateMembersForEvents(iiInfo, interfaceMembers, implementationMembers);
     GenerateMembersForMethods(iiInfo, interfaceMembers, implementationMembers);
 
-    var attributes = new[]
-    {
-      AttributeList(SingletonSeparatedList(
-        Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
-          .AddArgumentListArguments(
-            AttributeArgument(LiteralExpression(
-              SyntaxKind.StringLiteralExpression,
-              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyProductAttribute>().Product))
-            ),
-            AttributeArgument(LiteralExpression(
-              SyntaxKind.StringLiteralExpression,
-              Literal(Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version))
-            )
+    var executingAssembly = Assembly.GetExecutingAssembly();
+    var generatedCodeAttribute = AttributeList(SingletonSeparatedList(
+      Attribute(IdentifierName("global::System.CodeDom.Compiler.GeneratedCode"))
+        .AddArgumentListArguments(
+          AttributeArgument(LiteralExpression(
+            SyntaxKind.StringLiteralExpression,
+            Literal(executingAssembly.GetCustomAttribute<AssemblyProductAttribute>().Product))
+          ),
+          AttributeArgument(LiteralExpression(
+            SyntaxKind.StringLiteralExpression,
+            Literal(executingAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version))
           )
-      )),
-      AttributeList(SingletonSeparatedList(
-        Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
-      ))
-    };
-
+        )
+    ));
+    var excludeFromCodeCoverageAttribute = AttributeList(SingletonSeparatedList(
+      Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
+    ));
+    
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
+      .AddAttributeLists(generatedCodeAttribute)
       .AddModifiers(Token(SyntaxKind.PartialKeyword))
       .AddMembers(interfaceMembers.ToArray());
 
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()
-      .AddAttributeLists(attributes)
+      .AddAttributeLists(generatedCodeAttribute, excludeFromCodeCoverageAttribute)
       .AddModifiers(Token(SyntaxKind.InternalKeyword))
       .AddMembers(implementationMembers.ToArray())
       .AddBaseListTypes(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
