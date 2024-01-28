@@ -11,7 +11,7 @@ Scenario: Explicit interface implementatins conflict for DateTime struct
     using System;
     using Tum4ik.StinimGen.Attributes;
     namespace Attribute.Usage;
-    [IIFor(typeof(DateTime), "DateTimeWrapper")]
+    [IIFor(typeof(DateTime), WrapperClassName = "DateTimeWrapper")]
     internal partial interface IDateTime { }
     """
   When run generator
@@ -32,7 +32,7 @@ Scenario: Static methods from the System.Object class must not be included
     using Tum4ik.StinimGen.Attributes;
     using Methods;
     namespace Attribute.Usage;
-    [IIFor(typeof(EmptyClass), "EmptyClassWrapper")]
+    [IIFor(typeof(EmptyClass), WrapperClassName = "EmptyClassWrapper")]
     internal partial interface IEmptyClass { }
     """
   When run generator
@@ -45,7 +45,7 @@ Scenario: Static methods from the System.Object class must not be included
     """
   And generated implementation must be
     """
-    internal class EmptyClassWrapper : IEmptyClass
+    internal sealed class EmptyClassWrapper : IEmptyClass
     {
     }
     """

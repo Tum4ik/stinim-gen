@@ -19,7 +19,7 @@ Background:
     using Tum4ik.StinimGen.Attributes;
     using Methods;
     namespace Attribute.Usage;
-    [IIFor(typeof(MethodHolder), "MethodHolderWrapper")]
+    [IIFor(typeof(MethodHolder), WrapperClassName = "MethodHolderWrapper")]
     internal partial interface IMethodHolder { }
     """
 

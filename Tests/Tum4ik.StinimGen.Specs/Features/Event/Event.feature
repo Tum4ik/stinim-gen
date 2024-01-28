@@ -18,7 +18,7 @@ Background:
     using Tum4ik.StinimGen.Attributes;
     using Events;
     namespace Attribute.Usage;
-    [IIFor(typeof(EventHolder), "EventHolderWrapper")]
+    [IIFor(typeof(EventHolder), WrapperClassName = "EventHolderWrapper")]
     internal partial interface IEventHolder { }
     """
 
