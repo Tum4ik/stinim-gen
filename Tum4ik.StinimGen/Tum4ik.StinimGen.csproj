@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>12</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
@@ -47,10 +47,6 @@
     <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.pdb" Pack="true" PackagePath="lib/netstandard2.0" />
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Condition="'$(Configuration)'=='Debug'" Include="..\Tum4ik.StinimGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
   </ItemGroup>
 
   <ItemGroup>

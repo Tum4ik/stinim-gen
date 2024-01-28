@@ -37,7 +37,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           .DescendantNodes()
           .OfType<AttributeArgumentSyntax>()
           .ToImmutableArray();
-        if (attributeArguments.Length != 2)
+        if (attributeArguments.Length < 2)
         {
           throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
         }
