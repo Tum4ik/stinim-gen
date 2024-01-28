@@ -37,7 +37,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           .DescendantNodes()
           .OfType<AttributeArgumentSyntax>()
           .ToImmutableArray();
-        if (attributeArguments.Length != 2)
+        if (attributeArguments.Length < 2)
         {
           throw new ArgumentException("Incorrect amount of the declared attribute arguments.");
         }
@@ -50,7 +50,33 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           throw new ArgumentException("Can not get the class named type symbol.");
         }
 
-        var wrapperClassName = (attributeArguments[1].Expression as LiteralExpressionSyntax)?.Token.ValueText;
+        string? wrapperClassName = null;
+        var isPublic = false;
+        var isSealed = true;
+        for (var i = 1; i < attributeArguments.Length; i++)
+        {
+          var attributeArgument = attributeArguments[i];
+          var argumentName = attributeArgument.NameEquals?.Name.Identifier.ValueText;
+          var argumentValue = (attributeArgument.Expression as LiteralExpressionSyntax)?.Token.ValueText;
+          if (argumentName is null || argumentValue is null)
+          {
+            continue;
+          }
+
+          switch (argumentName)
+          {
+            case "WrapperClassName":
+              wrapperClassName = argumentValue;
+              break;
+            case "IsPublic":
+              isPublic = bool.Parse(argumentValue);
+              break;
+            case "IsSealed":
+              isSealed = bool.Parse(argumentValue);
+              break;
+          }
+        }
+
         if (wrapperClassName is null)
         {
           throw new ArgumentException("Incorrect wrapper class name.");
@@ -107,7 +133,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               break;
           }
         }
-        
+
         return new IIInfo(
           interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
@@ -122,6 +148,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
             TypeKind.Class,
             false
           ),
+          new(isPublic, isSealed),
           propertyForFieldInfoList.ToImmutableArray(),
           propertyInfoList.ToImmutableArray(),
           eventInfoList.ToImmutableArray(),
@@ -172,18 +199,27 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     var excludeFromCodeCoverageAttribute = AttributeList(SingletonSeparatedList(
       Attribute(IdentifierName("global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage"))
     ));
-    
+
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
       .AddAttributeLists(generatedCodeAttribute)
       .AddModifiers(Token(SyntaxKind.PartialKeyword))
-      .AddMembers(interfaceMembers.ToArray());
+      .AddMembers([.. interfaceMembers]);
 
+    var implementationModifiers = new List<SyntaxToken>(2);
+    var accessibilityModifier = iiInfo.ImplementationModifiers.IsPublic
+      ? SyntaxKind.PublicKeyword
+      : SyntaxKind.InternalKeyword;
+    implementationModifiers.Add(Token(accessibilityModifier));
+    if (iiInfo.ImplementationModifiers.IsSealed)
+    {
+      implementationModifiers.Add(Token(SyntaxKind.SealedKeyword));
+    }
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()
       .AddAttributeLists(generatedCodeAttribute, excludeFromCodeCoverageAttribute)
-      .AddModifiers(Token(SyntaxKind.InternalKeyword))
-      .AddMembers(implementationMembers.ToArray())
+      .AddModifiers([.. implementationModifiers])
+      .AddMembers([.. implementationMembers])
       .AddBaseListTypes(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));
 
     AddSource(

@@ -199,6 +199,7 @@ dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 dotnet_diagnostic.CS1591.severity = none
 
 dotnet_diagnostic.S1186.severity = none
+dotnet_diagnostic.S3878.severity = none
 dotnet_diagnostic.S4200.severity = none
 
 dotnet_diagnostic.VSTHRD100.severity = none

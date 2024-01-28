@@ -31,7 +31,7 @@ and the name of the wrapper class to be generated.
 ```csharp
 using Tum4ik.StinimGen.Attributes;
 
-[IIFor(typeof(DateTime), "DateTimeWrapper")]
+[IIFor(typeof(DateTime), WrapperClassName = "DateTimeWrapper")]
 internal partial interface IDateTime
 {
 }
@@ -86,3 +86,11 @@ public class MyServiceTests
   }
 }
 ```
+
+## API
+| Property | Default | Description |
+|-|-|-|
+| sourceType (constructor required) | - | The type to generate interface members and an implementation wrapper for |
+| WrapperClassName (required) | - | The implementation wrapper class name to generate |
+| IsPublic | false | Controls the generated implementation wrapper accessibility: `true` emits `public` access modifier, `false` - `internal` |
+| IsSealed | true | Controls the ability to inherit generated implementation wrapper: `true` emits `sealed` modifier, `false` - nothing |

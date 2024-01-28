@@ -16,7 +16,7 @@ Background:
     using Tum4ik.StinimGen.Attributes;
     using Fields;
     namespace Attribute.Usage;
-    [IIFor(typeof(FieldHolder), "FieldHolderWrapper")]
+    [IIFor(typeof(FieldHolder), WrapperClassName = "FieldHolderWrapper")]
     internal partial interface IFieldHolder { }
     """
 

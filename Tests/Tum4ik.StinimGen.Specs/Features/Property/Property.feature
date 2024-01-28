@@ -17,7 +17,7 @@ Background:
     using Tum4ik.StinimGen.Attributes;
     using Properties;
     namespace Attribute.Usage;
-    [IIFor(typeof(PropertyHolder), "PropertyHolderWrapper")]
+    [IIFor(typeof(PropertyHolder), WrapperClassName = "PropertyHolderWrapper")]
     internal partial interface IPropertyHolder { }
     """
 

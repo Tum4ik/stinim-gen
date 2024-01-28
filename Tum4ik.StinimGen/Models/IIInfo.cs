@@ -6,9 +6,13 @@ internal sealed record IIInfo(
   string Namespace,
   TypeInfo InterfaceTypeInfo,
   TypeInfo ImplementationTypeInfo,
+  ImplementationModifiers ImplementationModifiers,
   ImmutableArray<PropertyInfo> PropertyForFieldInfoList,
   ImmutableArray<PropertyInfo> PropertyInfoList,
   ImmutableArray<EventInfo> EventInfoList,
   ImmutableArray<MethodDeclarationSyntax> MethodInfoList,
   string SourceFullyQualifiedName
 );
+
+
+internal sealed record ImplementationModifiers(bool IsPublic, bool IsSealed);

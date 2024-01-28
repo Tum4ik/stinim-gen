@@ -1,18 +1,21 @@
 Feature: Common generation
 
 
-Scenario: Common interface and implementation files generation
+Background:
   Given source declaration
     """
     namespace Common.Generation;
     public static class SomeStaticClass { }
     """
-  And attribute usage
+
+
+Scenario: Default interface and implementation files generation
+  Given attribute usage
     """
     using Tum4ik.StinimGen.Attributes;
     using Common.Generation;
     namespace Attribute.Usage;
-    [IIFor(typeof(SomeStaticClass), "SomeStaticClassWrapper")]
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper")]
     public partial interface ISomeStaticClass { }
     """
   When run generator
@@ -34,7 +37,121 @@ Scenario: Common interface and implementation files generation
     namespace Attribute.Usage;
     [global::System.CodeDom.Compiler.GeneratedCode("StinimGen", "<version>")]
     [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    internal sealed class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPublic=false
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPublic = false)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal sealed class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPublic=true
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPublic = true)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    public sealed class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsSealed=false
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsSealed = false)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
     internal class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsSealed=true
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsSealed = true)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal sealed class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPublic=false and IsSealed=false
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPublic = false, IsSealed = false)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPublic=true and IsSealed=true
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPublic = true, IsSealed = true)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    public sealed class SomeStaticClassWrapper : ISomeStaticClass
     {
     }
     """
