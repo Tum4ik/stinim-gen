@@ -1,1 +1,2 @@
 - New API to control implementation wrapper generation.
+- Keep members original XML documentation.
