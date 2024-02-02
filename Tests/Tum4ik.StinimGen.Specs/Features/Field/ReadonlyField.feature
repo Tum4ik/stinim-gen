@@ -30,10 +30,12 @@ Scenario: Non-nullable field with keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.StaticReadonlyField"/>
     float StaticReadonlyField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public float StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
   
@@ -47,10 +49,12 @@ Scenario: Nullable field with keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.StaticReadonlyField"/>
     float? StaticReadonlyField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public float? StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
   
@@ -64,10 +68,12 @@ Scenario: Non-nullable field
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.StaticReadonlyField"/>
     global::System.StringComparer StaticReadonlyField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.StringComparer StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
   
@@ -81,9 +87,11 @@ Scenario: Nullable field
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.StaticReadonlyField"/>
     global::System.StringComparer? StaticReadonlyField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.StringComparer? StaticReadonlyField { get => Fields.FieldHolder.StaticReadonlyField; }
     """
