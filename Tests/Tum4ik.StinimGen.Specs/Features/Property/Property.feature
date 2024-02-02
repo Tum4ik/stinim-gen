@@ -31,10 +31,12 @@ Scenario: Property with only getter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     int Property { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public int Property { get => Properties.PropertyHolder.Property; }
     """
   
@@ -49,10 +51,12 @@ Scenario: Property with only setter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     float? Property { set; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public float? Property { set => Properties.PropertyHolder.Property = value; }
     """
   
@@ -66,10 +70,12 @@ Scenario: Property with getter and setter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     global::System.IO.Stream Property { get; set; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.IO.Stream Property { get => Properties.PropertyHolder.Property; set => Properties.PropertyHolder.Property = value; }
     """
   
@@ -83,10 +89,12 @@ Scenario: Property with getter and private setter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     global::System.IO.Stream? Property { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
     """
   
@@ -100,10 +108,12 @@ Scenario: Property with getter and protected setter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     global::System.IO.Stream? Property { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
     """
   
@@ -117,10 +127,12 @@ Scenario: Property with private getter and setter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     float? Property { set; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public float? Property { set => Properties.PropertyHolder.Property = value; }
     """
 
@@ -128,15 +140,18 @@ Scenario: Property with private getter and setter
 Scenario: Property with protected getter and setter
   Given source member declaration
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     public static string Property { protected get; set; }
     """
   When run generator
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
     string Property { set; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public string Property { set => Properties.PropertyHolder.Property = value; }
     """

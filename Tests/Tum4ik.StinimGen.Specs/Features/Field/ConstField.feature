@@ -30,10 +30,12 @@ Scenario: Field with keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.ConstField"/>
     int ConstField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public int ConstField { get => Fields.FieldHolder.ConstField; }
     """
 
@@ -47,9 +49,11 @@ Scenario: Field with non-keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Fields.FieldHolder.ConstField"/>
     double ConstField { get; }
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public double ConstField { get => Fields.FieldHolder.ConstField; }
     """
