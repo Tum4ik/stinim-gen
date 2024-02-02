@@ -33,10 +33,12 @@ Scenario: Void method without parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method()"/>
     void Method();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method() => Methods.MethodHolder.Method();
     """
 
@@ -50,10 +52,12 @@ Scenario: Method without parameters returns keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method()"/>
     global::System.String Method();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.String Method() => Methods.MethodHolder.Method();
     """
 
@@ -67,10 +71,12 @@ Scenario: Method without parameters returns keyworded nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method()"/>
     global::System.String? Method();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.String? Method() => Methods.MethodHolder.Method();
     """
 
@@ -84,10 +90,12 @@ Scenario: Method without parameters returns non-nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method()"/>
     global::System.Text.StringBuilder Method();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Text.StringBuilder Method() => Methods.MethodHolder.Method();
     """
 
@@ -101,10 +109,12 @@ Scenario: Method without parameters returns nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method()"/>
     global::System.Text.StringBuilder? Method();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Text.StringBuilder? Method() => Methods.MethodHolder.Method();
     """
 
@@ -118,10 +128,12 @@ Scenario: Async void method without parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     void MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -135,10 +147,12 @@ Scenario: Async method without parameters returns Task
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     global::System.Threading.Tasks.Task MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Threading.Tasks.Task MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -152,10 +166,12 @@ Scenario: Method without parameters returns Taks of keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     global::System.Threading.Tasks.Task<global::System.String> MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Threading.Tasks.Task<global::System.String> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -169,10 +185,12 @@ Scenario: Method without parameters returns Task of keyworded nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     global::System.Threading.Tasks.Task<global::System.String?> MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Threading.Tasks.Task<global::System.String?> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -186,10 +204,12 @@ Scenario: Method without parameters returns Task of non-nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Threading.Tasks.Task<global::System.Text.StringBuilder> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -203,10 +223,12 @@ Scenario: Method without parameters returns Task of nullable type
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync()"/>
     global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> MethodAsync();
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public global::System.Threading.Tasks.Task<global::System.Text.StringBuilder?> MethodAsync() => Methods.MethodHolder.MethodAsync();
     """
 
@@ -220,10 +242,12 @@ Scenario: Void method with a parameter
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.Int32)"/>
     void Method(global::System.Int32 p);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.Int32 p) => Methods.MethodHolder.Method(p);
     """
 
@@ -237,10 +261,12 @@ Scenario: Void method with default parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.Int32, global::System.String, global::System.Int32)"/>
     void Method(global::System.Int32 p1, global::System.String p2 = "def", global::System.Int32 p3 = 10);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.Int32 p1, global::System.String p2 = "def", global::System.Int32 p3 = 10) => Methods.MethodHolder.Method(p1, p2, p3);
     """
 
@@ -254,10 +280,12 @@ Scenario: Void method with several keyworded parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.Int32, global::System.String[], global::System.Single? , global::System.Double? [], global::System.Object[] ? )"/>
     void Method(global::System.Int32 p1, global::System.String[] p2, global::System.Single? p3, global::System.Double? [] p4, global::System.Object[]? p5);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.Int32 p1, global::System.String[] p2, global::System.Single? p3, global::System.Double? [] p4, global::System.Object[]? p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
@@ -271,10 +299,12 @@ Scenario: Void method with several non-keyworded parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.DateTime, global::System.DateTime[], global::System.DateTime? , global::System.DateTime? [], global::System.DateTime[] ? )"/>
     void Method(global::System.DateTime p1, global::System.DateTime[] p2, global::System.DateTime? p3, global::System.DateTime? [] p4, global::System.DateTime[]? p5);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.DateTime p1, global::System.DateTime[] p2, global::System.DateTime? p3, global::System.DateTime? [] p4, global::System.DateTime[]? p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
@@ -288,10 +318,12 @@ Scenario: Void method with several keyworded generic parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.Collections.Generic.List{global::System.Int32}, global::System.Collections.Generic.List{global::System.String[]}, global::System.Collections.Generic.List{global::System.Single?}, global::System.Collections.Generic.List{global::System.Double? []}, global::System.Collections.Generic.List{global::System.Object[]?  } )"/>
     void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.Collections.Generic.List<global::System.Int32> p1, global::System.Collections.Generic.List<global::System.String[]> p2, global::System.Collections.Generic.List<global::System.Single?> p3, global::System.Collections.Generic.List<global::System.Double? []> p4, global::System.Collections.Generic.List<global::System.Object[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
@@ -305,10 +337,12 @@ Scenario: Void method with several non-keyworded generic parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(global::System.Collections.Generic.List{global::System.DateTime}, global::System.Collections.Generic.List{global::System.DateTime[]}, global::System.Collections.Generic.List{global::System.DateTime?}, global::System.Collections.Generic.List{global::System.DateTime? []}, global::System.Collections.Generic.List{global::System.DateTime[]?  } )"/>
     void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(global::System.Collections.Generic.List<global::System.DateTime> p1, global::System.Collections.Generic.List<global::System.DateTime[]> p2, global::System.Collections.Generic.List<global::System.DateTime?> p3, global::System.Collections.Generic.List<global::System.DateTime? []> p4, global::System.Collections.Generic.List<global::System.DateTime[]?> p5) => Methods.MethodHolder.Method(p1, p2, p3, p4, p5);
     """
 
@@ -322,9 +356,11 @@ Scenario: Void method with ref/out/in and params parameters
   Then there must not be generation exception
   And generated interface member must be
     """
+    /// <inheritdoc cref = "Methods.MethodHolder.Method(ref global::System.Int32, out global::System.Double? , in global::System.DateTime, global::System.DateTime? [])"/>
     void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP);
     """
   And generated implementation member must be
     """
+    /// <inheritdoc/>
     public void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);
     """

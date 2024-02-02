@@ -1,7 +1,7 @@
 using Tum4ik.StinimGen.Sandbox.Types;
 
 namespace Tum4ik.StinimGen.Sandbox.Types;
-internal sealed class SealedClass
+public class SealedClass
 {
   public const int ConstInt = 0;
   public const string ConstString = "ConstString";
@@ -24,4 +24,21 @@ internal sealed class SealedClass
   public static readonly string? StaticReadonlyNullableString = "StaticReadonlyNullableString";
   public static readonly DummyClass StaticReadonlyDummyClass = new();
   public static readonly DummyClass? StaticReadonlyNullableDummyClass = new();
+
+  public delegate void SuperEvent(int i, string s);
+
+  /// <summary>
+  /// Super event
+  /// </summary>
+  public static event SuperEvent Event;
+
+
+  /// <summary>
+  /// Gener
+  /// </summary>
+  public static event EventHandler Event2;
+
+
+  /// <inheritdoc cref="SealedClass.Event2"/>
+  public static event EventHandler Event3;
 }

@@ -30,7 +30,14 @@ internal static class StaticClass
   public static int? IntPropertyGet { get; }
   public static DummyStruct DummyStructPropertySet { set => StaticDummyStruct = value; }
   public static DummyStruct? DummyStructPropertyPrivateGetSet { private get; set; }
-  public static string StringPropertyGetPrivateSet { get; set; }
+
+  /// <summary>
+  /// Prop
+  /// </summary>
+  public static List<string> StringPropertyGetPrivateSet { get; set; }
+
+  /// <inheritdoc cref="Stack{T}.Clear"/>
+  public static string Prop { get; set; }
 
 
   public static event EventHandler Event;
