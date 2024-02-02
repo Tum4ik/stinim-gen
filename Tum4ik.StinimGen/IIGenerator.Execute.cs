@@ -9,7 +9,7 @@ partial class IIGenerator
 {
   internal static class Execute
   {
-    public static MemberDeclarationSyntax GetInterfacePropertySyntax(PropertyInfo propertyInfo)
+    public static MemberDeclarationSyntax GetInterfacePropertySyntax(PropertyInfo propertyInfo, IIInfo iiInfo)
     {
       var accessorsList = new List<AccessorDeclarationSyntax>(2);
 
@@ -27,10 +27,17 @@ partial class IIGenerator
         );
       }
 
+      var typeFullName = iiInfo.SourceFullyQualifiedName;
+      var propertyName = propertyInfo.PropertyName;
+      var signature = $"{typeFullName}.{propertyName}"
+        .Replace('<', '{')
+        .Replace('>', '}');
+
       return PropertyDeclaration(
           IdentifierName(propertyInfo.TypeNameWithNullabilityAnnotations),
-          Identifier(propertyInfo.PropertyName)
+          Identifier(propertyName)
         )
+        .WithLeadingTrivia(Comment($"/// <inheritdoc cref=\"{signature}\" />"))
         .AddAccessorListAccessors(accessorsList.ToArray());
     }
 
@@ -70,16 +77,23 @@ partial class IIGenerator
           Identifier(propertyInfo.PropertyName)
         )
         .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .WithLeadingTrivia(Comment("/// <inheritdoc />"))
         .AddAccessorListAccessors(accessorsList.ToArray());
     }
 
 
-    public static MemberDeclarationSyntax GetInterfaceEventSyntax(EventInfo eventInfo)
+    public static MemberDeclarationSyntax GetInterfaceEventSyntax(EventInfo eventInfo, IIInfo iiInfo)
     {
+      var typeFullName = iiInfo.SourceFullyQualifiedName;
+      var eventName = eventInfo.EventName;
+      var signature = $"{typeFullName}.{eventName}"
+        .Replace('<', '{')
+        .Replace('>', '}');
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
-          Identifier(eventInfo.EventName)
+          Identifier(eventName)
         )
+        .WithLeadingTrivia(Comment($"/// <inheritdoc cref=\"{signature}\" />"))
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
 
@@ -87,12 +101,13 @@ partial class IIGenerator
     public static MemberDeclarationSyntax GetImplementationEventSyntax(EventInfo eventInfo, IIInfo iiInfo)
     {
       var underlyingCallee = IdentifierName($"{iiInfo.SourceFullyQualifiedName}.{eventInfo.EventName}");
-      
+
       return EventDeclaration(
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
           Identifier(eventInfo.EventName)
         )
         .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .WithLeadingTrivia(Comment("/// <inheritdoc />"))
         .AddAccessorListAccessors(
           AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)
             .WithExpressionBody(ArrowExpressionClause(
@@ -116,10 +131,41 @@ partial class IIGenerator
     }
 
 
-    public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodDeclarationSyntax methodDeclarationSyntax)
+    public static MemberDeclarationSyntax GetInterfaceMethodSyntax(MethodDeclarationSyntax methodDeclarationSyntax,
+                                                                   IIInfo iiInfo)
     {
+      var typeFullName = iiInfo.SourceFullyQualifiedName;
+      var methodName = methodDeclarationSyntax.Identifier.ValueText;
+      var genericParameters = methodDeclarationSyntax.TypeParameterList?
+        .Parameters
+        .Select(p => p.Identifier.ValueText)
+        .ToList();
+      var parameters = methodDeclarationSyntax.ParameterList
+        .Parameters
+        .Select(p =>
+        {
+          var mod = p.Modifiers.FirstOrDefault(
+            m => m.IsKind(SyntaxKind.RefKeyword)
+              || m.IsKind(SyntaxKind.OutKeyword)
+              || m.IsKind(SyntaxKind.InKeyword)
+          );
+          return $"{(mod == default ? "" : mod.ValueText + " ")}{p.Type}";
+        })
+        .ToList();
+
+      var genericParametersPart = genericParameters is null || genericParameters.Count == 0
+        ? string.Empty
+        : $"{{{string.Join(", ", genericParameters)}}}";
+      var parametersPart = parameters.Count == 0
+        ? string.Empty
+        : string.Join(", ", parameters);
+      var signature = $"{typeFullName}.{methodName}{genericParametersPart}({parametersPart})"
+        .Replace('<', '{')
+        .Replace('>', '}');
+
       return methodDeclarationSyntax
         .WithModifiers(TokenList())
+        .WithLeadingTrivia(Comment($"/// <inheritdoc cref=\"{signature}\" />"))
         .WithBody(null)
         .WithExpressionBody(null)
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
@@ -150,6 +196,7 @@ partial class IIGenerator
       }
       return methodDeclarationSyntax
         .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+        .WithLeadingTrivia(Comment("/// <inheritdoc />"))
         .WithBody(null)
         .WithExpressionBody(
           ArrowExpressionClause(

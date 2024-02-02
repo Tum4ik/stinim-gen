@@ -243,7 +243,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var fieldInfo in iiInfo.PropertyForFieldInfoList)
     {
-      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(fieldInfo));
+      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(fieldInfo, iiInfo));
       implementationMembers.Add(Execute.GetImplementationPropertySyntax(fieldInfo, iiInfo));
     }
   }
@@ -255,7 +255,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var propertyInfo in iiInfo.PropertyInfoList)
     {
-      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(propertyInfo));
+      interfaceMembers.Add(Execute.GetInterfacePropertySyntax(propertyInfo, iiInfo));
       implementationMembers.Add(Execute.GetImplementationPropertySyntax(propertyInfo, iiInfo));
     }
   }
@@ -267,7 +267,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var eventInfo in iiInfo.EventInfoList)
     {
-      interfaceMembers.Add(Execute.GetInterfaceEventSyntax(eventInfo));
+      interfaceMembers.Add(Execute.GetInterfaceEventSyntax(eventInfo, iiInfo));
       implementationMembers.Add(Execute.GetImplementationEventSyntax(eventInfo, iiInfo));
     }
   }
@@ -279,7 +279,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
   {
     foreach (var methodInfo in iiInfo.MethodInfoList)
     {
-      interfaceMembers.Add(Execute.GetInterfaceMethodSyntax(methodInfo));
+      interfaceMembers.Add(Execute.GetInterfaceMethodSyntax(methodInfo, iiInfo));
       implementationMembers.Add(Execute.GetImplementationMethodSyntax(methodInfo, iiInfo));
     }
   }
