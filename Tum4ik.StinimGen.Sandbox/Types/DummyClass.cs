@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace Tum4ik.StinimGen.Sandbox.Types;
+[Obsolete("dmke")]
 public sealed class DummyClass
 {
   public DummyClass()
