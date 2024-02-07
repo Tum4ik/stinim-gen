@@ -364,3 +364,25 @@ Scenario: Void method with ref/out/in and params parameters
     /// <inheritdoc/>
     public void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);
     """
+
+
+Scenario: Forward Obsolete attribute
+  Given source member declaration
+    """
+    [Obsolete("Obsolete method")]
+    public static void ObsoleteMethod() { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Methods.MethodHolder.ObsoleteMethod()"/>
+    [global::System.ObsoleteAttribute("Obsolete method")]
+    void ObsoleteMethod();
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    [global::System.ObsoleteAttribute("Obsolete method")]
+    public void ObsoleteMethod() => Methods.MethodHolder.ObsoleteMethod();
+    """

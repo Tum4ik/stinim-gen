@@ -1,4 +1,6 @@
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Editing;
 
 namespace Tum4ik.StinimGen.Extensions;
 internal static class SymbolExtensions
@@ -14,5 +16,16 @@ internal static class SymbolExtensions
       SymbolDisplayFormat.FullyQualifiedFormat
         .AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier)
     );
+  }
+
+
+  public static AttributeListSyntax[] GetObsoleteAttributeSyntaxIfPresent(this ISymbol symbol,
+                                                                          SyntaxGenerator syntaxGenerator)
+  {
+    return symbol.GetAttributes()
+      .Where(a => a.AttributeClass?.ContainingNamespace.Name == "System"
+               && a.AttributeClass.Name == "ObsoleteAttribute")
+      .Select(a => (AttributeListSyntax) syntaxGenerator.Attribute(a))
+      .ToArray();
   }
 }

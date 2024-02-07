@@ -155,3 +155,25 @@ Scenario: Property with protected getter and setter
     /// <inheritdoc/>
     public string Property { set => Properties.PropertyHolder.Property = value; }
     """
+
+
+Scenario: Forward Obsolete attribute
+  Given source member declaration
+    """
+    [Obsolete("Obsolete property")]
+    public static int ObsoleteProperty { get; }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Properties.PropertyHolder.ObsoleteProperty"/>
+    [global::System.ObsoleteAttribute("Obsolete property")]
+    int ObsoleteProperty { get; }
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    [global::System.ObsoleteAttribute("Obsolete property")]
+    public int ObsoleteProperty { get => Properties.PropertyHolder.ObsoleteProperty; }
+    """

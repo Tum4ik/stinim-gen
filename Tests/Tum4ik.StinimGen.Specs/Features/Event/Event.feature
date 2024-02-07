@@ -197,3 +197,25 @@ Scenario: Full event
     /// <inheritdoc/>
     public event global::System.EventHandler FullEvent { add => Events.EventHolder.FullEvent += value; remove => Events.EventHolder.FullEvent -= value; }
     """
+
+
+Scenario: Forward Obsolete attribute
+  Given source member declaration
+    """
+    [Obsolete("Obsolete event")]
+    public static event EventHandler ObsoleteEvent;
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Events.EventHolder.ObsoleteEvent"/>
+    [global::System.ObsoleteAttribute("Obsolete event")]
+    event global::System.EventHandler ObsoleteEvent;
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    [global::System.ObsoleteAttribute("Obsolete event")]
+    public event global::System.EventHandler ObsoleteEvent { add => Events.EventHolder.ObsoleteEvent += value; remove => Events.EventHolder.ObsoleteEvent -= value; }
+    """
