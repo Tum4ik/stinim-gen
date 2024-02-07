@@ -393,7 +393,7 @@ Scenario: Forward Obsolete attribute
 Scenario: Forward parameters attributes
   Given source member declaration
     """
-    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false), Out][AllowNull] out int result)
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false), DisallowNull][AllowNull] out int result)
     {
       result = 0;
       return false;
@@ -404,10 +404,10 @@ Scenario: Forward parameters attributes
   And generated interface member must be
     """
     /// <inheritdoc cref = "Methods.MethodHolder.TryParse(global::System.String? , out global::System.Int32)"/>
-    global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Runtime.InteropServices.OutAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result);
+    global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Diagnostics.CodeAnalysis.DisallowNullAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result);
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Runtime.InteropServices.OutAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result) => Methods.MethodHolder.TryParse(s, out result);
+    public global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Diagnostics.CodeAnalysis.DisallowNullAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result) => Methods.MethodHolder.TryParse(s, out result);
     """

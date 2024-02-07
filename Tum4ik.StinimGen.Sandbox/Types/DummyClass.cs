@@ -45,7 +45,7 @@ public sealed class DummyClass
 
 
   /// <inheritdoc cref="TryParse(string?, out int)"/>
-  public static bool TryParse([NotNullWhen(true)][In] string? s, [MaybeNullWhen(false), Out][AllowNull] out int result)
+  public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false), DisallowNull][AllowNull] out int result)
   {
     result = 0;
     return false;

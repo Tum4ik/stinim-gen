@@ -148,9 +148,15 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               var paramNameToParamAttrs = methodSymbol.Parameters
                 .ToDictionary(
                   p => p.Name,
-                  p => p.GetAttributes().Select(
-                    a => (AttributeListSyntax) syntaxGenerator.Attribute(a)
-                  ).ToImmutableArray()
+                  p => p.GetAttributes()
+                    .Where(
+                      a => a.AttributeClass?
+                        .GetFullyQualifiedMetadataName()?
+                        .StartsWith("System.Diagnostics.CodeAnalysis")
+                        is true
+                    )
+                    .Select(a => (AttributeListSyntax) syntaxGenerator.Attribute(a))
+                    .ToImmutableArray()
                 );
               var forwardedAttributes = methodSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
               var methodDeclarationSyntax = ((MethodDeclarationSyntax) syntaxGenerator.MethodDeclaration(methodSymbol))
