@@ -95,3 +95,25 @@ Scenario: Nullable field
     /// <inheritdoc/>
     public global::System.Delegate? StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
     """
+
+
+Scenario: Forward Obsolete attribute
+  Given source member declaration
+    """
+    [Obsolete("Obsolete field")]
+    public static object ObsoleteField;
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Fields.FieldHolder.ObsoleteField"/>
+    [global::System.ObsoleteAttribute("Obsolete field")]
+    object ObsoleteField { get; set; }
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    [global::System.ObsoleteAttribute("Obsolete field")]
+    public object ObsoleteField { get => Fields.FieldHolder.ObsoleteField; set => Fields.FieldHolder.ObsoleteField = value; }
+    """

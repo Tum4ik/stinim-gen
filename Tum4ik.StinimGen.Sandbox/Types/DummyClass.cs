@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 namespace Tum4ik.StinimGen.Sandbox.Types;
+[Obsolete("dmke")]
 public sealed class DummyClass
 {
   public DummyClass()
@@ -40,6 +41,16 @@ public sealed class DummyClass
   {
     return 0;
   }
+
+
+  /// <inheritdoc cref="TryParse(string?, out int)"/>
+  public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false), DisallowNull][AllowNull] out int result)
+  {
+    result = 0;
+    return false;
+  }
+
+  
 
 
   

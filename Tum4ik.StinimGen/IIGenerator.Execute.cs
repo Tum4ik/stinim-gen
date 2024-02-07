@@ -37,8 +37,9 @@ partial class IIGenerator
           IdentifierName(propertyInfo.TypeNameWithNullabilityAnnotations),
           Identifier(propertyName)
         )
+        .AddAttributeLists(propertyInfo.ForwardedAttributes)
         .WithLeadingTrivia(Comment($"/// <inheritdoc cref=\"{signature}\" />"))
-        .AddAccessorListAccessors(accessorsList.ToArray());
+        .AddAccessorListAccessors([.. accessorsList]);
     }
 
 
@@ -77,8 +78,9 @@ partial class IIGenerator
           Identifier(propertyInfo.PropertyName)
         )
         .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddAttributeLists(propertyInfo.ForwardedAttributes)
         .WithLeadingTrivia(Comment("/// <inheritdoc />"))
-        .AddAccessorListAccessors(accessorsList.ToArray());
+        .AddAccessorListAccessors([.. accessorsList]);
     }
 
 
@@ -93,6 +95,7 @@ partial class IIGenerator
           IdentifierName(eventInfo.TypeNameWithNullabilityAnnotations),
           Identifier(eventName)
         )
+        .AddAttributeLists(eventInfo.ForwardedAttributes)
         .WithLeadingTrivia(Comment($"/// <inheritdoc cref=\"{signature}\" />"))
         .WithSemicolonToken(Token(SyntaxKind.SemicolonToken));
     }
@@ -107,6 +110,7 @@ partial class IIGenerator
           Identifier(eventInfo.EventName)
         )
         .AddModifiers(Token(SyntaxKind.PublicKeyword))
+        .AddAttributeLists(eventInfo.ForwardedAttributes)
         .WithLeadingTrivia(Comment("/// <inheritdoc />"))
         .AddAccessorListAccessors(
           AccessorDeclaration(SyntaxKind.AddAccessorDeclaration)

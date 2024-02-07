@@ -8,6 +8,8 @@ Background:
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Runtime.InteropServices;
     namespace Methods;
     public class MethodHolder
     {
@@ -363,4 +365,49 @@ Scenario: Void method with ref/out/in and params parameters
     """
     /// <inheritdoc/>
     public void Method(ref global::System.Int32 refP, out global::System.Double? outP, in global::System.DateTime inP, params global::System.DateTime? [] paramsP) => Methods.MethodHolder.Method(ref refP, out outP, in inP, paramsP);
+    """
+
+
+Scenario: Forward Obsolete attribute
+  Given source member declaration
+    """
+    [Obsolete("Obsolete method")]
+    public static void ObsoleteMethod() { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Methods.MethodHolder.ObsoleteMethod()"/>
+    [global::System.ObsoleteAttribute("Obsolete method")]
+    void ObsoleteMethod();
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    [global::System.ObsoleteAttribute("Obsolete method")]
+    public void ObsoleteMethod() => Methods.MethodHolder.ObsoleteMethod();
+    """
+
+
+Scenario: Forward parameters attributes
+  Given source member declaration
+    """
+    public static bool TryParse([NotNullWhen(true)] string? s, [MaybeNullWhen(false), DisallowNull][AllowNull] out int result)
+    {
+      result = 0;
+      return false;
+    }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated interface member must be
+    """
+    /// <inheritdoc cref = "Methods.MethodHolder.TryParse(global::System.String? , out global::System.Int32)"/>
+    global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Diagnostics.CodeAnalysis.DisallowNullAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result);
+    """
+  And generated implementation member must be
+    """
+    /// <inheritdoc/>
+    public global::System.Boolean TryParse([global::System.Diagnostics.CodeAnalysis.NotNullWhenAttribute(true)] global::System.String? s, [global::System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute(false)][global::System.Diagnostics.CodeAnalysis.DisallowNullAttribute][global::System.Diagnostics.CodeAnalysis.AllowNullAttribute] out global::System.Int32 result) => Methods.MethodHolder.TryParse(s, out result);
     """
