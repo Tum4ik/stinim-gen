@@ -140,6 +140,9 @@ jobs:
     needs: build
     runs-on: windows-latest
 
+    env:
+      GH_TOKEN: ${{ github.token }}
+
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4.1.1
