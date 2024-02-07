@@ -1,3 +1,4 @@
 - New API to control implementation wrapper generation.
 - Keep members original XML documentation.
 - Forward Obsolete attribute.
+- Forward method parameters attributes.

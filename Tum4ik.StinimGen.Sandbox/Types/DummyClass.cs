@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace Tum4ik.StinimGen.Sandbox.Types;
 [Obsolete("dmke")]
@@ -43,5 +44,10 @@ public sealed class DummyClass
   }
 
 
-  
+  /// <inheritdoc cref="TryParse(string?, out int)"/>
+  public static bool TryParse([NotNullWhen(true)][In] string? s, [MaybeNullWhen(false), Out][AllowNull] out int result)
+  {
+    result = 0;
+    return false;
+  }
 }

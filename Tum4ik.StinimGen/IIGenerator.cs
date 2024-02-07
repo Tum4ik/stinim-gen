@@ -145,10 +145,32 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
+              var paramNameToParamAttrs = methodSymbol.Parameters
+                .ToDictionary(
+                  p => p.Name,
+                  p => p.GetAttributes().Select(
+                    a => (AttributeListSyntax) syntaxGenerator.Attribute(a)
+                  ).ToImmutableArray()
+                );
               var forwardedAttributes = methodSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
               var methodDeclarationSyntax = ((MethodDeclarationSyntax) syntaxGenerator.MethodDeclaration(methodSymbol))
                 .WithExplicitInterfaceSpecifier(null)
                 .AddAttributeLists(forwardedAttributes);
+              var parametersWithAttributes = methodDeclarationSyntax.ParameterList.Parameters
+                .Select(p =>
+                {
+                  if (paramNameToParamAttrs.TryGetValue(p.Identifier.ValueText, out var attributes))
+                  {
+                    return p.WithAttributeLists(List(attributes));
+                  }
+                  return p;
+                })
+                ;
+              methodDeclarationSyntax = methodDeclarationSyntax.WithParameterList(ParameterList(
+                Token(SyntaxKind.OpenParenToken),
+                SeparatedList(parametersWithAttributes),
+                Token(SyntaxKind.CloseParenToken)
+              ));
               methodInfoList.Add(methodDeclarationSyntax);
               break;
             }
