@@ -98,9 +98,19 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           switch (member)
           {
             case IFieldSymbol fieldSymbol:
-              propertyForFieldInfoList.Add(fieldSymbol.ToFieldInfo());
+            {
+              var forwardedAttributes = fieldSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
+              propertyForFieldInfoList.Add(new(
+                TypeNameWithNullabilityAnnotations: fieldSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                PropertyName: fieldSymbol.Name,
+                HasGetter: true,
+                HasSetter: !fieldSymbol.IsConst && !fieldSymbol.IsReadOnly,
+                ForwardedAttributes: forwardedAttributes
+              ));
               break;
+            }
             case IPropertySymbol propertySymbol:
+            {
               var hasGetter = propertySymbol.GetMethod is not null
                            && propertySymbol.GetMethod.DeclaredAccessibility == Accessibility.Public;
               var hasSetter = propertySymbol.SetMethod is not null
@@ -109,51 +119,93 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               {
                 continue;
               }
+              var forwardedAttributes = propertySymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
               propertyInfoList.Add(new(
-                propertySymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                propertySymbol.Name,
-                hasGetter,
-                hasSetter
+                TypeNameWithNullabilityAnnotations: propertySymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                PropertyName: propertySymbol.Name,
+                HasGetter: hasGetter,
+                HasSetter: hasSetter,
+                ForwardedAttributes: forwardedAttributes
               ));
               break;
+            }
             case IEventSymbol eventSymbol:
+            {
+              var forwardedAttributes = eventSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
               eventInfoList.Add(new(
-                eventSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
-                eventSymbol.Name
+                TypeNameWithNullabilityAnnotations: eventSymbol.Type.GetFullyQualifiedNameWithNullabilityAnnotations(),
+                EventName: eventSymbol.Name,
+                ForwardedAttributes: forwardedAttributes
               ));
               break;
+            }
             case IMethodSymbol methodSymbol:
+            {
               if (methodSymbol.MethodKind != MethodKind.Ordinary)
               {
                 continue;
               }
+              var paramNameToParamAttrs = methodSymbol.Parameters
+                .ToDictionary(
+                  p => p.Name,
+                  p => p.GetAttributes()
+                    .Where(
+                      a => a.AttributeClass?
+                        .GetFullyQualifiedMetadataName()?
+                        .StartsWith("System.Diagnostics.CodeAnalysis")
+                        is true
+                    )
+                    .Select(a => (AttributeListSyntax) syntaxGenerator.Attribute(a))
+                    .ToImmutableArray()
+                );
+              var forwardedAttributes = methodSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
               var methodDeclarationSyntax = ((MethodDeclarationSyntax) syntaxGenerator.MethodDeclaration(methodSymbol))
-                .WithExplicitInterfaceSpecifier(null);
+                .WithExplicitInterfaceSpecifier(null)
+                .AddAttributeLists(forwardedAttributes);
+              var parametersWithAttributes = methodDeclarationSyntax.ParameterList.Parameters
+                .Select(p =>
+                {
+                  if (paramNameToParamAttrs.TryGetValue(p.Identifier.ValueText, out var attributes))
+                  {
+                    return p.WithAttributeLists(List(attributes));
+                  }
+                  return p;
+                })
+                ;
+              methodDeclarationSyntax = methodDeclarationSyntax.WithParameterList(ParameterList(
+                Token(SyntaxKind.OpenParenToken),
+                SeparatedList(parametersWithAttributes),
+                Token(SyntaxKind.CloseParenToken)
+              ));
               methodInfoList.Add(methodDeclarationSyntax);
               break;
+            }
           }
         }
 
+        var sourceForwardedAttributes = sourceNamedTypeSymbol.GetObsoleteAttributeSyntaxIfPresent(syntaxGenerator);
+
         return new IIInfo(
-          interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
+          Namespace: interfaceNamedTypeSymbol.ContainingNamespace.ToDisplayString(new(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
           )),
-          new(
+          InterfaceTypeInfo: new(
             interfaceNamedTypeSymbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat),
             interfaceNamedTypeSymbol.TypeKind,
             interfaceNamedTypeSymbol.IsRecord
           ),
-          new(
+          ImplementationTypeInfo: new(
             wrapperClassName,
             TypeKind.Class,
             false
           ),
-          new(isPublic, isSealed),
-          propertyForFieldInfoList.ToImmutableArray(),
-          propertyInfoList.ToImmutableArray(),
-          eventInfoList.ToImmutableArray(),
-          methodInfoList.ToImmutableArray(),
-          sourceNamedTypeSymbol.GetFullyQualifiedMetadataName()
+          ImplementationModifiers: new(isPublic, isSealed),
+          PropertyForFieldInfoList: propertyForFieldInfoList.ToImmutableArray(),
+          PropertyInfoList: propertyInfoList.ToImmutableArray(),
+          EventInfoList: eventInfoList.ToImmutableArray(),
+          MethodInfoList: methodInfoList.ToImmutableArray(),
+          SourceFullyQualifiedName: sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
+          SourceForwardedAttributes: sourceForwardedAttributes
         );
       }
     );
@@ -203,6 +255,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     var interfaceTypeDeclarationSyntax = iiInfo.InterfaceTypeInfo
       .GetSyntax()
       .AddAttributeLists(generatedCodeAttribute)
+      .AddAttributeLists(iiInfo.SourceForwardedAttributes)
       .AddModifiers(Token(SyntaxKind.PartialKeyword))
       .AddMembers([.. interfaceMembers]);
 
@@ -218,6 +271,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()
       .AddAttributeLists(generatedCodeAttribute, excludeFromCodeCoverageAttribute)
+      .AddAttributeLists(iiInfo.SourceForwardedAttributes)
       .AddModifiers([.. implementationModifiers])
       .AddMembers([.. implementationMembers])
       .AddBaseListTypes(SimpleBaseType(ParseTypeName(iiInfo.InterfaceTypeInfo.QualifiedName)));

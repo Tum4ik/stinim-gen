@@ -11,7 +11,8 @@ internal sealed record IIInfo(
   ImmutableArray<PropertyInfo> PropertyInfoList,
   ImmutableArray<EventInfo> EventInfoList,
   ImmutableArray<MethodDeclarationSyntax> MethodInfoList,
-  string SourceFullyQualifiedName
+  string SourceFullyQualifiedName,
+  AttributeListSyntax[] SourceForwardedAttributes
 );
 
 
