@@ -113,30 +113,30 @@ jobs:
         path: .\SolutionProperties\ReleaseNotes.txt
 
 
-  nuget-release:
+  # nuget-release:
 
-    name: NuGet Release ${{ needs.build.outputs.version }}
-    if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
-    needs: build
-    runs-on: windows-latest
+  #   name: NuGet Release ${{ needs.build.outputs.version }}
+  #   if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
+  #   needs: build
+  #   runs-on: windows-latest
 
-    steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4.1.1
-      with:
-        name: Package
+  #   steps:
+  #   - name: Download build artifacts
+  #     uses: actions/download-artifact@v4.1.1
+  #     with:
+  #       name: Package
 
-    - name: NuGet push
-      run: |
-        dotnet nuget push "**/*.nupkg" `
-          -s https://api.nuget.org/v3/index.json `
-          -k ${{ secrets.NUGET_API_KEY }}
+  #   - name: NuGet push
+  #     run: |
+  #       dotnet nuget push "**/*.nupkg" `
+  #         -s https://api.nuget.org/v3/index.json `
+  #         -k ${{ secrets.NUGET_API_KEY }}
 
 
   github-release:
 
     name: GitHub Release ${{ needs.build.outputs.version }}
-    if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
+    # if: github.event_name != 'pull_request' && contains(github.ref_name, 'release')
     needs: build
     runs-on: windows-latest
 
@@ -147,9 +147,7 @@ jobs:
         name: ReleaseNotes
 
     - name: GitHub release
-      uses: softprops/action-gh-release@v0.1.15
-      with:
-        tag_name: ${{ needs.build.outputs.version }}
-        draft: false
-        body_path: ReleaseNotes.txt
-        fail_on_unmatched_files: true
+      run: |
+        gh release create ${{ needs.build.outputs.version }} --draft --latest --prerelease `
+          --title ${{ needs.build.outputs.version }} `
+          --notes-file ReleaseNotes.txt
