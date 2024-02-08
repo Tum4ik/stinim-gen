@@ -50,7 +50,7 @@ jobs:
         if (![System.Version]::TryParse($majorMinor, [ref]$null)) { $majorMinor = "0.0" }
         $buildNumber = "$(Get-Date -Format 'yy')$((Get-Date).DayOfYear.ToString().PadLeft(3, '0'))"
         $version = "$majorMinor.$buildNumber.${{ github.run_number }}"
-        echo "version=$version-rc" >> $env:GITHUB_OUTPUT
+        echo "version=$version" >> $env:GITHUB_OUTPUT
 
     - name: Build
       run: |
@@ -147,9 +147,11 @@ jobs:
         name: ReleaseNotes
 
     - name: GitHub release
-      uses: softprops/action-gh-release@v0.1.15
-      with:
-        tag_name: ${{ needs.build.outputs.version }}
-        draft: false
-        body_path: ReleaseNotes.txt
-        fail_on_unmatched_files: true
+      env:
+        GH_REPO: ${{ github.repository }}
+        GITHUB_TOKEN: ${{ github.token }}
+      run: |
+        gh release create ${{ needs.build.outputs.version }} `
+          --latest `
+          --title ${{ needs.build.outputs.version }} `
+          --notes-file ReleaseNotes.txt
