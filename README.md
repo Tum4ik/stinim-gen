@@ -6,7 +6,7 @@
 <h1 align="center">
 
   [![NuGet: Tum4ik.StinimGen](https://img.shields.io/nuget/v/Tum4ik.StinimGen)](https://www.nuget.org/packages/Tum4ik.StinimGen)
-  [![NuGet: Downloads](https://img.shields.io/nuget/dt/Tum4ik.StinimGen)](https://www.nuget.org/packages/Tum4ik.StinimGen)
+  [![NuGet: Downloads](https://img.shields.io/nuget/dt/Tum4ik.StinimGen)](https://www.nuget.org/stats/packages/Tum4ik.StinimGen?groupby=Version)
 </h1>
 
 Interface and implementation generator for static members.
