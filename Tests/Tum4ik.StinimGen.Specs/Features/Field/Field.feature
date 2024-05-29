@@ -30,13 +30,13 @@ Scenario: Non-nullable field with keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Fields.FieldHolder.StaticField"/>
+    /// <inheritdoc cref = "global::Fields.FieldHolder.StaticField"/>
     object StaticField { get; set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public object StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
+    public object StaticField { get => global::Fields.FieldHolder.StaticField; set => global::Fields.FieldHolder.StaticField = value; }
     """
   
 
@@ -49,13 +49,13 @@ Scenario: Nullable field with keyworded type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Fields.FieldHolder.StaticField"/>
+    /// <inheritdoc cref = "global::Fields.FieldHolder.StaticField"/>
     object? StaticField { get; set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public object? StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
+    public object? StaticField { get => global::Fields.FieldHolder.StaticField; set => global::Fields.FieldHolder.StaticField = value; }
     """
   
 
@@ -68,13 +68,13 @@ Scenario: Non-nullable field
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Fields.FieldHolder.StaticField"/>
+    /// <inheritdoc cref = "global::Fields.FieldHolder.StaticField"/>
     global::System.Delegate StaticField { get; set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.Delegate StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
+    public global::System.Delegate StaticField { get => global::Fields.FieldHolder.StaticField; set => global::Fields.FieldHolder.StaticField = value; }
     """
   
 
@@ -87,13 +87,13 @@ Scenario: Nullable field
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Fields.FieldHolder.StaticField"/>
+    /// <inheritdoc cref = "global::Fields.FieldHolder.StaticField"/>
     global::System.Delegate? StaticField { get; set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.Delegate? StaticField { get => Fields.FieldHolder.StaticField; set => Fields.FieldHolder.StaticField = value; }
+    public global::System.Delegate? StaticField { get => global::Fields.FieldHolder.StaticField; set => global::Fields.FieldHolder.StaticField = value; }
     """
 
 
@@ -107,7 +107,7 @@ Scenario: Forward Obsolete attribute
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Fields.FieldHolder.ObsoleteField"/>
+    /// <inheritdoc cref = "global::Fields.FieldHolder.ObsoleteField"/>
     [global::System.ObsoleteAttribute("Obsolete field")]
     object ObsoleteField { get; set; }
     """
@@ -115,5 +115,5 @@ Scenario: Forward Obsolete attribute
     """
     /// <inheritdoc/>
     [global::System.ObsoleteAttribute("Obsolete field")]
-    public object ObsoleteField { get => Fields.FieldHolder.ObsoleteField; set => Fields.FieldHolder.ObsoleteField = value; }
+    public object ObsoleteField { get => global::Fields.FieldHolder.ObsoleteField; set => global::Fields.FieldHolder.ObsoleteField = value; }
     """

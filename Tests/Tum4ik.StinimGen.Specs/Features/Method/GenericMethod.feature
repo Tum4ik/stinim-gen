@@ -33,13 +33,13 @@ Scenario: Void method with a generic parameter and without parameters
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{T}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{T}()"/>
     void Method<T>();
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public void Method<T>() => Methods.MethodHolder.Method<T>();
+    public void Method<T>() => global::Methods.MethodHolder.Method<T>();
     """
 
 
@@ -52,13 +52,13 @@ Scenario: Void method with several generic parameters and without parameters
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{T1, T2, T3}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{T1, T2, T3}()"/>
     void Method<T1, T2, T3>();
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public void Method<T1, T2, T3>() => Methods.MethodHolder.Method<T1, T2, T3>();
+    public void Method<T1, T2, T3>() => global::Methods.MethodHolder.Method<T1, T2, T3>();
     """
 
 
@@ -71,13 +71,13 @@ Scenario: Method without parameters returns generic type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{T}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{T}()"/>
     T Method<T>();
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public T Method<T>() => Methods.MethodHolder.Method<T>();
+    public T Method<T>() => global::Methods.MethodHolder.Method<T>();
     """
 
 
@@ -90,13 +90,13 @@ Scenario: Method with parameters returns generic type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{T1, T2}(T1, T2)"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{T1, T2}(T1, T2)"/>
     T1 Method<T1, T2>(T1 p1, T2 p2);
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public T1 Method<T1, T2>(T1 p1, T2 p2) => Methods.MethodHolder.Method<T1, T2>(p1, p2);
+    public T1 Method<T1, T2>(T1 p1, T2 p2) => global::Methods.MethodHolder.Method<T1, T2>(p1, p2);
     """
 
 
@@ -109,13 +109,13 @@ Scenario: Async method without parameters returns Task of generic type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.MethodAsync{T}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.MethodAsync{T}()"/>
     global::System.Threading.Tasks.Task<T> MethodAsync<T>();
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.Threading.Tasks.Task<T> MethodAsync<T>() => Methods.MethodHolder.MethodAsync<T>();
+    public global::System.Threading.Tasks.Task<T> MethodAsync<T>() => global::Methods.MethodHolder.MethodAsync<T>();
     """
 
 
@@ -128,7 +128,7 @@ Scenario: Generic method with a constraint
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{T}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{T}()"/>
     void Method<T>()
         where T : class, new();
     """
@@ -136,7 +136,7 @@ Scenario: Generic method with a constraint
     """
     /// <inheritdoc/>
     public void Method<T>()
-        where T : class, new() => Methods.MethodHolder.Method<T>();
+        where T : class, new() => global::Methods.MethodHolder.Method<T>();
     """
 
 
@@ -152,7 +152,7 @@ Scenario: Generic method with several constraints
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Methods.MethodHolder.Method{TParent, TChild}()"/>
+    /// <inheritdoc cref = "global::Methods.MethodHolder.Method{TParent, TChild}()"/>
     void Method<TParent, TChild>()
         where TParent : class where TChild : TParent, new();
     """
@@ -160,5 +160,5 @@ Scenario: Generic method with several constraints
     """
     /// <inheritdoc/>
     public void Method<TParent, TChild>()
-        where TParent : class where TChild : TParent, new() => Methods.MethodHolder.Method<TParent, TChild>();
+        where TParent : class where TChild : TParent, new() => global::Methods.MethodHolder.Method<TParent, TChild>();
     """
