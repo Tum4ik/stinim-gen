@@ -32,13 +32,13 @@ Scenario: Event field with EventHandler type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.EventHandler EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.EventHandler EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.EventHandler EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -51,13 +51,13 @@ Scenario: Event field with custom type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::Events.CustomEventHandler EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::Events.CustomEventHandler EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::Events.CustomEventHandler EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -70,13 +70,13 @@ Scenario: Event field with Action type
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Action EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Action EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Action EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -89,13 +89,13 @@ Scenario: Event field with Action type with keyworded generic parameter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Action<int> EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Action<int> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Action<int> EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -108,13 +108,13 @@ Scenario: Event field with Action type with keyworded nullable generic parameter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Action<string?> EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Action<string?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Action<string?> EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -127,13 +127,13 @@ Scenario: Event field with Action type with non-keyworded generic parameter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Action<global::System.DateTime> EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Action<global::System.DateTime> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Action<global::System.DateTime> EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -146,13 +146,13 @@ Scenario: Event field with Action type with non-keyworded nullable generic param
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Action<global::System.DayOfWeek?> EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Action<global::System.DayOfWeek?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Action<global::System.DayOfWeek?> EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -165,13 +165,13 @@ Scenario: Event field with Func
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.EventMember"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.EventMember"/>
     event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember { add => Events.EventHolder.EventMember += value; remove => Events.EventHolder.EventMember -= value; }
+    public event global::System.Func<global::System.DayOfWeek?, double, int?> EventMember { add => global::Events.EventHolder.EventMember += value; remove => global::Events.EventHolder.EventMember -= value; }
     """
 
 
@@ -189,13 +189,13 @@ Scenario: Full event
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.FullEvent"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.FullEvent"/>
     event global::System.EventHandler FullEvent;
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public event global::System.EventHandler FullEvent { add => Events.EventHolder.FullEvent += value; remove => Events.EventHolder.FullEvent -= value; }
+    public event global::System.EventHandler FullEvent { add => global::Events.EventHolder.FullEvent += value; remove => global::Events.EventHolder.FullEvent -= value; }
     """
 
 
@@ -209,7 +209,7 @@ Scenario: Forward Obsolete attribute
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Events.EventHolder.ObsoleteEvent"/>
+    /// <inheritdoc cref = "global::Events.EventHolder.ObsoleteEvent"/>
     [global::System.ObsoleteAttribute("Obsolete event")]
     event global::System.EventHandler ObsoleteEvent;
     """
@@ -217,5 +217,5 @@ Scenario: Forward Obsolete attribute
     """
     /// <inheritdoc/>
     [global::System.ObsoleteAttribute("Obsolete event")]
-    public event global::System.EventHandler ObsoleteEvent { add => Events.EventHolder.ObsoleteEvent += value; remove => Events.EventHolder.ObsoleteEvent -= value; }
+    public event global::System.EventHandler ObsoleteEvent { add => global::Events.EventHolder.ObsoleteEvent += value; remove => global::Events.EventHolder.ObsoleteEvent -= value; }
     """

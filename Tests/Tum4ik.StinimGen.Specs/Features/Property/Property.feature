@@ -31,13 +31,13 @@ Scenario: Property with only getter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     int Property { get; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public int Property { get => Properties.PropertyHolder.Property; }
+    public int Property { get => global::Properties.PropertyHolder.Property; }
     """
   
 
@@ -51,13 +51,13 @@ Scenario: Property with only setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     float? Property { set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public float? Property { set => Properties.PropertyHolder.Property = value; }
+    public float? Property { set => global::Properties.PropertyHolder.Property = value; }
     """
   
 
@@ -70,13 +70,13 @@ Scenario: Property with getter and setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     global::System.IO.Stream Property { get; set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.IO.Stream Property { get => Properties.PropertyHolder.Property; set => Properties.PropertyHolder.Property = value; }
+    public global::System.IO.Stream Property { get => global::Properties.PropertyHolder.Property; set => global::Properties.PropertyHolder.Property = value; }
     """
   
 
@@ -89,13 +89,13 @@ Scenario: Property with getter and private setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     global::System.IO.Stream? Property { get; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
+    public global::System.IO.Stream? Property { get => global::Properties.PropertyHolder.Property; }
     """
   
 
@@ -108,13 +108,13 @@ Scenario: Property with getter and protected setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     global::System.IO.Stream? Property { get; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public global::System.IO.Stream? Property { get => Properties.PropertyHolder.Property; }
+    public global::System.IO.Stream? Property { get => global::Properties.PropertyHolder.Property; }
     """
   
 
@@ -127,13 +127,13 @@ Scenario: Property with private getter and setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     float? Property { set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public float? Property { set => Properties.PropertyHolder.Property = value; }
+    public float? Property { set => global::Properties.PropertyHolder.Property = value; }
     """
 
 
@@ -147,13 +147,13 @@ Scenario: Property with protected getter and setter
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.Property"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.Property"/>
     string Property { set; }
     """
   And generated implementation member must be
     """
     /// <inheritdoc/>
-    public string Property { set => Properties.PropertyHolder.Property = value; }
+    public string Property { set => global::Properties.PropertyHolder.Property = value; }
     """
 
 
@@ -167,7 +167,7 @@ Scenario: Forward Obsolete attribute
   Then there must not be generation exception
   And generated interface member must be
     """
-    /// <inheritdoc cref = "Properties.PropertyHolder.ObsoleteProperty"/>
+    /// <inheritdoc cref = "global::Properties.PropertyHolder.ObsoleteProperty"/>
     [global::System.ObsoleteAttribute("Obsolete property")]
     int ObsoleteProperty { get; }
     """
@@ -175,5 +175,5 @@ Scenario: Forward Obsolete attribute
     """
     /// <inheritdoc/>
     [global::System.ObsoleteAttribute("Obsolete property")]
-    public int ObsoleteProperty { get => Properties.PropertyHolder.ObsoleteProperty; }
+    public int ObsoleteProperty { get => global::Properties.PropertyHolder.ObsoleteProperty; }
     """
