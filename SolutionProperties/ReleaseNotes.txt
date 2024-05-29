@@ -1,1 +1,1 @@
-- Updated Microsoft.CodeAnalysis.CSharp.Workspaces package.
+- Fixed missing `global::` prefix for the underlying callee.

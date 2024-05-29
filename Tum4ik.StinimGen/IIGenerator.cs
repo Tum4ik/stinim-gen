@@ -151,8 +151,8 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
                   p => p.GetAttributes()
                     .Where(
                       a => a.AttributeClass?
-                        .GetFullyQualifiedMetadataName()?
-                        .StartsWith("System.Diagnostics.CodeAnalysis")
+                        .GetFullyQualifiedName()?
+                        .StartsWith("global::System.Diagnostics.CodeAnalysis")
                         is true
                     )
                     .Select(a => (AttributeListSyntax) syntaxGenerator.Attribute(a))
@@ -204,7 +204,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
           PropertyInfoList: propertyInfoList.ToImmutableArray(),
           EventInfoList: eventInfoList.ToImmutableArray(),
           MethodInfoList: methodInfoList.ToImmutableArray(),
-          SourceFullyQualifiedName: sourceNamedTypeSymbol.GetFullyQualifiedMetadataName(),
+          SourceFullyQualifiedName: sourceNamedTypeSymbol.GetFullyQualifiedName(),
           SourceForwardedAttributes: sourceForwardedAttributes
         );
       }
