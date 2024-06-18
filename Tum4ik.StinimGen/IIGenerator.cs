@@ -53,6 +53,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
         string? wrapperClassName = null;
         var isPublic = false;
         var isSealed = true;
+        var isPartial = false;
         for (var i = 1; i < attributeArguments.Length; i++)
         {
           var attributeArgument = attributeArguments[i];
@@ -73,6 +74,9 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
               break;
             case "IsSealed":
               isSealed = bool.Parse(argumentValue);
+              break;
+            case "IsPartial":
+              isPartial = bool.Parse(argumentValue);
               break;
           }
         }
@@ -199,7 +203,7 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
             TypeKind.Class,
             false
           ),
-          ImplementationModifiers: new(isPublic, isSealed),
+          ImplementationModifiers: new(isPublic, isSealed, isPartial),
           PropertyForFieldInfoList: propertyForFieldInfoList.ToImmutableArray(),
           PropertyInfoList: propertyInfoList.ToImmutableArray(),
           EventInfoList: eventInfoList.ToImmutableArray(),
@@ -267,6 +271,10 @@ internal sealed partial class IIGenerator : IIncrementalGenerator
     if (iiInfo.ImplementationModifiers.IsSealed)
     {
       implementationModifiers.Add(Token(SyntaxKind.SealedKeyword));
+    }
+    if (iiInfo.ImplementationModifiers.IsPartial)
+    {
+      implementationModifiers.Add(Token(SyntaxKind.PartialKeyword));
     }
     var implementationTypeDeclarationSyntax = iiInfo.ImplementationTypeInfo
       .GetSyntax()

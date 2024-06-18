@@ -38,4 +38,10 @@ public class IIForAttribute : Attribute
   /// <see langword="true"/> emits <see langword="sealed"/> modifier, <see langword="false"/> - nothing.
   /// </summary>
   public bool IsSealed { get; init; } = true;
+
+  /// <summary>
+  /// Control the ability to extend the generated implementation wrapper with custom members:
+  /// <see langword="true"/> emits <see langword="partial"/> keyword, <see langword="false"/> - nothing.
+  /// </summary>
+  public bool IsPartial { get; init; }
 }
