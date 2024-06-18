@@ -119,6 +119,44 @@ Scenario: Implementation wrapper generation when IsSealed=true
     """
 
 
+Scenario: Implementation wrapper generation when IsPartial=false and IsSealed=false
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPartial = false, IsSealed = false)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPartial=true and IsSealed=false
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPartial = true, IsSealed = false)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal partial class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
 Scenario: Implementation wrapper generation when IsPublic=false and IsSealed=false
   Given attribute usage
     """
@@ -152,6 +190,25 @@ Scenario: Implementation wrapper generation when IsPublic=true and IsSealed=true
   And generated implementation must be
     """
     public sealed class SomeStaticClassWrapper : ISomeStaticClass
+    {
+    }
+    """
+
+
+Scenario: Implementation wrapper generation when IsPartial=true and IsSealed=true
+  Given attribute usage
+    """
+    using Tum4ik.StinimGen.Attributes;
+    using Common.Generation;
+    namespace Attribute.Usage;
+    [IIFor(typeof(SomeStaticClass), WrapperClassName = "SomeStaticClassWrapper", IsPartial = true, IsSealed = true)]
+    public partial interface ISomeStaticClass { }
+    """
+  When run generator
+  Then there must not be generation exception
+  And generated implementation must be
+    """
+    internal sealed partial class SomeStaticClassWrapper : ISomeStaticClass
     {
     }
     """

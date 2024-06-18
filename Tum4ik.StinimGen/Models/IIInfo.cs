@@ -16,4 +16,4 @@ internal sealed record IIInfo(
 );
 
 
-internal sealed record ImplementationModifiers(bool IsPublic, bool IsSealed);
+internal sealed record ImplementationModifiers(bool IsPublic, bool IsSealed, bool IsPartial);
