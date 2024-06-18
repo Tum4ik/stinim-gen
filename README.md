@@ -94,3 +94,27 @@ public class MyServiceTests
 | WrapperClassName (required) | - | The implementation wrapper class name to generate |
 | IsPublic | false | Controls the generated implementation wrapper accessibility: `true` emits `public` access modifier, `false` - `internal` |
 | IsSealed | true | Controls the ability to inherit generated implementation wrapper: `true` emits `sealed` modifier, `false` - nothing |
+| IsPartial | false | Control the ability to extend the generated implementation wrapper with custom members: `true` emits `partial` keyword, `false` - nothing |
+
+
+## Advanced topics
+
+### Custom members
+It may be possible you want to extend the declared interface with your own members and provide their implementations
+in the generated wrapper. For that you need to use `IsPartial` property.
+```csharp
+using Tum4ik.StinimGen.Attributes;
+
+[IIFor(typeof(DateTime), WrapperClassName = "DateTimeWrapper", IsPartial = true)]
+internal partial interface IDateTime
+{
+  DateTime Yesterday { get; }
+  DateTime Tomorrow { get; }
+}
+
+partial class DateTimeWrapper
+{
+  public DateTime Yesterday => DateTime.Now.Subtract(TimeSpan.FromDays(1));
+  public DateTime Tomorrow => DateTime.Now.AddDays(1);
+}
+```
