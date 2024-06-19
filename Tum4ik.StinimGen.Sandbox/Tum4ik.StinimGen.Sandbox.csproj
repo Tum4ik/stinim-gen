@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -8,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tum4ik.StinimGen.Attributes\Tum4ik.StinimGen.Attributes.csproj" />
-    <ProjectReference Include="..\Tum4ik.StinimGen\Tum4ik.StinimGen.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\Tum4ik.StinimGen\Tum4ik.StinimGen.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
