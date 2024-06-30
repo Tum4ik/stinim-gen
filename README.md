@@ -9,7 +9,7 @@
   [![NuGet: Downloads](https://img.shields.io/nuget/dt/Tum4ik.StinimGen)](https://www.nuget.org/stats/packages/Tum4ik.StinimGen?groupby=Version)
 </h1>
 
-Interface and implementation generator for static members.
+.NET interface and implementation generator for static members.
 
 This library is useful in case you want to have possibilities to mock static classes or static members in your tests.
 
