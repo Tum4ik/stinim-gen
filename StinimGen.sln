@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{8E79
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{67D68640-5538-42AB-97C3-66EEB296423D}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\gated.yml = .github\workflows\gated.yml
+		.github\workflows\release-2.2.yml = .github\workflows\release-2.2.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2A87494B-868C-4DCC-B008-F2A9CD953BDE}"
