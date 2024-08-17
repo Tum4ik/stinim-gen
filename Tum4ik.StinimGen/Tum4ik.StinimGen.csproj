@@ -46,6 +46,7 @@
     <None Include="$(OutputPath)\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.dll" Pack="true" PackagePath="lib/netstandard2.0" />
     <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.pdb" Pack="true" PackagePath="lib/netstandard2.0" />
+    <None Include="..\Tum4ik.StinimGen.Attributes\$(OutputPath)\Tum4ik.StinimGen.Attributes.xml" Pack="true" PackagePath="lib/netstandard2.0" />
     <None Include="..\logo.png" Pack="true" PackagePath="\" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
