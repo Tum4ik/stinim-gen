@@ -1,1 +1,2 @@
-- Added possibility to control the `partial` keyword of the generated implementation wrapper.
+- Added XML docs to the package.
+- Updated dependencies.
